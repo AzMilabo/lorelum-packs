@@ -64,13 +64,20 @@ Lorelum 的核心是"按需检索、精准注入"。一个 Practice 只有在**�
 
 ### 4.2 Out of scope（不覆盖，留给别的包或后续）
 
-- **SSR / RSC / Next.js / Remix 等元框架** → 未来独立包 `react-metaframeworks`（渲染模型差异大，混在一起会稀释触发精度）
+- **SSR / RSC / Next.js / Remix 等元框架** → 未来独立包 `react-metaframeworks`
 - **移动端 React Native** → 独立包
 - **构建工具链深水区**（Vite/Webpack 配置、Babel 插件）→ 通用 `tooling` 层只放少量实践
 - **CI/CD、部署、监控** → 非前端专属，留给通用包
 - **微前端** → 独立专题包
 
-> 🟡 **讨论点 A**：Next.js / RSC 是否真的先排除？社区主流是 Next，把它全排除可能让首包"看起来不接地气"。一种折中：核心包纯客户端，单独有 `react.rsc.*` 少量标记 `status: provisional` 的 Practice 占位。**我的倾向：先排除，保持触发精度，但留一个明确的占位领域。**
+> ✅ **已决（issue #5）**：Next.js / RSC / Remix **不纳入首包**，留给未来独立包 `react-metaframeworks`。
+>
+> **理由（渲染模型根本不同）：**
+> - SPA 形态下，所有组件都在浏览器跑，`useState`/`useEffect`/事件处理是默认心智；
+> - RSC 形态下，组件要分"服务端/客户端"，数据获取方式完全不同（直接 `await db.query` vs TanStack Query），`useState`/`onClick` 只能在 `'use client'` 组件里用；
+> - 如果首包同时覆盖两种，每条 Practice 都要写"SPA 这样做、RSC 那样做"，`applies_when` 触发条件变模糊，检索精度崩塌，退化成 `.cursorrules` 式大杂烩——丢掉 Lorelum 的核心价值。
+>
+> **占位机制：** `pack.yaml` 声明 `provisional_domains: [rsc, ssr]`（见 §9 / issue #7 的 pack.yaml schema），标注"待 `react-metaframeworks` 包或后续版本"。**不展开成领域**——若极少数确实跨形态通用的 Practice（如 TS 类型设计、a11y 基础）有需要，可标 `status: provisional` 单条加入首包，但不构成 RSC 领域。
 
 ### 4.3 目标用户画像
 
@@ -431,7 +438,7 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 
 | # | 问题 | 我的倾向 |
 |---|------|---------|
-| A | Next.js / RSC 是否纳入首包 | 先排除，留占位领域 |
+| ~~A~~ | ~~Next.js / RSC 是否纳入首包~~ | ✅ **已决（#5）**：不纳入；渲染模型根本不同会稀释触发精度。留 `provisional_domains: [rsc, ssr]` 占位，未来独立包 `react-metaframeworks` |
 | B | 反模式集中登记 vs 随 Practice | 索引集中、叙事分散 |
 | ~~C~~ | ~~`stage` 单值还是多值~~ | ✅ **已决（#1）**：多值数组，单条 ≤3 个，集合匹配召回 |
 | ~~D~~ | ~~`applies_when` 是否改名 `trigger`~~ | ✅ **已决（#2）**：保持 `applies_when`，破坏性改名无足够收益 |
