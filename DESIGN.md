@@ -127,7 +127,7 @@ react-fullstack/
 - **模板放 `templates/`**，是可被 `lore` 脚手架引用的代码骨架（区别于 Practice 的"指导文字"）。
 - **`pack.yaml` 是清单**，声明这个包的元信息与所含领域，供 `lore install` / `lore search` 使用。
 
-> 🟡 **讨论点 B**：反模式是集中放还是随 Practice 放？集中放便于 `lore check`，但作者改一条 Practice 时要跳两个地方。**我的倾向：登记集中（`index.yaml` 为准、有 id/检测线索），详细解释随对应 Practice 正文。** 也就是"索引集中、叙事分散"。
+> ✅ **已决（issue #6）**：**索引集中、叙事分散。** `anti-patterns/index.yaml` 是登记权威（id / summary / why_bad / relates_to / severity / 可选 detection），Practice 正文引用反模式 id 并展开叙事。职责清晰：`lore check` 查索引、作者改 Practice 看正文、id 唯一性有单一来源。
 
 ---
 
@@ -205,6 +205,8 @@ react-fullstack/
 - `summary` / `why_bad` / `relates_to` / `severity` —— **必填**，人类可读，描述"是什么、为什么坏"。
 - `detection` —— **可选**，给引擎的弱线索（正则/启发式）。pack 作者写不出可靠检测器时，留空即可。
 
+**`severity` 取值（issue #6）：** `minor`（代码味道，偶发可接受）/ `major`（明显坏味道，应改）/ `critical`（埋雷/安全/数据风险，必须改）。
+
 > ✅ **已决（issue #3）**：检测由**引擎承担**，pack 只提供 `summary` / `why_bad` / `relates_to` / `severity`（必填）+ 可选的 `detection` 弱线索。
 >
 > **技术根据：** 正则检测"看脸"（误报漏报都高），AST 检测"看骨"（可靠但要解析器+遍历器，门槛高）。反模式的本质多为结构性问题（"调用出现在错误上下文""依赖不匹配""状态可派生却存储"），必须靠 AST 才能可靠识别。让 pack 作者（前端专家）写 AST 检测器是能力错配。故：可靠检测归 `lore check` 引擎（专业工具链），pack 只给人类可读描述 + 可选的字面弱线索（引擎可消费作初筛、也可忽略）。
@@ -267,7 +269,7 @@ react-fullstack/
 - `domain` 取 §7 表的 key。
 - `topic` 为 kebab-case 短描述，如 `layered-design`、`server-vs-client-state`。
 
-反模式 id 用**两级**：`<domain>.<short-description>`（不带 stack 前缀，因为反模式往往跨栈复用，如 `state.server-state-in-redux` 在 React/Vue 都成立）。
+反模式 id 用**两级**：`<domain>.<short-description>`，**不带栈前缀**（反模式往往跨栈复用，如 `state.server-state-in-redux` 在 React/Vue 都成立；靠 `domain` 前缀已能区分语境）。
 
 ```
 Practice:   react.api.layered-design
@@ -278,7 +280,7 @@ Practice:   react.api.layered-design
             effect.unconditional-fetch
 ```
 
-> 🟡 **讨论点 G**：反模式 id 是否需要栈前缀？`api.direct-axios-in-component` 明显是前端/React 语境，但 `state.spread-props-everywhere` 就跨栈。**倾向：不带栈前缀，靠 domain 区分；若反模式确实栈特定，再升格命名。**
+> ✅ **已决（issue #6 / G）**：反模式 id **不带栈前缀**，两级 `<domain>.<short>`。理由：反模式常跨栈复用，栈前缀是冗余；少数确实栈特定的（如 `effect.stale-closure-deps` 是 React hooks 特有）靠 domain + 描述已足够，不必升格命名。
 
 ---
 
@@ -439,12 +441,12 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 | # | 问题 | 我的倾向 |
 |---|------|---------|
 | ~~A~~ | ~~Next.js / RSC 是否纳入首包~~ | ✅ **已决（#5）**：不纳入；渲染模型根本不同会稀释触发精度。留 `provisional_domains: [rsc, ssr]` 占位，未来独立包 `react-metaframeworks` |
-| B | 反模式集中登记 vs 随 Practice | 索引集中、叙事分散 |
+| ~~B~~ | ~~反模式集中登记 vs 随 Practice~~ | ✅ **已决（#6）**：索引集中（`index.yaml` 为准）+ 叙事分散（Practice 正文展开） |
 | ~~C~~ | ~~`stage` 单值还是多值~~ | ✅ **已决（#1）**：多值数组，单条 ≤3 个，集合匹配召回 |
 | ~~D~~ | ~~`applies_when` 是否改名 `trigger`~~ | ✅ **已决（#2）**：保持 `applies_when`，破坏性改名无足够收益 |
 | ~~E~~ | ~~反模式检测能力由 pack 还是引擎承担~~ | ✅ **已决（#3）**：引擎承担（AST）；pack 必填 summary/why_bad/relates_to/severity，detection 可选作弱线索 |
 | F | 是否单列 `typescript` / `a11y` domain | 不单列 |
-| G | 反模式 id 是否带栈前缀 | 不带，靠 domain 区分 |
+| ~~G~~ | ~~反模式 id 是否带栈前缀~~ | ✅ **已决（#6）**：不带；两级 `<domain>.<short>`，靠 domain 区分语境 |
 | H | `lore decide` 输入：自然语言还是结构化 | 待引擎定；pack 先按结构化写 |
 | I | `pack.yaml` 的确切 schema | 本提案只给轮廓，需与引擎对齐 |
 | ~~J~~ | ~~多语言（本包用中文还是中英双语）~~ | ✅ **已决（#4）**：英文为主 + 检索字段双语（title/applies_when 平铺后缀 _zh）；详见 §6.5 |
