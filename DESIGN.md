@@ -149,7 +149,7 @@ react-fullstack/
 
 > ✅ **已决（issue #1）**：`stage` 为**多值数组**，单条最多 3 个，且必须是最强相关的阶段。引擎按集合匹配召回（用户当前阶段 ∈ Practice.stage）。上限 3 由校验脚本强制，防止"全标上"导致字段退化。此结论需回流到 `lorelum/lorelum` 的检索模型 spec。
 
-> 🟡 **讨论点 D**：README 的 CONTRIBUTING 示例里出现过把 `applies_when` 改名为 `trigger` 的迹象。**我的倾向：保持 `applies_when`**（已写入 README 的公共范例，改名是破坏性变更，值得但不在本包范围内推动）。
+> ✅ **已决（issue #2）**：保持 `applies_when`，不改名。理由：主仓库 README 已将其作为公共 Practice 范例的字段名，改名属破坏性变更；且 `applies_when`（"在什么情况下适用"）语义比 `trigger` 更适合写自然语言触发条件。若未来主仓库 spec 决定改名，本仓库届时跟随。
 
 ### 6.2 正文结构
 
@@ -398,7 +398,7 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 | A | Next.js / RSC 是否纳入首包 | 先排除，留占位领域 |
 | B | 反模式集中登记 vs 随 Practice | 索引集中、叙事分散 |
 | ~~C~~ | ~~`stage` 单值还是多值~~ | ✅ **已决（#1）**：多值数组，单条 ≤3 个，集合匹配召回 |
-| D | `applies_when` 是否改名 `trigger` | 保持 `applies_when` |
+| ~~D~~ | ~~`applies_when` 是否改名 `trigger`~~ | ✅ **已决（#2）**：保持 `applies_when`，破坏性改名无足够收益 |
 | E | 反模式检测能力由 pack 还是引擎承担 | 引擎；pack 只给弱线索 |
 | F | 是否单列 `typescript` / `a11y` domain | 不单列 |
 | G | 反模式 id 是否带栈前缀 | 不带，靠 domain 区分 |
