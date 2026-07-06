@@ -182,14 +182,21 @@ react-fullstack/
   summary: 在 React 组件里直接调用 axios / fetch
   why_bad: |
     把数据获取与 UI 耦合，无法复用、难以测试、无法统一处理鉴权/错误/重试。
-  detection:
-    - regex: "axios\\.(get|post|put|delete)\\("   # 简易线索，非最终检测方案
-    - heuristic: "组件函数体内出现 http 调用"
   relates_to: [react.api.layered-design]
   severity: major
+  detection:                       # 可选。弱线索，非可靠检测方案。
+    - regex: "axios\\.(get|post|put|delete)\\("
+                                   # 引擎可消费作初筛，也可忽略；最终判断由引擎的
+                                   # AST/类型分析能力完成。pack 作者不背"写可靠检测器"的负担。
 ```
 
-> 🟡 **讨论点 E**：反模式的"检测线索"做到什么程度？正则太脆，AST 才靠谱，但 AST 检测属于 `lore check` 引擎能力，不是 pack 该承担的。**我的倾向：pack 只提供 `summary` + `why_bad` + `relates_to`，检测能力（regex/AST/heuristic）留接口给引擎，pack 可选填 `detection` 作为弱线索。** 不要让 pack 作者背上写可靠检测器的负担。
+**字段定位：**
+- `summary` / `why_bad` / `relates_to` / `severity` —— **必填**，人类可读，描述"是什么、为什么坏"。
+- `detection` —— **可选**，给引擎的弱线索（正则/启发式）。pack 作者写不出可靠检测器时，留空即可。
+
+> ✅ **已决（issue #3）**：检测由**引擎承担**，pack 只提供 `summary` / `why_bad` / `relates_to` / `severity`（必填）+ 可选的 `detection` 弱线索。
+>
+> **技术根据：** 正则检测"看脸"（误报漏报都高），AST 检测"看骨"（可靠但要解析器+遍历器，门槛高）。反模式的本质多为结构性问题（"调用出现在错误上下文""依赖不匹配""状态可派生却存储"），必须靠 AST 才能可靠识别。让 pack 作者（前端专家）写 AST 检测器是能力错配。故：可靠检测归 `lore check` 引擎（专业工具链），pack 只给人类可读描述 + 可选的字面弱线索（引擎可消费作初筛、也可忽略）。
 
 ### 6.4 完整 Practice 范例（基于 README，补全字段）
 
@@ -399,7 +406,7 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 | B | 反模式集中登记 vs 随 Practice | 索引集中、叙事分散 |
 | ~~C~~ | ~~`stage` 单值还是多值~~ | ✅ **已决（#1）**：多值数组，单条 ≤3 个，集合匹配召回 |
 | ~~D~~ | ~~`applies_when` 是否改名 `trigger`~~ | ✅ **已决（#2）**：保持 `applies_when`，破坏性改名无足够收益 |
-| E | 反模式检测能力由 pack 还是引擎承担 | 引擎；pack 只给弱线索 |
+| ~~E~~ | ~~反模式检测能力由 pack 还是引擎承担~~ | ✅ **已决（#3）**：引擎承担（AST）；pack 必填 summary/why_bad/relates_to/severity，detection 可选作弱线索 |
 | F | 是否单列 `typescript` / `a11y` domain | 不单列 |
 | G | 反模式 id 是否带栈前缀 | 不带，靠 domain 区分 |
 | H | `lore decide` 输入：自然语言还是结构化 | 待引擎定；pack 先按结构化写 |
