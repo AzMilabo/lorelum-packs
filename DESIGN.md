@@ -134,7 +134,7 @@ react-fullstack/
 |------|:---:|------|------|
 | `id` | ✅ | string | 全局唯一，点分命名空间（见 §8） |
 | `title` | ✅ | string | 人类可读标题（`# 标题`的镜像，便于检索结果展示） |
-| `stage` | ✅ | string | 开发阶段/触发阶段，见下方枚举 |
+| `stage` | ✅ | string[] (≤3) | 开发阶段/触发阶段数组，**单条最多 3 个**，见下方枚举与约束 |
 | `tech_stack` | ✅ | string[] | 关联技术，如 `[react, typescript]` |
 | `applies_when` | ✅ | string | **触发条件**（自然语言，检索命中的关键） |
 | `domain` | ✅ | string | 所属领域（§7 表中的 key） |
@@ -147,7 +147,7 @@ react-fullstack/
 
 `project-setup` · `architecture` · `feature-implementation` · `api-layer` · `state-design` · `ui-build` · `form` · `routing` · `testing` · `refactor` · `review`
 
-> 🟡 **讨论点 C**：`stage` 是单值还是多值？一条 Practice 可能在多个阶段适用（如"分层 API 设计"在 `architecture` 和 `feature-implementation` 都该被召回）。**我的倾向：多值数组**，代价是检索时要做集合匹配。这个字段最终怎么用取决于引擎实现，需要和引擎方对齐。
+> ✅ **已决（issue #1）**：`stage` 为**多值数组**，单条最多 3 个，且必须是最强相关的阶段。引擎按集合匹配召回（用户当前阶段 ∈ Practice.stage）。上限 3 由校验脚本强制，防止"全标上"导致字段退化。此结论需回流到 `lorelum/lorelum` 的检索模型 spec。
 
 > 🟡 **讨论点 D**：README 的 CONTRIBUTING 示例里出现过把 `applies_when` 改名为 `trigger` 的迹象。**我的倾向：保持 `applies_when`**（已写入 README 的公共范例，改名是破坏性变更，值得但不在本包范围内推动）。
 
@@ -397,7 +397,7 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 |---|------|---------|
 | A | Next.js / RSC 是否纳入首包 | 先排除，留占位领域 |
 | B | 反模式集中登记 vs 随 Practice | 索引集中、叙事分散 |
-| C | `stage` 单值还是多值 | 多值数组 |
+| ~~C~~ | ~~`stage` 单值还是多值~~ | ✅ **已决（#1）**：多值数组，单条 ≤3 个，集合匹配召回 |
 | D | `applies_when` 是否改名 `trigger` | 保持 `applies_when` |
 | E | 反模式检测能力由 pack 还是引擎承担 | 引擎；pack 只给弱线索 |
 | F | 是否单列 `typescript` / `a11y` domain | 不单列 |
