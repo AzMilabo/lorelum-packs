@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions
+    url: https://github.com/lorelum/lorelum/discussions
+    about: For questions, ideas, and general chat — please use Discussions instead of opening an issue.
+  - name: 🔒 Security report
+    url: https://github.com/AzMilabo/lorelum-packs/security/advisories/new
+    about: Found a security issue in pack content (e.g. an insecure code sample)? Report it privately, not via a public issue.

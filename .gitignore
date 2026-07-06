@@ -1,0 +1,47 @@
+# ────────────────────────────────────────────────────────────
+# OS / editor (always apply)
+# ────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+
+# ────────────────────────────────────────────────────────────
+# Secrets & env (always apply)
+# ────────────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# ────────────────────────────────────────────────────────────
+# Logs (always apply)
+# ────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ────────────────────────────────────────────────────────────
+# Build outputs / caches
+# This is a content repo (Markdown + YAML), but templates may
+# generate transient build artifacts when a contributor tests
+# them locally. Keep the common ones out of the tree.
+# ────────────────────────────────────────────────────────────
+dist/
+build/
+out/
+.cache/
+
+# --- Node (only relevant when testing a template locally) ---
+node_modules/
+coverage/
+*.tsbuildinfo
+.eslintcache
+.turbo/
+pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

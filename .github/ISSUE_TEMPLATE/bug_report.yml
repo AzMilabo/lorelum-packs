@@ -1,0 +1,73 @@
+name: 🐛 Content issue
+description: Report something wrong in a Practice, anti-pattern, template, or decision
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please search existing issues first to avoid duplicates.
+
+        This template is for **content problems** in this repo — a Practice that's wrong, an anti-pattern that's misleading, a broken code sample, a stale claim about a library API.
+
+        For problems with the Lorelum engine / CLI / MCP, use the [main repo](https://github.com/lorelum/lorelum/issues/new/choose) instead.
+
+  - type: input
+    id: location
+    attributes:
+      label: Which content is affected?
+      description: The Practice/anti-pattern id (e.g. `react.api.layered-design`), or the file path.
+      placeholder: "react.api.layered-design  /  anti-patterns/index.yaml  /  templates/api-module/"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of issue?
+      options:
+        - Wrong / outdated technical guidance
+        - Broken or non-compiling code sample
+        - Misleading anti-pattern framing
+        - Missing or incorrect frontmatter (id, applies_when, etc.)
+        - Security problem in a code sample (report privately instead if severe)
+        - Typo / formatting / broken link
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What's wrong?
+      description: Describe the problem. Quote the exact line/section if possible.
+      placeholder: "The sample under 'Core guidance' calls useEffect without a cleanup, which leaks the listener."
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should it say instead?
+      description: The corrected guidance or code, if you have it.
+    validations:
+      required: false
+
+  - type: input
+    id: version-context
+    attributes:
+      label: Framework/library version context (if relevant)
+      description: If the issue is about a specific React/library API, note the version the content should target.
+      placeholder: "React 18.3 / TanStack Query v5"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true
+        - label: This is about content in this repo, not the Lorelum engine/CLI.
+          required: true

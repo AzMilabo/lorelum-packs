@@ -1,0 +1,79 @@
+name: ✨ Content proposal
+description: Propose a new Practice, anti-pattern, template, or decision-graph entry
+title: "[feat] "
+labels: ["feature", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for proposing new content! Tell us the gap first, then what you'd add.
+
+        This template is for **knowledge-pack content** in this repo — a new Practice, anti-pattern, template, or `decisions.yaml` entry.
+
+        For features in the Lorelum engine / CLI / MCP / format spec, use the [main repo](https://github.com/lorelum/lorelum/issues/new/choose) instead.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The gap
+      description: What can't an AI agent do well today because this Practice/anti-pattern doesn't exist? When would it be retrieved?
+      placeholder: "When an agent implements a settings page with RBAC, it has no guidance on where to put the permission check, so it scatters checks inside components."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: The proposed content
+      description: The Practice/anti-pattern you'd add. A draft `applies_when`, the core guidance, and a code sketch are ideal — even rough.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Practice (new)
+        - Anti-pattern (new)
+        - Template (new)
+        - Decision graph (`decisions.yaml`)
+        - Existing content (revise/extend)
+        - Pack scope / DESIGN.md
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: domain
+    attributes:
+      label: Domain (if known)
+      description: From DESIGN.md §7 — e.g. api, state, routing, components, forms, styling, performance, testing, errors, architecture.
+      placeholder: "api"
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: When is this "done"? Bullet the testable outcomes.
+      placeholder: |
+        - [ ] Practice file exists with complete frontmatter
+        - [ ] Code samples type-check by inspection
+        - [ ] Related anti-patterns registered in index.yaml
+        - [ ] Follows DESIGN.md §6 format
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues and Discussions and this is not a duplicate.
+          required: true
+        - label: This is about content in this repo, not the Lorelum engine/CLI/format spec.
+          required: true
