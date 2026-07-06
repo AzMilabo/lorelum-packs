@@ -129,6 +129,45 @@ react-fullstack/
 
 > ✅ **已决（issue #6）**：**索引集中、叙事分散。** `anti-patterns/index.yaml` 是登记权威（id / summary / why_bad / relates_to / severity / 可选 detection），Practice 正文引用反模式 id 并展开叙事。职责清晰：`lore check` 查索引、作者改 Practice 看正文、id 唯一性有单一来源。
 
+### 5.1 `pack.yaml` schema（issue #7 / I）
+
+知识包的清单文件，声明元信息与所含领域，供 `lore install` / `lore search` 消费。
+
+```yaml
+# 必填
+id: react-fullstack                    # pack id，全局唯一，kebab-case
+version: 0.1.0                         # 语义化版本（MAJOR.MINOR.PATCH）
+license: CC-BY-4.0                     # 内容协议
+tech_stack: [react, typescript]        # 关联技术栈
+description: >                         # 一句话描述，供 lore search 展示
+  Practices for building React 18+ SPAs with TypeScript — API layer,
+  state, routing, forms, performance, testing.
+
+# 所含领域（与 practices/ 子目录、§7 domain 表一致）
+domains:
+  - architecture
+  - api
+  - state
+  - routing
+  - components
+  - forms
+  - styling
+  - performance
+  - testing
+  - errors
+
+# 可选
+provisional_domains: []                # 占位领域（见 §4.2 / issue #5），如 [rsc, ssr]
+maintainers: []                        # 维护者（GitHub handle 或名字）
+```
+
+**字段定位：**
+- `id` / `version` / `license` / `tech_stack` / `description` / `domains` —— **必填**。
+- `provisional_domains` / `maintainers` —— **可选**。
+- 具体字段命名与 required 集最终由主仓库 spec 定义；本 schema 是**内容方诉求**，回流到 `lorelum/lorelum` 的 pack 格式 spec。
+
+**版本号语义（建议）：** 内容性变更（增删 Practice、修订指引）升 PATCH；新增 domain 或反模式体系变化升 MINOR；id 重命名/字段破坏性变更升 MAJOR。
+
 ---
 
 ## 6. Practice 格式规范（草案）
@@ -257,7 +296,11 @@ react-fullstack/
 
 原则：**domain 是稳定骨架，Practice 是可增删的肉**。新增领域需要讨论（影响 id 命名空间），新增 Practice 不需要。
 
-> 🟡 **讨论点 F**：`a11y` 和 `typescript` 没有单列 domain。我的考虑：a11y 是横切（融入 components/forms/performance），typescript 是默认底座（不单列，但有类型相关的强实践挂在对应 domain 下，如 `api.dto-typing`）。**是否要单列 `typescript` domain？倾向不单列。**
+> ✅ **已决（issue #7 / F）**：`typescript` 和 `a11y` **都不单列 domain**。
+>
+> - **a11y** 是横切关注点，融入 `components`/`forms`/`performance` 等相关 domain（一条组件 Practice 里自然包含 a11y 要求）；
+> - **typescript** 是默认底座（§4 已声明 TS 为默认），类型相关强实践挂在对应 domain 下（如 `react.api.dto-typing` 挂 `api`，`react.state.discriminated-union` 挂 `state`）；
+> - 单列会让 domain 体系被横切概念污染，且与"一条 Practice 答一个触发条件"的粒度原则冲突。
 
 ---
 
@@ -320,7 +363,7 @@ Practice:   react.api.layered-design
 
 初始决策图谱覆盖：**状态管理 · 样式方案 · 表单方案 · 路由方案 · 数据获取策略**。
 
-> 🟡 **讨论点 H**：`lore decide` 的输入是自然语言（"React SPA, medium client state, ..."）还是结构化字段？两种都要支持的话，`decisions.yaml` 需要同时声明 `inputs`（结构化）和语义检索的桥接。**这是产品级问题，需在 `lorelum/lorelum` 那边定，本包先按结构化 inputs 写。**
+> ✅ **已决（issue #7 / H）**：`decisions.yaml` **先按结构化 `inputs` 写**。理由：结构化字段是可靠、可枚举、可直接被决策树消费的内容形态；自然语言输入（"React SPA, medium client state, ..."）是引擎层面的语义桥接问题，属 `lorelum/lorelum` 的产品决策。本仓库只产内容：先把结构化决策树写扎实，等引擎定了自然语言桥接再补适配层。
 
 ---
 
@@ -445,10 +488,10 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 | ~~C~~ | ~~`stage` 单值还是多值~~ | ✅ **已决（#1）**：多值数组，单条 ≤3 个，集合匹配召回 |
 | ~~D~~ | ~~`applies_when` 是否改名 `trigger`~~ | ✅ **已决（#2）**：保持 `applies_when`，破坏性改名无足够收益 |
 | ~~E~~ | ~~反模式检测能力由 pack 还是引擎承担~~ | ✅ **已决（#3）**：引擎承担（AST）；pack 必填 summary/why_bad/relates_to/severity，detection 可选作弱线索 |
-| F | 是否单列 `typescript` / `a11y` domain | 不单列 |
+| ~~F~~ | ~~是否单列 `typescript` / `a11y` domain~~ | ✅ **已决（#7）**：不单列；a11y 横切融入相关 domain，TS 是默认底座、类型实践挂对应 domain |
 | ~~G~~ | ~~反模式 id 是否带栈前缀~~ | ✅ **已决（#6）**：不带；两级 `<domain>.<short>`，靠 domain 区分语境 |
-| H | `lore decide` 输入：自然语言还是结构化 | 待引擎定；pack 先按结构化写 |
-| I | `pack.yaml` 的确切 schema | 本提案只给轮廓，需与引擎对齐 |
+| ~~H~~ | ~~`lore decide` 输入：自然语言还是结构化~~ | ✅ **已决（#7）**：pack 先按结构化 inputs 写；自然语言桥接是引擎侧产品决策 |
+| ~~I~~ | ~~`pack.yaml` 的确切 schema~~ | ✅ **已决（#7）**：见 §5.1，必填 id/version/license/tech_stack/description/domains，可选 provisional_domains/maintainers；最终字段命名回流主仓库 spec |
 | ~~J~~ | ~~多语言（本包用中文还是中英双语）~~ | ✅ **已决（#4）**：英文为主 + 检索字段双语（title/applies_when 平铺后缀 _zh）；详见 §6.5 |
 
 > 🟡 **讨论点 J（语言）**：主仓库 README 是中英双语，CONTRIBUTING/AGENTS 是英文。知识包内容面向全球社区（CC-BY-4.0），**英文是默认**；但维护者显然重视中文受众。**我的倾向：Practice 正文以英文为主、关键术语配中文注释；`applies_when` / `title` 这类检索字段中英都给（用 `title` + `title_zh` 之类），让检索对中文 query 也友好。** 这个会影响 frontmatter schema，需要早定。
