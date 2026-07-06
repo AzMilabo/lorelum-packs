@@ -133,10 +133,12 @@ react-fullstack/
 | 字段 | 必填 | 类型 | 说明 |
 |------|:---:|------|------|
 | `id` | ✅ | string | 全局唯一，点分命名空间（见 §8） |
-| `title` | ✅ | string | 人类可读标题（`# 标题`的镜像，便于检索结果展示） |
+| `title` | ✅ | string | 英文标题（`# 标题`的镜像，便于检索结果展示） |
+| `title_zh` | ✅ | string | 中文标题。检索关键字段双语，见 §6.5 语言策略 |
 | `stage` | ✅ | string[] (≤3) | 开发阶段/触发阶段数组，**单条最多 3 个**，见下方枚举与约束 |
 | `tech_stack` | ✅ | string[] | 关联技术，如 `[react, typescript]` |
-| `applies_when` | ✅ | string | **触发条件**（自然语言，检索命中的关键） |
+| `applies_when` | ✅ | string | 英文**触发条件**（自然语言，检索命中的关键） |
+| `applies_when_zh` | ✅ | string | 中文触发条件。检索关键字段双语，见 §6.5 语言策略 |
 | `domain` | ✅ | string | 所属领域（§7 表中的 key） |
 | `status` | ➖ | enum | `draft` \| `stable` \| `provisional` \| `deprecated`，默认 `stable` |
 | `related` | ➖ | string[] | 关联 Practice id 或反模式 id |
@@ -150,6 +152,8 @@ react-fullstack/
 > ✅ **已决（issue #1）**：`stage` 为**多值数组**，单条最多 3 个，且必须是最强相关的阶段。引擎按集合匹配召回（用户当前阶段 ∈ Practice.stage）。上限 3 由校验脚本强制，防止"全标上"导致字段退化。此结论需回流到 `lorelum/lorelum` 的检索模型 spec。
 
 > ✅ **已决（issue #2）**：保持 `applies_when`，不改名。理由：主仓库 README 已将其作为公共 Practice 范例的字段名，改名属破坏性变更；且 `applies_when`（"在什么情况下适用"）语义比 `trigger` 更适合写自然语言触发条件。若未来主仓库 spec 决定改名，本仓库届时跟随。
+
+> ✅ **已决（issue #4）**：知识包采用**英文为主 + 检索字段双语**策略。`title`/`applies_when` 英文必填，`title_zh`/`applies_when_zh` 中文必填（平铺后缀，非结构化对象）。详见 §6.5 语言策略。
 
 ### 6.2 正文结构
 
@@ -201,6 +205,29 @@ react-fullstack/
 ### 6.4 完整 Practice 范例（基于 README，补全字段）
 
 见 §11 末尾的 `react.api.layered-design` 范例。
+
+### 6.5 语言策略（issue #4）
+
+知识包采用**英文为主 + 检索字段双语**。规则：
+
+| 内容 | 语言 | 说明 |
+|------|------|------|
+| 正文 prose（核心指引、权衡、反模式叙事） | **英文为主** | 关键术语可在括号注中文，如 "DTO boundary（数据传输对象边界）" |
+| 代码示例 + 代码注释 | **全英文** | 与开源惯例一致 |
+| `title` / `applies_when` | **英文**（必填） | 检索关键字段，主版本 |
+| `title_zh` / `applies_when_zh` | **中文**（必填） | 平铺后缀字段，让中文 query 也能命中关键字段 |
+| 反模式 `summary` / `why_bad` | **英文为主** | 反模式 id 全局复用，英文降低跨语言歧义 |
+| `decisions.yaml` 的 `question` / `ask` | 英文，可补中文 | 决策树节点的提问文本 |
+
+**为什么用平铺后缀（`title` + `title_zh`）而非结构化对象（`title: { en, zh }`）：**
+- 对引擎解析逻辑改动最小（YAML 标量字段，无需支持对象类型）；
+- 对作者直观（写两行而非嵌套）；
+- 本仓库是内容仓库，不该推动 spec 复杂化。
+
+**为什么正文不全双语：**
+- 维护成本翻倍，且 CC-BY-4.0 内容面向全球社区；
+- 正文是给人/AI **理解**用的，英文为主 + 术语括注中文已可读；
+- 检索**命中**靠关键字段（title/applies_when），这两类双语即可保证中文 query 不漏召回。
 
 ---
 
@@ -348,11 +375,13 @@ Practice:   react.api.layered-design
 ```markdown
 ---
 id: react.api.layered-design
-title: 分层 API 设计
+title: Layered API Design
+title_zh: 分层 API 设计
 domain: api
 stage: [api-layer, architecture]
 tech_stack: [react, typescript]
-applies_when: 在 React SPA 中构建数据获取/API 层
+applies_when: building an API layer in a React SPA
+applies_when_zh: 在 React SPA 中构建数据获取/API 层
 status: stable
 related:
   - api.direct-axios-in-component
@@ -361,7 +390,7 @@ related:
 last_reviewed: 2026-07-06
 ---
 
-# 分层 API 设计
+# Layered API Design
 
 ## 何时适用
 当你的组件需要从服务端获取数据、且项目存在 ≥3 个数据资源时，应该建立分层的 API 抽象，而不是在组件里直接发请求。
@@ -411,7 +440,7 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 | G | 反模式 id 是否带栈前缀 | 不带，靠 domain 区分 |
 | H | `lore decide` 输入：自然语言还是结构化 | 待引擎定；pack 先按结构化写 |
 | I | `pack.yaml` 的确切 schema | 本提案只给轮廓，需与引擎对齐 |
-| J | 多语言（本包用中文还是中英双语） | 见下 |
+| ~~J~~ | ~~多语言（本包用中文还是中英双语）~~ | ✅ **已决（#4）**：英文为主 + 检索字段双语（title/applies_when 平铺后缀 _zh）；详见 §6.5 |
 
 > 🟡 **讨论点 J（语言）**：主仓库 README 是中英双语，CONTRIBUTING/AGENTS 是英文。知识包内容面向全球社区（CC-BY-4.0），**英文是默认**；但维护者显然重视中文受众。**我的倾向：Practice 正文以英文为主、关键术语配中文注释；`applies_when` / `title` 这类检索字段中英都给（用 `title` + `title_zh` 之类），让检索对中文 query 也友好。** 这个会影响 frontmatter schema，需要早定。
 
