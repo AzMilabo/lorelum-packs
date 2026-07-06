@@ -42,7 +42,7 @@ lorelum/lorelum-packs  ← 知识包内容（CC-BY-4.0）  你在这里
 
 ```
 .
-├── README.md          # 你正在读
+├── README.md          
 ├── DESIGN.md          # react-fullstack 知识包设计提案（草案 v0.1）
 └── react-fullstack/      # 首个知识包（按 DESIGN.md 落地，M1 起填充）
     ├── pack.yaml         # 知识包清单（待定稿）
