@@ -52,6 +52,7 @@ Lorelum 的核心是"按需检索、精准注入"。一个 Practice 只有在**�
 - **React 18+**（hooks 优先，concurrent rendering）
 - **TypeScript**（默认强类型，不写纯 JS 实践）
 - **客户端路由**（React Router / TanStack Router 为主，兼顾理念）
+- **鉴权与会话**（auth）：token 存储与刷新、会话生命周期、权限模型（RBAC/ABAC）、路由级与组件级守卫的接线边界
 - **状态管理**：客户端状态（Context / Zustand / Redux Toolkit）+ 服务端状态（TanStack Query / SWR）的**选型与边界**
 - **API 层**（HTTP client 抽象、DTO 边界、错误处理、请求生命周期）
 - **组件设计**（分层、组合、props 设计、受控/非受控）
@@ -105,8 +106,11 @@ react-fullstack/
 │   │   ├── client-vs-server-state.md
 │   │   └── url-as-state.md
 │   ├── routing/
-│   │   ├── permission-guard.md
+│   │   ├── route-guard-wiring.md   # 路由级守卫接线（认证态本身见 auth/）
 │   │   └── code-splitting.md
+│   ├── auth/
+│   │   ├── token-storage.md
+│   │   └── permission-model.md
 │   ├── components/
 │   ├── forms/
 │   ├── styling/
@@ -140,8 +144,9 @@ version: 0.1.0                         # 语义化版本（MAJOR.MINOR.PATCH）
 license: CC-BY-4.0                     # 内容协议
 tech_stack: [react, typescript]        # 关联技术栈
 description: >                         # 一句话描述，供 lore search 展示
-  Practices for building React 18+ SPAs with TypeScript — API layer,
-  state, routing, forms, performance, testing.
+  Practices for building React 18+ SPAs with TypeScript — architecture,
+  API layer, state, routing, auth, components, forms, styling,
+  performance, testing, errors.
 
 # 所含领域（与 practices/ 子目录、§7 domain 表一致）
 domains:
@@ -149,6 +154,7 @@ domains:
   - api
   - state
   - routing
+  - auth
   - components
   - forms
   - styling
@@ -286,7 +292,8 @@ maintainers: []                        # 维护者（GitHub handle 或名字）
 | `architecture` | 项目结构、模块边界、分层 | feature-based 结构、模块依赖方向 | architecture |
 | `api` | HTTP 抽象、DTO、错误、生命周期 | 分层 API、错误处理、请求竞态 | api-layer |
 | `state` | 客户端/服务端状态、URL 状态 | 客户端 vs 服务端状态边界 | state-design |
-| `routing` | 路由组织、权限、分割 | 权限路由、懒加载 | routing |
+| `routing` | 路由组织、懒加载、守卫接线 | 路由结构、路由级代码分割 | routing |
+| `auth` | 鉴权与会话：token 存储/刷新、会话生命周期、权限模型（RBAC/ABAC）、守卫接线边界 | token 存储策略、路由级 vs 组件级守卫 | feature-implementation |
 | `components` | 组件分层、props、组合 | 展示/容器分离、受控边界 | ui-build |
 | `forms` | 受控、校验、提交、选型 | 表单状态、校验时机 | form |
 | `styling` | 方案选型、token、主题 | 样式分层、设计 token | ui-build |
@@ -301,6 +308,13 @@ maintainers: []                        # 维护者（GitHub handle 或名字）
 > - **a11y** 是横切关注点，融入 `components`/`forms`/`performance` 等相关 domain（一条组件 Practice 里自然包含 a11y 要求）；
 > - **typescript** 是默认底座（§4 已声明 TS 为默认），类型相关强实践挂在对应 domain 下（如 `react.api.dto-typing` 挂 `api`，`react.state.discriminated-union` 挂 `state`）；
 > - 单列会让 domain 体系被横切概念污染，且与"一条 Practice 答一个触发条件"的粒度原则冲突。
+
+> ✅ **已决（issue #23 / K）**：**单列 `auth` domain。**
+>
+> - 鉴权/会话/token 刷新/权限模型在 SPA 是独立高频痛点，有独立的反模式（`auth.client-only-auth`、token 存储类）和决策点（token 存哪、刷新策略）；
+> - 揉进 routing 会稀释 `applies_when` 检索精度——认证 ≠ 路由，正是首包要避免的 `.cursorrules` 式大杂烩；
+> - `routing` 保留"路由级守卫怎么接线"的 Practice（讲路由层），认证态本身的 Practice 归 `auth`；
+> - 对齐 wiki 路线图 P3 把 `auth` 与 routing/state/api 并列的口径。
 
 ---
 
@@ -317,9 +331,11 @@ maintainers: []                        # 维护者（GitHub handle 或名字）
 ```
 Practice:   react.api.layered-design
             react.state.server-vs-client-state
-            react.routing.permission-guard
+            react.routing.route-guard-wiring
+            react.auth.token-storage
 反模式:     api.direct-axios-in-component
             state.server-state-in-redux
+            auth.client-only-auth
             effect.unconditional-fetch
 ```
 
@@ -406,8 +422,10 @@ Practice:   react.api.layered-design
 - `component.spread-props-blindly` — `{...props}` 无类型约束透传
 
 **routing**
-- `routing.client-only-auth` — 权限只在客户端路由做、无后端兜底
 - `routing.eager-everything` — 不做代码分割的全量 bundle
+
+**auth**
+- `auth.client-only-auth` — 权限只在客户端路由做、无后端兜底
 
 **testing**
 - `testing.implementation-detail` — 测实现细节而非行为
@@ -471,7 +489,7 @@ last_reviewed: 2026-07-06
 |------|------|------|
 | **M0** | 本设计文档定稿 | 钉契约 |
 | **M1** | `react.api.layered-design` + `react.state.server-vs-client-state` 两条深度样例 + 反模式登记 + `decisions.yaml` 状态选型 | 用真实内容**验证格式**，反推引擎需求 |
-| **M2** | architecture / routing / components 三领域各 2–3 条 | 验证 domain 划分与 id 体系 |
+| **M2** | architecture / routing / **auth** / components 四领域各 2–3 条 | 验证 domain 划分与 id 体系 |
 | **M3** | forms / styling / testing 补齐 | 形成可用广度 |
 | **M4** | performance / errors + 全量反模式复核 + templates | 接近首包发布质量 |
 
@@ -493,6 +511,7 @@ M1 是关键——**先把两条 Practice 打磨到能当范例的程度，再�
 | ~~H~~ | ~~`lore decide` 输入：自然语言还是结构化~~ | ✅ **已决（#7）**：pack 先按结构化 inputs 写；自然语言桥接是引擎侧产品决策 |
 | ~~I~~ | ~~`pack.yaml` 的确切 schema~~ | ✅ **已决（#7）**：见 §5.1，必填 id/version/license/tech_stack/description/domains，可选 provisional_domains/maintainers；最终字段命名回流主仓库 spec |
 | ~~J~~ | ~~多语言（本包用中文还是中英双语）~~ | ✅ **已决（#4）**：英文为主 + 检索字段双语（title/applies_when 平铺后缀 _zh）；详见 §6.5 |
+| ~~K~~ | ~~`auth` 是否单列 domain（wiki 路线图 P3 vs DESIGN §7 漂移）~~ | ✅ **已决（#23）**：单列 `auth` domain；认证/会话/token/权限模型独立于 routing，揉进 routing 会稀释触发精度。详见 §7 已决注 |
 
 > 🟡 **讨论点 J（语言）**：主仓库 README 是中英双语，CONTRIBUTING/AGENTS 是英文。知识包内容面向全球社区（CC-BY-4.0），**英文是默认**；但维护者显然重视中文受众。**我的倾向：Practice 正文以英文为主、关键术语配中文注释；`applies_when` / `title` 这类检索字段中英都给（用 `title` + `title_zh` 之类），让检索对中文 query 也友好。** 这个会影响 frontmatter schema，需要早定。
 

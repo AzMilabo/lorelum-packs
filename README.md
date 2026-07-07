@@ -51,7 +51,8 @@ lorelum/lorelum-packs  ← 知识包内容（CC-BY-4.0）  你在这里
     │   ├── architecture/ # 项目结构、模块边界、分层
     │   ├── api/          # HTTP 抽象、DTO、错误处理、生命周期
     │   ├── state/        # 客户端/服务端状态、URL 状态
-    │   ├── routing/      # 路由组织、权限守卫、代码分割
+    │   ├── routing/      # 路由组织、懒加载、守卫接线
+    │   ├── auth/         # 鉴权与会话：token 存储/刷新、权限模型、守卫边界
     │   ├── components/   # 组件分层、props 设计、组合
     │   ├── forms/        # 受控、校验、提交、表单库选型
     │   ├── styling/      # 样式方案选型、设计 token、主题
