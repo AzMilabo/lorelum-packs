@@ -13,19 +13,16 @@ related:
   - api.dto-as-ui-model
   - api.token-in-api-class
   - api.swallow-error
-  - react.state.server-vs-client-state
 last_reviewed: 2026-07-07
 ---
 
 # Layered API Design
 
-## 何时适用
+## When to apply
 
-When your app fetches data from a server and has **three or more distinct resources** (users, orders, …), introduce an explicit API layer instead of calling HTTP clients directly from components. Below that threshold (a throwaway demo with 1–2 endpoints) the full layering is overkill — see [权衡](#权衡).
+Use this when your app fetches data from a server and has **three or more distinct resources** (users, orders, …). Introduce an explicit API layer instead of calling HTTP clients directly from components. Below that threshold (a throwaway demo with 1–2 endpoints), the full layering is overkill — see [Tradeoffs](#tradeoffs).
 
-适用条件翻译：当 app 从服务端取数据、且有 ≥3 个资源（users/orders/…）时，应建立显式的 API 层。低于该规模（一次性 demo、1–2 个 endpoint）的全套分层是过度设计——见权衡。
-
-## 核心指引
+## Core guidance
 
 Split the API layer into **four layers, each with one reason to change**:
 
@@ -81,7 +78,8 @@ One instance per app. Handles cross-cutting transport concerns.
 
 ```typescript
 // lib/api/baseClient.ts
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, type AxiosInstance } from 'axios';
+import { authStore } from '@/features/auth/authStore';
 
 // Normalize every HTTP failure into one app-level error type.
 export class ApiError extends Error {
@@ -95,7 +93,7 @@ export class ApiError extends Error {
   }
 }
 
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10_000,
 });
@@ -224,11 +222,19 @@ export function useUpdateProfile(userId: string) {
 
 ### Layer 4 — Component (UI only)
 
-The component knows only `User`. It never imports axios, never sees a DTO, never inspects HTTP status codes.
+The component knows only `User`. It never imports axios, never sees a DTO, never inspects HTTP status codes. `Skeleton` and `ErrorState` are placeholders for your own UI primitives.
 
 ```tsx
 // features/users/components/ProfileCard.tsx
 import { useUserProfile, useUpdateProfile } from '../api/useUser';
+
+// Replace with your own UI primitives.
+function Skeleton() {
+  return <div aria-busy="true">Loading…</div>;
+}
+function ErrorState({ error }: { error: unknown }) {
+  return <div role="alert">{String(error)}</div>;
+}
 
 export function ProfileCard({ userId }: { userId: string }) {
   const { data: user, isLoading, error } = useUserProfile(userId);
@@ -256,20 +262,16 @@ export function ProfileCard({ userId }: { userId: string }) {
 }
 ```
 
-## 权衡
+## Tradeoffs
 
-- **< 3 resources: skip the base client.** A demo with 1–2 endpoints can call axios directly *inside an API module* — the API module layer still earns its keep (it's where DTO conversion happens), but a shared base client is premature. Promote to four layers the moment a second resource appears.
+- **< 3 resources: skip the base client.** A demo with 1–2 endpoints can call axios directly *inside an API module* — the API module layer still earns its keep (it's where DTO conversion happens), but a shared base client is premature. Promote to four layers the moment a **third** resource appears.
 - **Already on TanStack Query: the Hook layer is mostly free.** The query hook *is* the hook layer; you don't write a second wrapper. Don't hand-roll a custom `useApi` abstraction over it.
-- **No server cache invalidation needed (rare):** if a resource is truly fire-and-forget, `useEffect` + API module is acceptable — but the API module still does DTO conversion. See `react.state.server-vs-client-state` for when server cache tooling is worth it.
+- **No server cache invalidation needed (rare):** if a resource is truly fire-and-forget, `useEffect` + API module is acceptable — but the API module still does DTO conversion.
 - **Server-driven UI:** if the server *is* the source of truth for component shapes (e.g. dynamic forms from a schema), the DTO↔domain mapping may collapse — the domain model *is* the schema. This is the one case where `api.dto-as-ui-model` is acceptable, and it should be flagged explicitly.
 
-## 反模式
+## Anti-patterns
 
 - **api.direct-axios-in-component** — calling `axios.get()` / `fetch()` directly inside a component. Couples transport to UI, blocks caching/dedup/retry, and spreads auth handling everywhere.
 - **api.dto-as-ui-model** — using the server's wire shape (`user.profile.display_name`) directly as component state/props. A backend rename then forces edits scattered across N components, and components are forced to know about nullability/ISO strings.
 - **api.token-in-api-class** — hardcoding auth tokens (or `localStorage.getItem('token')`) inside the base client or API module. Couples infra to one auth scheme and blocks reuse. Inject via an external store instead.
 - **api.swallow-error** — `try { ... } catch { /* nothing */ }`. Errors vanish silently, debugging becomes guesswork, and users see blank screens with no telemetry. Either surface via the hook's `error` state or rethrow as `ApiError`.
-
-## 参考
-
-- `react.state.server-vs-client-state` — when to reach for TanStack Query / SWR (the Hook layer's typical backing) vs. client state stores.

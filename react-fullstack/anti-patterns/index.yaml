@@ -1,0 +1,47 @@
+# Lorelum react-fullstack pack — anti-pattern registry.
+# Format: DESIGN.md §6.3. Ids are two-segment <domain>.<short>, no stack prefix (#6).
+# summary / why_bad are English-first per §6.5 (ids are globally reused).
+# Detection is optional weak hints (#3); reliable detection belongs to the engine.
+
+- id: api.direct-axios-in-component
+  domain: api
+  summary: Calling axios / fetch directly inside a React component
+  why_bad: |
+    Couples HTTP transport to UI: the call can't be reused, can't be tested
+    without rendering, and can't share auth/error/retry handling. Caching,
+    dedup, and request lifecycle are lost because there is no hook layer.
+  relates_to: [react.api.layered-design]
+  severity: major
+
+- id: api.dto-as-ui-model
+  domain: api
+  summary: Using the server wire shape (DTO) directly as component state/props
+  why_bad: |
+    A backend rename (e.g. display_name → full_name) forces edits scattered
+    across N components. Components are forced to know about nullability,
+    ISO strings, and nested wire shapes — concerns that belong at the API
+    module boundary. The DTO↔domain mapping has nowhere to live.
+  relates_to: [react.api.layered-design]
+  severity: major
+
+- id: api.token-in-api-class
+  domain: api
+  summary: Hardcoding auth tokens inside the base client or API module
+  why_bad: |
+    Couples transport infra to a single auth scheme and blocks reuse across
+    projects or auth strategies. If the token source changes (e.g. from
+    localStorage to httpOnly cookie), every resource file must be edited.
+    Also a security smell: secrets should be injected, not embedded.
+  relates_to: [react.api.layered-design]
+  severity: critical
+
+- id: api.swallow-error
+  domain: api
+  summary: try/catch with empty catch — errors vanish silently
+  why_bad: |
+    Errors disappear: debugging becomes guesswork, users see blank screens
+    with no explanation, and no telemetry fires. Failing silently is worse
+    than failing loudly — surface via the hook's error state, or rethrow
+    as a normalized ApiError so upper layers can decide.
+  relates_to: [react.api.layered-design]
+  severity: major
