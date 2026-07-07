@@ -36,16 +36,16 @@ decision_graphs:
       - if: { derivable: "yes" }
         then:
           recommend: Compute during render (or useMemo if expensive); do not store.
-        practice: react.state.server-vs-client-state
+          practice: react.state.server-vs-client-state
+        note: Short-circuits all other rules — see state.derived-in-state.
 
       # Server cache → dedicated cache library. The flagship rule.
       - if: { origin: server-cache }
         then:
           recommend: TanStack Query / SWR
           reason: Server data is a staleable cache; a cache library handles invalidation, dedup, retry, and stale-while-revalidate for free.
-        practice: react.state.server-vs-client-state
-        anti_patterns_triggered:
-          - state.server-state-in-redux
+          practice: react.state.server-vs-client-state
+        note: Violating this triggers state.server-state-in-redux.
 
       # URL → URL is the source of truth.
       - if: { origin: url }
@@ -71,9 +71,8 @@ decision_graphs:
         then:
           recommend: Zustand (default) or Redux Toolkit
           reason: Precise subscriptions avoid the Context re-render trap. Prefer Zustand for new code; use RTK when the team already has Redux or needs time-travel + middleware ecosystem.
-        practice: react.state.server-vs-client-state
-        anti_patterns_triggered:
-          - state.props-drilling-too-deep
+          practice: react.state.server-vs-client-state
+        note: Lifting this out of props drilling avoids state.props-drilling-too-deep.
 
     anti_patterns_to_check:
       - state.server-state-in-redux

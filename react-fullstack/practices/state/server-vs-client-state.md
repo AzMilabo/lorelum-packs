@@ -130,14 +130,20 @@ Prefer **Zustand** for new code: no Provider boilerplate, ~1KB, accessible outsi
 If a value can be **computed from existing state or props**, do not store it. Compute it during render. Storing derived values creates a second source of truth that must be kept in sync (usually via `useEffect`, which is itself a smell — see `state.derived-in-state`).
 
 ```typescript
-// Bad: storing what can be computed.
-const [items, setItems] = useState<string[]>([]);
-const [count, setCount] = useState(0);          // derives from items
-useEffect(() => { setCount(items.length); }, [items]); // sync tax
+// Bad: storing what can be computed, then syncing via useEffect.
+import { useEffect, useState } from 'react';
 
-// Good: compute during render.
 const [items, setItems] = useState<string[]>([]);
-const count = items.length;                      // no second source of truth
+const [count, setCount] = useState(0);                   // derives from items
+useEffect(() => { setCount(items.length); }, [items]);   // sync tax
+```
+
+```typescript
+// Good: compute during render — no second source of truth.
+import { useState } from 'react';
+
+const [items, setItems] = useState<string[]>([]);
+const count = items.length;
 ```
 
 For expensive derivations, `useMemo` — not state.
