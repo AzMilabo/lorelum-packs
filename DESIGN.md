@@ -106,8 +106,11 @@ react-fullstack/
 │   │   ├── client-vs-server-state.md
 │   │   └── url-as-state.md
 │   ├── routing/
-│   │   ├── permission-guard.md
+│   │   ├── route-guard-wiring.md   # 路由级守卫接线（认证态本身见 auth/）
 │   │   └── code-splitting.md
+│   ├── auth/
+│   │   ├── token-storage.md
+│   │   └── permission-model.md
 │   ├── components/
 │   ├── forms/
 │   ├── styling/
@@ -141,8 +144,9 @@ version: 0.1.0                         # 语义化版本（MAJOR.MINOR.PATCH）
 license: CC-BY-4.0                     # 内容协议
 tech_stack: [react, typescript]        # 关联技术栈
 description: >                         # 一句话描述，供 lore search 展示
-  Practices for building React 18+ SPAs with TypeScript — API layer,
-  state, routing, forms, performance, testing.
+  Practices for building React 18+ SPAs with TypeScript — architecture,
+  API layer, state, routing, auth, components, forms, styling,
+  performance, testing, errors.
 
 # 所含领域（与 practices/ 子目录、§7 domain 表一致）
 domains:
@@ -327,7 +331,7 @@ maintainers: []                        # 维护者（GitHub handle 或名字）
 ```
 Practice:   react.api.layered-design
             react.state.server-vs-client-state
-            react.routing.permission-guard
+            react.routing.route-guard-wiring
             react.auth.token-storage
 反模式:     api.direct-axios-in-component
             state.server-state-in-redux
