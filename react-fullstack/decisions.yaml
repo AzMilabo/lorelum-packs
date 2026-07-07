@@ -1,0 +1,78 @@
+# Lorelum react-fullstack pack — decision graphs.
+# Format: per DESIGN.md §9 (top-level list of graphs; each rule has if/then/note;
+# then holds recommend/practice). Structured inputs first (issue #7 / H); natural-
+# language bridging to project context is an engine-side concern, not a pack concern.
+# DSL field names are provisional — final names are owned by lorelum/lorelum spec.
+
+- id: decide.state-management
+  question: Where should this piece of state live?
+  inputs:
+    - key: origin
+      ask: Where does the value come from?
+      options:
+        - server-cache    # fetched from a server, can go stale
+        - url             # the URL is the source of truth
+        - user-input      # entered by the user, only the client knows it
+        - ui-transient    # UI-only (modal open, hover, etc.)
+    - key: sharing
+      ask: How many components share this value?
+      options:
+        - single          # one component owns it
+        - few-cross-tree  # a handful of components across the tree
+        - app-wide        # most of the app reads/writes it
+    - key: change_frequency
+      ask: How often does it change?
+      options:
+        - low             # theme, locale — changes rarely
+        - high            # cart, real-time data — changes often
+    - key: derivable
+      ask: Can this value be computed from existing state or props?
+      options:
+        - "yes"
+        - "no"
+
+  rules:
+    # Derivable values are never stored, regardless of origin.
+    - if: { derivable: "yes" }
+      then:
+        recommend: Compute during render (or useMemo if expensive); do not store.
+        practice: react.state.server-vs-client-state
+      note: Short-circuits all other rules. Storing a computable value creates a second source of truth — see state.derived-in-state.
+
+    # Server cache → dedicated cache library. The flagship rule.
+    - if: { origin: server-cache }
+      then:
+        recommend: TanStack Query / SWR
+        practice: react.state.server-vs-client-state
+      note: Server data is a staleable cache; a cache library handles invalidation, dedup, retry, and stale-while-revalidate for free. Violating this triggers state.server-state-in-redux.
+
+    # URL → URL is the source of truth.
+    - if: { origin: url }
+      then:
+        recommend: URL search params (useSearchParams)
+      # practice: react.state.url-as-state — not yet authored; add when it lands.
+      note: URL state survives refresh, is shareable, and needs no store.
+
+    # Client state, single component.
+    - if: { origin: [user-input, ui-transient], sharing: single }
+      then:
+        recommend: useState / useReducer
+      note: No sharing → no store needed.
+
+    # Client state, shared, low-frequency → Context.
+    - if: { origin: [user-input, ui-transient], sharing: [few-cross-tree, app-wide], change_frequency: low }
+      then:
+        recommend: Context
+      note: Low-frequency changes make the Context re-render cost negligible.
+
+    # Client state, shared, high-frequency → Zustand (default) or Redux Toolkit.
+    - if: { origin: [user-input, ui-transient], sharing: [few-cross-tree, app-wide], change_frequency: high }
+      then:
+        recommend: Zustand (default) or Redux Toolkit
+        practice: react.state.server-vs-client-state
+      note: Precise subscriptions avoid the Context re-render trap. Prefer Zustand for new code; use RTK when the team already has Redux or needs time-travel + middleware ecosystem. Lifting out of props drilling avoids state.props-drilling-too-deep.
+
+  anti_patterns_to_check:
+    - state.server-state-in-redux
+    - state.derived-in-state
+    - state.props-drilling-too-deep
