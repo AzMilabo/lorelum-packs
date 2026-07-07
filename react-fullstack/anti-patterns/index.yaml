@@ -30,7 +30,7 @@
   why_bad: |
     Couples transport infra to a single auth scheme and blocks reuse across
     projects or auth strategies. If the token source changes (e.g. from
-    localStorage to httpOnly cookie), every resource file must be edited.
+    localStorage to HttpOnly cookie), every resource file must be edited.
     Also a security smell: secrets should be injected, not embedded.
   relates_to: [react.api.layered-design]
   severity: critical

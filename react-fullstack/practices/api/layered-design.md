@@ -26,7 +26,7 @@ Use this when your app fetches data from a server and has **three or more distin
 
 Split the API layer into **four layers, each with one reason to change**:
 
-```
+```text
 Component ──imports──▶ Hook ──imports──▶ API module ──imports──▶ Base client
    UI             React state          single-resource          HTTP transport
                   cache, lifecycle     DTO↔domain mapping        auth, errors, retry
@@ -54,7 +54,7 @@ Four layers is "just enough" — the minimum where (a) swapping the HTTP library
 
 A request's payload changes form **three times** as it travels up:
 
-```
+```text
 HTTP body
   { user_id, profile: { display_name, avatar_url, created_at } }   ← wire format (DTO)
      │
