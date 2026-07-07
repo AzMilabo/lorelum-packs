@@ -102,7 +102,7 @@ Only after ruling out server and URL state do you reach for client-state tools. 
 | A few components, **low-frequency** change (theme, locale) | **Context** | simple, React-native, no extra dep |
 | A few / many components, **high-frequency** or complex (cart, multi-step wizard) | **Zustand** (default) / Redux Toolkit (existing Redux codebase) | precise subscriptions avoid the Context re-render trap |
 
-```typescript
+```tsx
 // Client state, shared, high-frequency: Zustand.
 import { create } from 'zustand';
 
@@ -129,21 +129,27 @@ Prefer **Zustand** for new code: no Provider boilerplate, ~1KB, accessible outsi
 
 If a value can be **computed from existing state or props**, do not store it. Compute it during render. Storing derived values creates a second source of truth that must be kept in sync (usually via `useEffect`, which is itself a smell — see `state.derived-in-state`).
 
-```typescript
+```tsx
 // Bad: storing what can be computed, then syncing via useEffect.
 import { useEffect, useState } from 'react';
 
-const [items, setItems] = useState<string[]>([]);
-const [count, setCount] = useState(0);                   // derives from items
-useEffect(() => { setCount(items.length); }, [items]);   // sync tax
+function ItemListBad() {
+  const [items, setItems] = useState<string[]>([]);
+  const [count, setCount] = useState(0);                   // derives from items
+  useEffect(() => { setCount(items.length); }, [items]);   // sync tax
+  return <ul>{items.map((i) => <li key={i}>{i}</li>)}</ul>;
+}
 ```
 
-```typescript
+```tsx
 // Good: compute during render — no second source of truth.
 import { useState } from 'react';
 
-const [items, setItems] = useState<string[]>([]);
-const count = items.length;
+function ItemListGood() {
+  const [items, setItems] = useState<string[]>([]);
+  const count = items.length;                              // no sync, no drift
+  return <ul>{items.map((i) => <li key={i}>{i}</li>)}</ul>;
+}
 ```
 
 For expensive derivations, `useMemo` — not state.
