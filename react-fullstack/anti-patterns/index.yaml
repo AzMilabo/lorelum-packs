@@ -45,3 +45,38 @@
     as a normalized ApiError so upper layers can decide.
   relates_to: [react.api.layered-design]
   severity: major
+
+- id: state.server-state-in-redux
+  domain: state
+  summary: Storing server-fetched data in Redux/Zustand and hand-managing the cache
+  why_bad: |
+    Server data is a staleable cache: it must be invalidated, retried, and
+    deduplicated. A client store has none of these mechanisms, so the developer
+    reimplements (badly) what TanStack Query / SWR ship for free. The data still
+    goes stale with no way to detect or refresh it, and multiple components can
+    silently hold inconsistent copies.
+  relates_to: [react.state.server-vs-client-state]
+  severity: major
+
+- id: state.derived-in-state
+  domain: state
+  summary: Storing a value that can be computed from existing state/props
+  why_bad: |
+    Creates a second source of truth that must be kept in sync — usually via a
+    useEffect that watches the source and updates the derived value. That adds an
+    extra render cycle, can drift out of sync if any dependency is missed, and
+    makes the data flow harder to follow. Compute during render instead (or
+    useMemo if expensive).
+  relates_to: [react.state.server-vs-client-state]
+  severity: minor
+
+- id: state.props-drilling-too-deep
+  domain: state
+  summary: Passing a value through more than two component layers that don't use it
+  why_bad: |
+    Intermediate components are forced to know about and forward a value they
+    don't care about. Every new consumer forces an edit to the whole chain, and
+    the prop list of unrelated components grows noisy. Lift to a store/Context for
+    shared state, or restructure via composition (children-as-render-props).
+  relates_to: [react.state.server-vs-client-state]
+  severity: minor
