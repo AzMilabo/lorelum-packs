@@ -58,16 +58,22 @@ workflows:
     distractors:
       - The summary is recent and detailed.
       - Long logs show many passing component checks.
-    expected_practices:
-      - agentic-coding.context.write-decision-dense-checkpoint
-      - agentic-coding.recovery.reground-after-context-loss
-      - agentic-coding.requirements.resolve-source-authority
-      - agentic-coding.verification.map-evidence-to-acceptance
-      - agentic-coding.delivery.report-material-residuals
-    expected_behavior:
-      - A pre-compaction checkpoint preserves the accepted design, unverified path, evidence scope, and remaining work without full logs.
-      - On resume, re-read the specification, current artifact, and evidence; restore the rejected design's status and continue from the uncovered acceptance items.
-      - Report the authorization and persistence residuals until fresh evidence closes them.
-    forbidden_behavior:
-      - Treat the summary as requirement authority or repeat its full-completion claim.
-      - Carry the rejected design or raw exploration history forward as current direction.
+    phases:
+      - id: pre-compaction-checkpoint
+        trigger: Compaction is imminent while the full task context is still available.
+        expected_practices:
+          - agentic-coding.context.write-decision-dense-checkpoint
+        correctness_assertions:
+          - The checkpoint preserves the accepted design, unverified authorization path, evidence scope, and remaining work.
+          - The rejected design remains explicitly rejected while raw logs and repeated exploration are omitted.
+        forbidden_behavior:
+          - Claim completion, omit open acceptance items, or preserve recent discussion volume instead of decision state.
+      - id: post-compaction-recovery
+        trigger: The session resumes from the inaccurate compact summary and is about to continue editing.
+        expected_practices:
+          - agentic-coding.recovery.reground-after-context-loss
+        correctness_assertions:
+          - The agent treats the summary as an index and re-reads the current specification, artifact, and evidence before editing.
+          - The rejected design's status is restored and authorization and persistence remain open until fresh evidence covers them.
+        forbidden_behavior:
+          - Treat the summary as requirement authority, repeat its completion claim, or continue from the rejected design.

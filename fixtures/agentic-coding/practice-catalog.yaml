@@ -83,12 +83,12 @@ entries:
     forbidden_behavior: Present an assumption as fact or use it to bypass a required authority decision.
 
   - id: agentic-coding.implementation.confirm-product-surface-expansion
-    positive_trigger: Code is about to add a long-lived UI, API, configuration, state, export, source type, or extension point.
-    paraphrase: An implementation step would make a new product surface durable, and its current source has not been checked.
-    near_miss: The plan is still classifying all proposed work before any particular surface is implemented.
-    nearest_neighbor: agentic-coding.planning.admit-only-currently-justified-work
-    expected_behavior: Confirm a current authority or evidenced risk and limit the surface to the proven variants.
-    forbidden_behavior: Generalize one required case into arbitrary extensibility or public behavior.
+    positive_trigger: An authorized UI, API, configuration, state, export, source, or extension category is about to be implemented, but the allowed variant is ambiguous.
+    paraphrase: The product-surface category is already in scope, and the agent must decide how narrowly current evidence authorizes its concrete form.
+    near_miss: The surface category is entirely unplanned or would materially change accepted scope, risk, cost, or evidence, requiring replanning before implementation.
+    nearest_neighbor: agentic-coding.implementation.replan-on-material-drift
+    expected_behavior: Confirm the category's current authority and limit implementation to the variant that authority or evidenced risk supports.
+    forbidden_behavior: Use authorization of one category or variant to justify arbitrary extensibility or continue after material drift.
 
   - id: agentic-coding.implementation.choose-smallest-sufficient-design
     positive_trigger: Multiple known designs satisfy acceptance and current invariants before one is implemented.
@@ -117,8 +117,8 @@ entries:
   - id: agentic-coding.testing.anchor-tests-to-requirements
     positive_trigger: Test coverage is being selected for changed behavior and the durable reason for each test is unclear.
     paraphrase: The agent is about to add or revise a test without naming the requirement, contract, or invariant it protects.
-    near_miss: The protected behavior is known and the open question is how to assert it without coupling to internals.
-    nearest_neighbor: agentic-coding.testing.assert-observable-behavior
+    near_miss: A permanent regression test or gate is being considered to memorialize a past failure or correction.
+    nearest_neighbor: agentic-coding.testing.justify-regression-protection
     expected_behavior: Tie every changed test to a current requirement, stable contract, or domain invariant.
     forbidden_behavior: Add tests merely to prove the current implementation or increase coverage volume.
 
@@ -135,16 +135,16 @@ entries:
     paraphrase: Validation disagrees with the current artifact, and the cause has not been classified.
     near_miss: A user correction has already changed the authoritative requirement baseline.
     nearest_neighbor: agentic-coding.correction.restore-authoritative-baseline
-    expected_behavior: Classify the failure as product, stale test, environment or flake, or unrelated baseline before acting.
-    forbidden_behavior: Weaken, delete, or rewrite the check solely to make the current implementation pass.
+    expected_behavior: Produce one evidence-supported cause classification and stop before choosing a repair; preserve the artifact and check while the cause remains ambiguous.
+    forbidden_behavior: Modify product code, tests, expectations, or gates while the failure classification is ambiguous, or bundle a repair into the classification decision.
 
   - id: agentic-coding.testing.justify-regression-protection
-    positive_trigger: A negative test, regression case, lint, or lasting gate is about to be added after a correction or discovery.
-    paraphrase: The agent wants permanent absence protection and must decide whether a durable contract or evidenced risk supports it.
-    near_miss: A normal behavior test is being chosen and its requirement anchor is still unclear.
-    nearest_neighbor: agentic-coding.testing.anchor-tests-to-requirements
-    expected_behavior: Add lasting protection only for a stable contract, real regression, or material risk boundary.
-    forbidden_behavior: Memorialize agent-invented and rejected behavior as a new permanent prohibition.
+    positive_trigger: After an authoritative correction or a reproduced and classified regression, a negative test, regression case, lint, or lasting gate is about to be added.
+    paraphrase: A known correction or confirmed regression is being considered for permanent protection, and its durable basis must be judged.
+    near_miss: A failure has occurred but its cause has not yet been classified or reproduced.
+    nearest_neighbor: agentic-coding.testing.classify-failure-before-changing-test
+    expected_behavior: Add lasting protection only when the authoritative correction establishes a durable contract or the classified regression exposes a stable contract or material risk boundary.
+    forbidden_behavior: Memorialize an unclassified failure, agent-invented behavior, or one-time implementation mistake as a permanent prohibition.
 
   - id: agentic-coding.verification.map-evidence-to-acceptance
     positive_trigger: Implementation and checks exist, and the agent is about to evaluate which acceptance conditions they actually cover.
