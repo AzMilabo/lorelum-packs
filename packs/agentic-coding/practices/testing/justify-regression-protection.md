@@ -6,8 +6,9 @@ tech_stack:
   - agentic-coding
 applies_when: >-
   the agent is about to add a long-lived negative test, regression test, lint
-  rule, or delivery gate after an unwanted behavior or correction, and must
-  decide whether preventing its recurrence is a durable contract
+  rule, or delivery gate after a reproduced and classified regression or an
+  authoritative correction, and must decide whether preventing recurrence is a
+  durable contract
 severity: warn
 anti_patterns:
   - id: agentic-coding.testing.memorialized-transient-mistake
@@ -18,7 +19,7 @@ anti_patterns:
 
 ## When to apply
 
-Apply before making a negative condition or past failure a permanent part of the project’s verification surface. The trigger is the durability decision, not ordinary positive coverage of a current requirement. A security prohibition, compatibility boundary, or explicit acceptance condition already documented as durable is a near miss because its justification is established.
+Apply before making a classified regression or authoritative correction a permanent part of the project’s verification surface. The trigger is the durability decision, not ordinary positive coverage of a current requirement. An unclassified failure is a near miss and must be classified before regression protection is considered. A security prohibition, compatibility boundary, or explicit acceptance condition already documented as durable is also a near miss because its justification is established.
 
 ## Guidance
 

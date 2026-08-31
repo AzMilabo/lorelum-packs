@@ -1,13 +1,13 @@
 ---
 id: agentic-coding.implementation.confirm-product-surface-expansion
-title: Confirm Any Product Surface Expansion
+title: Confirm Authorized Product Surface Variants
 stage: implementation
 tech_stack:
   - agentic-coding
 applies_when: >-
-  implementation is about to add a long-lived UI element, API, configuration,
-  persisted state, public export, source type, or extension point whose exact
-  variant is not clearly established by the accepted scope
+  accepted scope authorizes a long-lived UI, API, configuration, persisted
+  state, public export, source type, or extension-point category, and
+  implementation is about to expose an exact variant that remains ambiguous
 severity: warn
 anti_patterns:
   - id: agentic-coding.implementation.speculative-public-surface
@@ -18,11 +18,11 @@ anti_patterns:
 
 ## When to apply
 
-Apply at the last implementation decision before introducing or broadening a surface that users, integrations, stored data, or downstream code may depend on. It is narrower than general scope review: the distinguishing condition is a new long-lived product or extension contract. An internal refactor that preserves all observable surfaces is a near miss.
+Apply at the last implementation decision before exposing a variant within a product-surface category that accepted scope already authorizes. An entirely unplanned surface, or one that materially changes scope, risk, or evidence needs, is a near miss: pause and replan from that drift. An internal refactor that preserves all observable surfaces is also a near miss.
 
 ## Guidance
 
-Identify the authoritative requirement or confirmed decision for the proposed surface, then compare its exact supported variants with what the implementation would expose. Decide to admit the proven variant, narrow the design to it, or defer the expansion for confirmation. The output is one bounded surface decision; do not infer neighboring modes merely because the implementation can generalize cheaply.
+Identify the authority for the accepted surface category, then compare the exact variants it supports with what the implementation would expose. Decide which proven variant boundary to admit or leave the ambiguous variant unexposed pending confirmation. The output is one bounded surface decision; do not infer neighboring modes merely because the implementation can generalize cheaply.
 
 ## Anti-pattern
 

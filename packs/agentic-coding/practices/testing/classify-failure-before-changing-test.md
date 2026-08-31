@@ -22,7 +22,7 @@ Apply after a check fails and before editing either the implementation or its ve
 
 ## Guidance
 
-Reproduce the smallest relevant failure and compare its observed behavior with the authoritative requirement and the state being tested. Gather only enough additional evidence to distinguish the candidate classes, then record the classification and the evidence that rules out the nearest alternative. Choose the change that follows from that classification. If the evidence remains ambiguous, keep the test and behavior unchanged while escalating the uncertainty rather than guessing through edits.
+Reproduce the smallest relevant failure and compare its observed behavior with the authoritative requirement and the state being tested. Gather only enough additional evidence to distinguish the candidate classes, then record the classification and the evidence that rules out the nearest alternative. Stop at that classification; selecting or applying a remediation is outside this Practice. If the evidence remains ambiguous, keep production code, tests, and configuration unchanged while escalating the uncertainty rather than guessing through edits.
 
 ## Anti-pattern
 
@@ -38,4 +38,4 @@ Contain active security, data-loss, or production incidents before completing a 
 
 ## Example
 
-A search test fails after results are grouped differently. The agent checks the requirement and finds grouping was never changed; it classifies the failure as a product defect and fixes grouping instead of rewriting the expectation.
+A search test fails after results are grouped differently. The agent checks the requirement, finds grouping was never changed, and classifies the failure as a product defect rather than rewriting the expectation. Remediation begins only after that classification is established.

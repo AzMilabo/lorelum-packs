@@ -7,7 +7,8 @@ tech_stack:
 applies_when: >-
   test coverage is being selected for new or changed behavior, and the agent
   is about to add or modify a test without identifying the requirement,
-  stable contract, or domain invariant that the test should protect
+  stable contract, or domain invariant that the test should protect, rather
+  than deciding whether a past failure deserves permanent protection
 severity: warn
 anti_patterns:
   - id: agentic-coding.testing.test-without-protected-contract
@@ -18,7 +19,7 @@ anti_patterns:
 
 ## When to apply
 
-Apply while deciding what a new or changed test is for. The distinguishing decision is the behavior or invariant the test protects. Choosing the exact observation or assertion comes later and is a near miss for this Practice. Mechanical test cleanup that preserves an already explicit contract does not require a new mapping.
+Apply while deciding what a new or changed test is for. The distinguishing decision is the behavior or invariant the test protects. Choosing the exact observation or assertion comes later and is a near miss for this Practice. Deciding whether to memorialize a past failure with permanent regression protection is also a near miss and requires its own durability judgment. Mechanical test cleanup that preserves an already explicit contract does not require a new mapping.
 
 ## Guidance
 
