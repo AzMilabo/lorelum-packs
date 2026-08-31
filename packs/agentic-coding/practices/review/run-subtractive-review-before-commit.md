@@ -35,4 +35,4 @@ Keep apparently unused migration, compatibility, security, audit, or rollback ma
 
 ## Example
 
-A pre-commit pass removes a duplicate digest helper and an unused test export, reuses the existing decoder, and keeps the custom registry path and input limit because both are current requirements.
+A pre-commit pass removes a second date-normalization helper and an unused fixture export, reuses the existing parser, and keeps the batch-size guard and recovery marker because the import contract requires both.

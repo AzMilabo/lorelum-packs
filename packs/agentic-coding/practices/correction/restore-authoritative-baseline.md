@@ -35,4 +35,4 @@ A correction can establish a new durable contract when the authority explicitly 
 
 ## Example
 
-The user rejects an invented generic locator and confirms support for one registry source. The agent removes the generic path and its tests, keeps the registry behavior, and does not add a rule claiming all future source types are forbidden.
+The user rejects an invented weekly email and confirms that the request was only for an on-screen status badge. The agent removes the scheduler and email tests, keeps the badge, and does not add a rule forbidding future notification features.

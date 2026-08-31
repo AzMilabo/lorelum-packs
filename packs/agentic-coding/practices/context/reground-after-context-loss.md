@@ -4,7 +4,7 @@ title: Reground After Context Loss
 stage: recovery
 tech_stack:
   - agentic-coding
-applies_when: work is resuming after context reduction, interruption, or session transfer, and the agent is about to edit or declare status using a summary whose claims have not been checked against durable task state
+applies_when: work is resuming after context reduction, interruption, or a same-agent session resume, and the agent is about to edit or declare status using a summary whose claims have not been checked against durable task state
 severity: warn
 anti_patterns:
   - id: agentic-coding.recovery.summary-as-authority
@@ -15,7 +15,7 @@ anti_patterns:
 
 ## When to apply
 
-Apply after context has been reduced or a session has resumed, before substantive editing or status claims rely on the surviving summary. Do not apply before an interruption when the task still has full context; create a durable checkpoint for that moment instead.
+Apply after context has been reduced or the same agent's session has resumed, before substantive editing or status claims rely on the surviving summary. A cross-agent transfer is a near miss and requires validating the handoff claims against current authority, artifacts, and evidence. Do not apply before an interruption when the task still has full context; create a durable checkpoint for that moment instead.
 
 ## Guidance
 
@@ -35,4 +35,4 @@ A trivial stateless task may require only a quick comparison with its current ar
 
 ## Example
 
-After resuming, the agent reopens the acceptance criteria and current diff. It finds that rendering evidence is valid but persistence was never checked, changes the state from "complete" to "UI slice verified," and continues with the missing persistence work.
+After resuming a parser refactor, the agent reopens the grammar requirements and current diff. It finds that core syntax checks remain valid but malformed-input recovery was never exercised, changes the state from "complete" to "core syntax verified," and continues from that corrected boundary.

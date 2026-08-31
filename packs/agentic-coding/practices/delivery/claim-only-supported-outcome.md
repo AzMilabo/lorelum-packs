@@ -35,4 +35,4 @@ Use the project's formally defined completion vocabulary when it has explicit ga
 
 ## Example
 
-Instead of "account settings are complete," report "the settings form renders and saves in the focused integration scenario; reload persistence was not part of this verification."
+Instead of "the search rollout is complete," report "query ranking passed the sampled relevance cases on the current index; failover behavior was not exercised."

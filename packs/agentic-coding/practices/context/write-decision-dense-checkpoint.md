@@ -35,4 +35,4 @@ Retain full logs separately when incident response, audit, legal, or reproducibi
 
 ## Example
 
-A checkpoint says that the goal is user-level role management, names the current specification, records the accepted aggregation decision, notes that denial behavior is unverified, and links the latest valid results. It reduces three failed UI approaches to "rejected because they split one user across rows."
+A checkpoint says that the goal is resumable media processing, names the current specification, records the accepted chunked pipeline, notes that cancellation cleanup is unverified, and links the latest valid results. It reduces two failed approaches to "rejected because they held entire inputs in memory."

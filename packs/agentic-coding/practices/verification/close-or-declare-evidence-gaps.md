@@ -35,4 +35,4 @@ Low-impact gaps may be declared rather than closed when the recipient can make a
 
 ## Example
 
-The current check proves a preference changes on screen but cannot verify reload persistence. The agent either runs the persistence check, reports only the in-session update, or marks persistence incomplete; it does not call the whole preference flow verified.
+The current check proves a preference changes on screen but cannot verify reload persistence. The agent records the supported outcome as limited to the in-session update.
