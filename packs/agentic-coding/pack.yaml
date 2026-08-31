@@ -1,0 +1,8 @@
+name: agentic-coding
+version: 0.1.0
+description: Installation placeholder for the future agentic-coding Knowledge Pack.
+author:
+  name: Lorelum
+license: CC-BY-4.0
+applies_to:
+  - agentic-coding

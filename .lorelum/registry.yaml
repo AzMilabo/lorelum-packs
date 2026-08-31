@@ -1,0 +1,10 @@
+schema_version: 1
+name: lorelum-official
+description: Official Knowledge Packs maintained by the Lorelum project.
+packs:
+  - name: agentic-coding
+    description: Practices for evidence-aligned agentic coding workflows.
+    releases:
+      - version: 0.1.0
+        ref: agentic-coding-v0.1.0
+        path: packs/agentic-coding
