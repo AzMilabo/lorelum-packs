@@ -1,0 +1,235 @@
+fixture_set: agentic-coding-practice-catalog
+evaluation_only: true
+description: Atomic retrieval and behavior hypotheses for the 29 Practices; not a runtime schema.
+entries:
+  - id: agentic-coding.requirements.ground-user-goal
+    positive_trigger: The agent is about to frame work without a current statement of the observable result the user needs, as can happen at task start.
+    paraphrase: The agent is about to continue work without a current user-visible outcome after implementation details displaced it.
+    near_miss: The user outcome is already explicit and only the completion boundary is missing.
+    nearest_neighbor: agentic-coding.requirements.define-acceptance-and-non-goals
+    expected_behavior: State one actor-and-outcome goal that preserves explicit constraints.
+    forbidden_behavior: Treat a component, test, document, or implementation idea as the user goal.
+
+  - id: agentic-coding.requirements.resolve-source-authority
+    positive_trigger: A current specification conflicts with code and a compact summary before intended behavior is chosen.
+    paraphrase: Several sources disagree, and the agent must decide which one can define the requirement.
+    near_miss: Sources agree on intent and the open question is whether existing code can be reused.
+    nearest_neighbor: agentic-coding.implementation.inspect-and-reuse-existing-capability
+    expected_behavior: Classify authority, observation, assumption, and superseded evidence; stop for an unresolved material choice.
+    forbidden_behavior: Promote the newest, most detailed, or easiest source without checking its authority.
+
+  - id: agentic-coding.requirements.define-acceptance-and-non-goals
+    positive_trigger: The goal is known, but planning would rely on an implicit definition of done and adjacent scope is plausible.
+    paraphrase: Before downstream work begins, the agent needs observable musts and a boundary against likely expansion.
+    near_miss: The affected user and intended result are still ambiguous.
+    nearest_neighbor: agentic-coding.requirements.ground-user-goal
+    expected_behavior: Record a compact observable acceptance boundary with a relevant non-goal.
+    forbidden_behavior: Define completion by artifacts produced or invent detailed criteria before the goal is resolved.
+
+  - id: agentic-coding.planning.admit-only-currently-justified-work
+    positive_trigger: Candidate plan items are about to become commitments, but some rely only on future usefulness.
+    paraphrase: The plan mixes required work with generic best practices and attractive optional additions.
+    near_miss: An already accepted public surface is now about to be implemented and needs a final source check.
+    nearest_neighbor: agentic-coding.implementation.confirm-product-surface-expansion
+    expected_behavior: Classify every candidate as required, optional, or out of scope using present evidence.
+    forbidden_behavior: Promote an item because it is common, impressive, or potentially useful later.
+
+  - id: agentic-coding.planning.scale-work-to-risk-and-cost
+    positive_trigger: The initial approach is being chosen for work whose failure impact and reversibility vary materially.
+    paraphrase: Before starting, the agent must decide how much analysis, validation, review, and recovery preparation is warranted.
+    near_miss: Implementation has already exposed a new public contract or higher failure cost.
+    nearest_neighbor: agentic-coding.implementation.replan-on-material-drift
+    expected_behavior: Set one investment level justified by blast radius, reversibility, uncertainty, and failure cost.
+    forbidden_behavior: Apply the same heavy or light engineering ceremony to every task.
+
+  - id: agentic-coding.planning.map-plan-to-user-capability
+    positive_trigger: A multi-layer plan is nearly final, but no one has traced the complete actor-to-outcome path.
+    paraphrase: Technical tasks exist for several components and may still omit a required capability step.
+    near_miss: Implementation is complete and actual evidence now needs reconciliation with acceptance.
+    nearest_neighbor: agentic-coding.verification.map-evidence-to-acceptance
+    expected_behavior: Map planned owners to every required step and expose any missing capability link.
+    forbidden_behavior: Treat completion of components or layers as completion of the user capability.
+
+  - id: agentic-coding.planning.plan-sufficient-evidence
+    positive_trigger: Acceptance is known before coding, but no proof route has been chosen for each must.
+    paraphrase: The agent is about to implement without deciding which affordable observations could rule out plausible failure.
+    near_miss: Checks have already run and their actual coverage must be mapped to acceptance.
+    nearest_neighbor: agentic-coding.verification.map-evidence-to-acceptance
+    expected_behavior: Choose the lowest-cost sufficient evidence, blind spot, and escalation condition for each must.
+    forbidden_behavior: Maximize check count or rely on easy checks that cannot demonstrate the acceptance condition.
+
+  - id: agentic-coding.planning.define-stop-condition
+    positive_trigger: Accepted work is about to begin and nearby improvements could make execution open-ended.
+    paraphrase: The task needs a precommitted finish, defer, and replan boundary before implementation momentum starts.
+    near_miss: A material unplanned surface or risk has already appeared during implementation.
+    nearest_neighbor: agentic-coding.implementation.replan-on-material-drift
+    expected_behavior: Define one observable execution boundary and material replanning signals.
+    forbidden_behavior: Continue until the result looks good or turn every discovered opportunity into current scope.
+
+  - id: agentic-coding.implementation.inspect-and-reuse-existing-capability
+    positive_trigger: A helper, layer, or parser is about to be added before related runtime, dependency, and local capabilities are checked.
+    paraphrase: The agent is ready to implement behavior that may already exist nearby or in an approved dependency.
+    near_miss: Several known viable designs remain and the task is to choose the smallest sufficient one.
+    nearest_neighbor: agentic-coding.implementation.choose-smallest-sufficient-design
+    expected_behavior: Make a bounded reuse judgment from relevant modules, call sites, tests, runtime, and dependencies.
+    forbidden_behavior: Reimplement first or search indefinitely after sufficient reuse evidence is available.
+
+  - id: agentic-coding.implementation.surface-unconfirmed-assumptions
+    positive_trigger: Evidence is incomplete, a narrow reversible path can continue, and an assumption may affect later work.
+    paraphrase: The agent can proceed safely only if one uncertain premise and its recheck condition remain visible.
+    near_miss: Conflicting authorities could change public behavior and must be resolved before coding.
+    nearest_neighbor: agentic-coding.requirements.resolve-source-authority
+    expected_behavior: Record the assumption, bounded impact, and condition that will confirm or invalidate it.
+    forbidden_behavior: Present an assumption as fact or use it to bypass a required authority decision.
+
+  - id: agentic-coding.implementation.confirm-product-surface-expansion
+    positive_trigger: An authorized UI, API, configuration, state, export, source, or extension category is about to be implemented, but the allowed variant is ambiguous.
+    paraphrase: The product-surface category is already in scope, and the agent must decide how narrowly current evidence authorizes its concrete form.
+    near_miss: The surface category is entirely unplanned or would materially change accepted scope, risk, cost, or evidence, requiring replanning before implementation.
+    nearest_neighbor: agentic-coding.implementation.replan-on-material-drift
+    expected_behavior: Confirm the category's current authority and limit implementation to the variant that authority or evidenced risk supports.
+    forbidden_behavior: Use authorization of one category or variant to justify arbitrary extensibility or continue after material drift.
+
+  - id: agentic-coding.implementation.choose-smallest-sufficient-design
+    positive_trigger: Multiple known designs satisfy acceptance and current invariants before one is implemented.
+    paraphrase: The agent must choose among viable designs with different layers, reversibility, and complexity.
+    near_miss: The implementation is finished and the whole diff needs a final subtractive review.
+    nearest_neighbor: agentic-coding.review.run-subtractive-review-before-commit
+    expected_behavior: Select the smallest reversible design that fits existing boundaries and protects required invariants.
+    forbidden_behavior: Add wrappers, error layers, or I/O passes that do not change current acceptance or risk.
+
+  - id: agentic-coding.implementation.preserve-responsibility-boundaries
+    positive_trigger: A change crosses modules or domains and behavior is about to be placed outside the owner of its invariant.
+    paraphrase: The implementation can work locally while assigning a rule to the wrong layer or domain object.
+    near_miss: Ownership is settled and the only decision is which of several sufficient implementations is smaller.
+    nearest_neighbor: agentic-coding.implementation.choose-smallest-sufficient-design
+    expected_behavior: Place the behavior with the component or domain that owns the invariant.
+    forbidden_behavior: Let a convenient data shape or call site redefine responsibility without an architecture decision.
+
+  - id: agentic-coding.implementation.replan-on-material-drift
+    positive_trigger: Implementation has introduced an unplanned surface, source type, I/O pass, file group, fallback, or higher-risk effect.
+    paraphrase: Current facts have made the accepted scope, risk, or evidence plan stale, and coding is about to continue.
+    near_miss: Work has not started and the initial engineering depth is still being selected.
+    nearest_neighbor: agentic-coding.planning.scale-work-to-risk-and-cost
+    expected_behavior: Pause and update scope, risk, evidence, and the continuation decision before more implementation.
+    forbidden_behavior: Continue because the drift appears technically useful or wait until final review to mention it.
+
+  - id: agentic-coding.testing.anchor-tests-to-requirements
+    positive_trigger: Test coverage is being selected for changed behavior and the durable reason for each test is unclear.
+    paraphrase: The agent is about to add or revise a test without naming the requirement, contract, or invariant it protects.
+    near_miss: A permanent regression test or gate is being considered to memorialize a past failure or correction.
+    nearest_neighbor: agentic-coding.testing.justify-regression-protection
+    expected_behavior: Tie every changed test to a current requirement, stable contract, or domain invariant.
+    forbidden_behavior: Add tests merely to prove the current implementation or increase coverage volume.
+
+  - id: agentic-coding.testing.assert-observable-behavior
+    positive_trigger: A test's purpose is known and the assertion is about to bind to incidental state, structure, or call order.
+    paraphrase: The agent must choose an assertion surface for a requirement that users or stable consumers can observe.
+    near_miss: The reason the test should exist has not yet been established.
+    nearest_neighbor: agentic-coding.testing.anchor-tests-to-requirements
+    expected_behavior: Assert user-visible behavior or a stable contract while allowing irrelevant implementation changes.
+    forbidden_behavior: Freeze incidental structure unless that exact structure is itself the contract.
+
+  - id: agentic-coding.testing.classify-failure-before-changing-test
+    positive_trigger: A test, type, lint, or other check has failed and the agent is about to modify the test or expectation.
+    paraphrase: Validation disagrees with the current artifact, and the cause has not been classified.
+    near_miss: A user correction has already changed the authoritative requirement baseline.
+    nearest_neighbor: agentic-coding.correction.restore-authoritative-baseline
+    expected_behavior: Produce one evidence-supported cause classification and stop before choosing a repair; preserve the artifact and check while the cause remains ambiguous.
+    forbidden_behavior: Modify product code, tests, expectations, or gates while the failure classification is ambiguous, or bundle a repair into the classification decision.
+
+  - id: agentic-coding.testing.justify-regression-protection
+    positive_trigger: After an authoritative correction or a reproduced and classified regression, a negative test, regression case, lint, or lasting gate is about to be added.
+    paraphrase: A known correction or confirmed regression is being considered for permanent protection, and its durable basis must be judged.
+    near_miss: A failure has occurred but its cause has not yet been classified or reproduced.
+    nearest_neighbor: agentic-coding.testing.classify-failure-before-changing-test
+    expected_behavior: Add lasting protection only when the authoritative correction establishes a durable contract or the classified regression exposes a stable contract or material risk boundary.
+    forbidden_behavior: Memorialize an unclassified failure, agent-invented behavior, or one-time implementation mistake as a permanent prohibition.
+
+  - id: agentic-coding.verification.map-evidence-to-acceptance
+    positive_trigger: Implementation and checks exist, and the agent is about to evaluate which acceptance conditions they actually cover.
+    paraphrase: Evidence has been collected and needs an item-by-item coverage map before completion is assessed.
+    near_miss: A known coverage gap already requires a choice to gather more proof, narrow the claim, or remain incomplete.
+    nearest_neighbor: agentic-coding.verification.close-or-declare-evidence-gaps
+    expected_behavior: Map current evidence to every acceptance item and expose uncovered conditions.
+    forbidden_behavior: Infer whole-capability success from a passing component, command, or check bundle.
+
+  - id: agentic-coding.verification.bind-evidence-to-artifact-state
+    positive_trigger: Evidence is being recorded or reused after relevant code, configuration, environment, or dependencies may have changed.
+    paraphrase: A prior finding or test result may be stale for the current artifact and its validity boundary is unknown.
+    near_miss: The evidence is current, but a review finding itself has not been checked against requirements and contracts.
+    nearest_neighbor: agentic-coding.review.validate-findings-before-action
+    expected_behavior: Bind evidence to artifact state, environment, time, and scope; invalidate only affected conclusions.
+    forbidden_behavior: Reuse old evidence as if it proves the current artifact or discard unrelated valid evidence wholesale.
+
+  - id: agentic-coding.verification.close-or-declare-evidence-gaps
+    positive_trigger: The evidence map shows less support than the intended completion claim.
+    paraphrase: A known acceptance gap must be resolved before delivery rather than hidden behind passing checks.
+    near_miss: Evidence has not yet been mapped, so the actual gaps are still unknown.
+    nearest_neighbor: agentic-coding.verification.map-evidence-to-acceptance
+    expected_behavior: Gather sufficient evidence, narrow the intended claim, or mark the item incomplete.
+    forbidden_behavior: Carry a known gap into an unqualified completion statement.
+
+  - id: agentic-coding.review.validate-findings-before-action
+    positive_trigger: A human, agent, or analyzer reports a finding and the agent is about to modify the artifact.
+    paraphrase: External review advice must be judged against current requirements, state, contracts, and tests before action.
+    near_miss: The finding is accepted and the question is only whether the evidence it cites is stale for the current artifact.
+    nearest_neighbor: agentic-coding.verification.bind-evidence-to-artifact-state
+    expected_behavior: Classify the finding as confirmed, unconfirmed, or requiring authority; then choose local repair or replanning.
+    forbidden_behavior: Apply a plausible finding automatically or dismiss it without checking current evidence.
+
+  - id: agentic-coding.review.run-subtractive-review-before-commit
+    positive_trigger: A completed diff is about to be committed and may contain unsupported files, abstractions, fallbacks, surfaces, I/O, tests, or docs.
+    paraphrase: Before handoff, the whole change needs one final check for unjustified additions and duplicated capability.
+    near_miss: A specific external finding has just arrived and has not yet been validated.
+    nearest_neighbor: agentic-coding.review.validate-findings-before-action
+    expected_behavior: Remove or merge unsupported additions while preserving every proven requirement and protection.
+    forbidden_behavior: Optimize deletion count, remove required behavior, or perform broad redesign during final review.
+
+  - id: agentic-coding.delivery.claim-only-supported-outcome
+    positive_trigger: The agent is about to say complete, fixed, accepted, or delivered after only scoped evidence.
+    paraphrase: A delivery verb and scope must be chosen without turning a technical slice into a full capability.
+    near_miss: A known evidence gap still needs a decision before any final claim is drafted.
+    nearest_neighbor: agentic-coding.verification.close-or-declare-evidence-gaps
+    expected_behavior: Use a claim whose verb and scope exactly match current evidence.
+    forbidden_behavior: Announce a full user capability, acceptance, publication, or push that was not evidenced.
+
+  - id: agentic-coding.delivery.report-material-residuals
+    positive_trigger: Delivery or handoff has remaining work, risk, drift, or verification limits that affect the next decision.
+    paraphrase: The completed portion is known, but a successor needs concise material residual information.
+    near_miss: There are no material residuals and only the supported outcome needs to be stated.
+    nearest_neighbor: agentic-coding.delivery.claim-only-supported-outcome
+    expected_behavior: Report only decision-relevant residuals with enough reproduction or recovery context.
+    forbidden_behavior: Hide a material limit or bury it in exhaustive exploration history and routine logs.
+
+  - id: agentic-coding.correction.restore-authoritative-baseline
+    positive_trigger: An authorized correction, scope change, or rejection has made the current route stale.
+    paraphrase: The user has corrected the agent, and valid original requirements must be separated from newly changed scope.
+    near_miss: A handoff conclusion may be wrong, but no authority has changed the requirement baseline.
+    nearest_neighbor: agentic-coding.recovery.validate-handoff-before-continuation
+    expected_behavior: Restore current authority, remove superseded assumptions, and distinguish restoration from a new durable contract.
+    forbidden_behavior: Preserve the rejected route or convert its removal into an invented global prohibition.
+
+  - id: agentic-coding.context.write-decision-dense-checkpoint
+    positive_trigger: Compaction, a long pause, or context rollover is imminent and a durable recovery artifact is needed.
+    paraphrase: Before context is reduced, the agent must preserve decisions and open risk without carrying full exploration noise.
+    near_miss: Context has already been lost and the agent must re-read durable sources before editing.
+    nearest_neighbor: agentic-coding.recovery.reground-after-context-loss
+    expected_behavior: Save current goal, authority, acceptance, decisions, open scope, valid evidence, and risks; summarize discarded paths by consequence.
+    forbidden_behavior: Preserve long logs and recent discussion while omitting authority, uncertainty, or unfinished work.
+
+  - id: agentic-coding.recovery.reground-after-context-loss
+    positive_trigger: A compacted or resumed session is about to continue implementation from a summary.
+    paraphrase: Context has been lost, and the agent needs current facts before the next edit.
+    near_miss: Compaction has not happened yet and the task needs a checkpoint for future recovery.
+    nearest_neighbor: agentic-coding.context.write-decision-dense-checkpoint
+    expected_behavior: Treat the summary as an index and re-read authoritative task sources, current artifact state, and evidence.
+    forbidden_behavior: Treat the summary's completion or design statements as self-authenticating facts.
+
+  - id: agentic-coding.recovery.validate-handoff-before-continuation
+    positive_trigger: Another agent or task reports conclusions and the receiving agent is about to act on them.
+    paraphrase: A cross-agent handoff contains claims that may not match current authority, artifact state, or evidence.
+    near_miss: The user has explicitly changed scope, making this an authority correction rather than a handoff check.
+    nearest_neighbor: agentic-coding.correction.restore-authoritative-baseline
+    expected_behavior: Verify handoff claims against current sources and artifacts, discard stale assumptions, and correct the next step.
+    forbidden_behavior: Accept another agent's completion, test, or design claim as current without verification.
