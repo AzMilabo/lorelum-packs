@@ -29,7 +29,7 @@ For each acceptance condition, choose the lowest-cost observation that can actua
 
 ## Anti-pattern
 
-A plan lists unit tests, static checks, and a manual click-through, but none can show that saved data survives reload. The volume of checks creates confidence without covering the persistence condition.
+A plan lists unit tests, static checks, and manual file inspection, but none can show that an exported archive opens in the required independent consumer. The volume of checks creates confidence without covering the compatibility condition.
 
 ## Why
 
@@ -41,4 +41,4 @@ Mandatory audits, certification, safety cases, or release gates may require evid
 
 ## Example
 
-For a saved preference, plan a focused behavior check for validation and an integration observation after reload for durability. Escalate to a real environment only if the storage boundary differs materially from the test environment.
+For an interchange export, plan focused schema validation and one compatibility observation in an independent consumer. Escalate to a representative production version only if its format support differs materially from the test consumer.

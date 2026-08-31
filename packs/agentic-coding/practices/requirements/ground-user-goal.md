@@ -5,8 +5,8 @@ stage: requirements
 tech_stack:
   - agentic-coding
 applies_when: >-
-  a task has just been received or the work is drifting, and the agent is about
-  to frame what to build without a current statement of the user-visible outcome
+  the agent is about to frame or continue work without a current statement of
+  the user-visible outcome
 severity: warn
 anti_patterns:
   - id: agentic-coding.requirements.solution-shaped-goal
@@ -20,7 +20,7 @@ anti_patterns:
 
 ## When to apply
 
-Apply when beginning a task, or when implementation details have started to replace the reason for the work. The trigger is a missing or stale statement of who needs what observable result. If the result is already clear and the only open question is how completion will be judged, define acceptance boundaries instead.
+Apply when the agent is about to frame or continue work and there is no current statement of who needs what observable result. This can happen at task start or after implementation details have begun to replace the reason for the work. If the result is already clear and the only open question is how completion will be judged, define acceptance boundaries instead.
 
 ## Guidance
 

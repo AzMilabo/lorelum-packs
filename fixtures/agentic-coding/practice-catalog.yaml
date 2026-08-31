@@ -3,8 +3,8 @@ evaluation_only: true
 description: Atomic retrieval and behavior hypotheses for the 29 Practices; not a runtime schema.
 entries:
   - id: agentic-coding.requirements.ground-user-goal
-    positive_trigger: A new task names a feature area but not the observable result the user needs.
-    paraphrase: Work has drifted into components, and the agent is about to frame the task around its preferred solution.
+    positive_trigger: The agent is about to frame work without a current statement of the observable result the user needs, as can happen at task start.
+    paraphrase: The agent is about to continue work without a current user-visible outcome after implementation details displaced it.
     near_miss: The user outcome is already explicit and only the completion boundary is missing.
     nearest_neighbor: agentic-coding.requirements.define-acceptance-and-non-goals
     expected_behavior: State one actor-and-outcome goal that preserves explicit constraints.
