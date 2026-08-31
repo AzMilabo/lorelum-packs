@@ -4,7 +4,8 @@ This repository is the official public catalog for installable Lorelum Knowledge
 
 ## Catalog
 
-- `agentic-coding@0.1.0` — an installation placeholder. Its planned 25–30 Practices will be authored in a later change.
+- `agentic-coding@0.2.0` — the complete first release: 29 tool-neutral Practices covering requirements, planning, implementation, testing, verification, review, delivery, correction, and context recovery.
+- `agentic-coding@0.1.0` — immutable placeholder history retained for reproducible installation tests. It is not production guidance and is not updated in place.
 
 ## Install
 
@@ -29,6 +30,8 @@ lore install <pack> --registry owner/repository
 packs/
   agentic-coding/
     pack.yaml
+    README.md
+    SOURCES.md
     practices/
 ```
 
