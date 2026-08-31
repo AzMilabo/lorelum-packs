@@ -28,7 +28,7 @@ Read the user's current request and any explicitly adopted task source. Produce 
 
 ## Anti-pattern
 
-Turning “let administrators manage all roles for one account” into “build a role-assignment table” makes a convenient interface shape the target. The table can work while the user still cannot manage the account as required.
+Turning “help support staff locate delayed orders” into “build a status dashboard” makes a convenient interface shape the target. The dashboard can render while staff still cannot find an order from the customer reference they receive.
 
 ## Why
 
@@ -40,4 +40,4 @@ For a purely mechanical request whose outcome is already exact, such as renaming
 
 ## Example
 
-Before planning a settings change, record: “Existing users can update their display name and time zone through the current settings flow, without introducing new product behavior.” A proposed marketing description can then be excluded because it does not advance that outcome.
+Before planning an order-support change, record: “Support staff can locate an order by customer reference and see its current delivery status, without gaining order-editing behavior.” A proposed analytics dashboard can then be excluded because it does not advance that outcome.

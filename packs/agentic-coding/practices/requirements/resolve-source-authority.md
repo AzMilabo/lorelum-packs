@@ -29,7 +29,7 @@ For the disputed point, classify each relevant source as current authority, hist
 
 ## Anti-pattern
 
-A compact summary says records are managed individually, while the adopted specification requires account-level aggregation. Continuing from the summary because it is shorter promotes a derivative source over the requirement authority.
+A compact summary says audit records expire after one year, while the adopted retention policy requires seven years. Continuing from the summary because it is shorter promotes a derivative source over the requirement authority.
 
 ## Why
 
@@ -41,4 +41,4 @@ An emergency safety or data-protection constraint may temporarily override a low
 
 ## Example
 
-The running service stores one row per role, but the current approved specification says users are managed as aggregates. Record the specification as requirement authority and the row model as current-state evidence, not as the target behavior.
+The current cleanup job deletes audit records after one year, but the approved retention policy requires seven years. Record the policy as requirement authority and the job schedule as current-state evidence, not as the target behavior.

@@ -25,11 +25,11 @@ Apply when a plan spans components, services, storage, policies, or other bounda
 
 ## Guidance
 
-Trace the requested capability from its initiating actor and action through every necessary boundary to the observable result. Map each planned item to the part of that path it enables, and identify any required step with no owner or any item with no role in the path. Resolve uncovered steps or explicitly narrow the promised capability; do not count a layer's completion as proof that the path is whole. Stop when the plan has an end-to-end capability map with no unexplained required gaps.
+Trace the requested capability from its initiating actor and action through every necessary boundary to the observable result. Map each planned item to the part of that path it enables, and identify any required step with no owner. Resolve uncovered steps or explicitly narrow the promised capability; do not count a layer's completion as proof that the path is whole. Stop when the plan has an end-to-end capability map with no unexplained required gaps.
 
 ## Anti-pattern
 
-A plan covers a form and an update endpoint but omits authorization and reload persistence. Each named component can be finished while the requested “authorized users can save a durable change” capability still fails.
+A plan covers an inventory-transfer request and confirmation screen but omits authorization and stock reservation. Each named component can be finished while the requested “authorized staff can move available stock without overselling” capability still fails.
 
 ## Why
 
@@ -41,4 +41,4 @@ A deliberately staged technical slice may cover only part of the capability when
 
 ## Example
 
-For profile editing, map entry, authorization, validation, persistence, and post-reload display to the user outcome. If the plan ends at the update call, add the missing persistence path or narrow the stated delivery before work begins.
+For an inventory transfer, map initiation, authorization, reservation, commit, and refreshed stock totals to the operator outcome. If the plan ends at request creation, add the missing reservation and commit path or narrow the stated delivery before work begins.

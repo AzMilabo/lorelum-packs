@@ -5,9 +5,9 @@ stage: requirements
 tech_stack:
   - agentic-coding
 applies_when: >-
-  the user outcome and requirement authority are known, and the agent is about
-  to plan or verify work without observable completion conditions and a boundary
-  against plausible scope expansion
+  the user outcome and requirement authority are known, and downstream work is
+  about to rely on an implicit definition of done while plausible adjacent work
+  could be mistaken for required scope
 severity: warn
 anti_patterns:
   - id: agentic-coding.requirements.artifact-count-acceptance
@@ -21,15 +21,15 @@ anti_patterns:
 
 ## When to apply
 
-Apply after the intended user result is understood but before a plan or verification claim depends on an implicit definition of done. The distinguishing condition is that plausible adjacent work could be mistaken for required scope. If the user outcome itself is still unclear, establish that outcome first rather than inventing acceptance criteria.
+Apply after the intended user result is understood but before downstream work relies on an implicit definition of done. The distinguishing condition is that plausible adjacent work could be mistaken for required scope. If the user outcome itself is still unclear, establish that outcome first rather than inventing acceptance criteria.
 
 ## Guidance
 
-Create one compact acceptance boundary in the project's existing task authority. State the smallest set of observable musts that together demonstrate the requested result, then name the most plausible non-goal that would otherwise expand the work. Prefer user behavior, stable contracts, and durable invariants over internal steps or artifact counts. Mark any must that cannot yet be made observable as unresolved rather than weakening it into an implementation proxy. Stop when the boundary can distinguish complete, incomplete, and out-of-scope work.
+Before downstream work proceeds, create one compact acceptance boundary in the project's existing task authority. State the smallest set of observable musts that together demonstrate the requested result, then name the most plausible non-goal that would otherwise expand the work. Prefer user behavior, stable contracts, and durable invariants over internal steps or artifact counts. Mark any must that cannot yet be made observable as unresolved rather than weakening it into an implementation proxy. Stop when the boundary can distinguish complete, incomplete, and out-of-scope work.
 
 ## Anti-pattern
 
-“Component added, tests written, and documentation updated” can all be true while saved data disappears after refresh. Those outputs do not define the requested behavior and may reward unnecessary additions.
+“Scheduler added, tests written, and documentation updated” can all be true while unsubscribed recipients still receive a report. Those outputs do not define the requested behavior and may reward unnecessary additions.
 
 ## Why
 
@@ -41,4 +41,4 @@ For a tiny, fully specified, reversible edit, one observable must and one short 
 
 ## Example
 
-For a profile edit, define the must as “the new display name remains after save and reload” and the non-goal as “add a new success animation.” A rendered form alone is then visibly incomplete, while animation work is visibly outside the task.
+For a scheduled report, define the musts as “subscribed recipients receive it at the agreed time” and “unsubscribed recipients do not,” with “redesign the report template” as a non-goal. A running scheduler alone is then visibly incomplete, while template work is visibly outside the task.
