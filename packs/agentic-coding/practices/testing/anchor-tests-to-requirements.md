@@ -39,4 +39,4 @@ Exploratory probes and temporary characterization tests can help reveal unknown 
 
 ## Example
 
-Rather than testing that each authorization record renders as one row, the agent maps the test to “an account’s complete role set can be managed together.” That mapping exposes that a row-per-record test would protect the wrong domain behavior.
+Rather than adding a test for every new retry helper, the agent maps the proposed test to “a transient failure is retried once without duplicating the operation.” Helpers with no independent contract do not gain tests merely because they were added.

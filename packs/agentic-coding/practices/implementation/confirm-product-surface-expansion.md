@@ -26,7 +26,7 @@ Identify the authority for the accepted surface category, then compare the exact
 
 ## Anti-pattern
 
-Turning a requirement for one configurable provider into arbitrary provider URLs, local files, multiple protocols, or a public plugin interface because a generic abstraction appears cleaner.
+Turning an authorized two-state notification preference into arbitrary channel identifiers, per-channel schemas, and a public extension interface because a generic abstraction appears cleaner.
 
 ## Why
 
@@ -38,4 +38,4 @@ Compatibility with an already published contract, an approved migration, or an e
 
 ## Example
 
-A task requires selecting one named remote catalog. Instead of accepting every URL scheme, the agent exposes only the confirmed catalog identifier and defers arbitrary locators. The observable result is a narrower public input contract.
+Accepted scope authorizes a display-density preference and names compact and comfortable modes. The agent exposes only those values and leaves custom style tokens unexposed pending authority. The observable result is a bounded preference contract.

@@ -26,7 +26,7 @@ Pause the expanding work and compare the discovery with the accepted scope, risk
 
 ## Anti-pattern
 
-Allowing a helper to become a public protocol, then adding a fallback, another input type, and a second I/O pass one at a time because no individual edit appears large enough to justify replanning.
+Allowing a local calculation to become a persisted background job, then adding retries and another write pass one edit at a time because no individual change appears large enough to justify replanning.
 
 ## Why
 
@@ -38,4 +38,4 @@ Urgent containment of an active security or data-loss incident may precede forma
 
 ## Example
 
-A private import adapter begins requiring a new public source type and network fallback. The agent pauses, rejects the fallback as outside scope, and updates the plan to cover only the adapter plus its revised validation evidence before resuming.
+A synchronous report formatter begins requiring a persistent queue and scheduled execution. The agent pauses, rejects scheduling as outside scope, and updates the plan only for synchronous formatting plus its revised latency evidence before resuming.
