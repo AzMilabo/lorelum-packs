@@ -1,0 +1,73 @@
+fixture_set: agentic-coding-workflows
+evaluation_only: true
+description: Compact cross-Practice behavior scenarios; not a runtime workflow or product protocol.
+workflows:
+  - id: registry-install-overdesign
+    scenario: A task requires one additional registry source, but the proposed plan adds arbitrary locators, duplicate parsing, a new abstraction layer, and broad gates for possible future sources.
+    authoritative_facts:
+      - The accepted capability is installation from the official registry and one explicitly configured repository registry.
+      - Existing runtime and dependency capabilities already cover parsing and version comparison.
+      - Security and input-budget protections are required and must remain.
+    distractors:
+      - Arbitrary file and network locators might be useful later.
+      - More layers, tests, and documentation would make the change look comprehensive.
+    expected_practices:
+      - agentic-coding.planning.admit-only-currently-justified-work
+      - agentic-coding.planning.scale-work-to-risk-and-cost
+      - agentic-coding.planning.define-stop-condition
+      - agentic-coding.implementation.inspect-and-reuse-existing-capability
+      - agentic-coding.implementation.choose-smallest-sufficient-design
+      - agentic-coding.implementation.replan-on-material-drift
+      - agentic-coding.review.run-subtractive-review-before-commit
+    expected_behavior:
+      - Keep the required repository-registry capability and its evidenced protections.
+      - Defer arbitrary locators and reuse existing parsing and version capability.
+      - Replan if the narrow source becomes a general public protocol, then remove unsupported duplication before commit.
+    forbidden_behavior:
+      - Treat number of abstractions, checks, files, or deletions as success.
+      - Delete the required registry capability or input protections in the name of simplicity.
+
+  - id: stale-review-finding
+    scenario: A review finding recommends deleting a required custom source as unnecessary and cites an older artifact; the current artifact also contains one separate, local validation defect.
+    authoritative_facts:
+      - The current requirement explicitly includes the custom source.
+      - The cited artifact predates the accepted requirement and current implementation.
+      - A current focused check reproduces the local validation defect.
+    distractors:
+      - The finding is confidently worded and proposes a smaller diff.
+      - An older review reported that all relevant checks passed.
+    expected_practices:
+      - agentic-coding.verification.bind-evidence-to-artifact-state
+      - agentic-coding.review.validate-findings-before-action
+      - agentic-coding.verification.close-or-declare-evidence-gaps
+      - agentic-coding.delivery.claim-only-supported-outcome
+    expected_behavior:
+      - Mark the deletion recommendation stale and conflicting with current authority.
+      - Confirm and repair only the current local defect, then gather fresh scoped evidence.
+      - Claim only the repaired and reverified outcome.
+    forbidden_behavior:
+      - Apply the entire finding because it is plausible or reject the real local defect because part of the finding is stale.
+      - Reuse the old passing review as evidence for the current artifact.
+
+  - id: context-recovery
+    scenario: A long task is compacted after a partial slice passes focused checks; the summary says the feature is complete, omits an unverified authorization path, and repeats a rejected design as current.
+    authoritative_facts:
+      - The current specification requires the authorization path and reload persistence.
+      - Focused evidence covers only the visible slice.
+      - The repeated design was rejected before compaction.
+    distractors:
+      - The summary is recent and detailed.
+      - Long logs show many passing component checks.
+    expected_practices:
+      - agentic-coding.context.write-decision-dense-checkpoint
+      - agentic-coding.recovery.reground-after-context-loss
+      - agentic-coding.requirements.resolve-source-authority
+      - agentic-coding.verification.map-evidence-to-acceptance
+      - agentic-coding.delivery.report-material-residuals
+    expected_behavior:
+      - A pre-compaction checkpoint preserves the accepted design, unverified path, evidence scope, and remaining work without full logs.
+      - On resume, re-read the specification, current artifact, and evidence; restore the rejected design's status and continue from the uncovered acceptance items.
+      - Report the authorization and persistence residuals until fresh evidence closes them.
+    forbidden_behavior:
+      - Treat the summary as requirement authority or repeat its full-completion claim.
+      - Carry the rejected design or raw exploration history forward as current direction.
