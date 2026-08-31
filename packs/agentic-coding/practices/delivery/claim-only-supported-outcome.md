@@ -23,7 +23,7 @@ Identify the artifact state, behavior, environment, and scope directly supported
 
 ## Anti-pattern
 
-Saying "user administration is accepted" because one page renders and its focused tests pass, even though role assignment, authorization rejection, and persistence were not exercised.
+Saying "webhook delivery is accepted" because one event arrives and a focused handler test passes, even though retry exhaustion and invalid-signature rejection were not exercised.
 
 ## Why
 

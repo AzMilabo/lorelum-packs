@@ -21,6 +21,8 @@ Apply to the completed diff immediately before it becomes a commit or review han
 
 Inspect each material addition against a current requirement, demonstrated risk, stable contract, or necessary implementation dependency. Remove additions with no present reason, consolidate duplicate logic, and replace local reinventions with already-suitable capability, while retaining behavior and protection that the evidence justifies. Stop with the smallest diff that still satisfies the accepted outcome and its risk boundaries.
 
+If any subtraction or replacement can affect accepted behavior, the affected evidence is stale; stop before commit until the revised state has current verification.
+
 ## Anti-pattern
 
 Celebrating deletion count, then removing an explicitly required extension point or authorization check because it makes the patch smaller, while leaving an unneeded helper because it looks conventional.

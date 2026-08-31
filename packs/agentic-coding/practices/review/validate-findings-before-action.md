@@ -23,7 +23,7 @@ Compare the finding with the authoritative requirement, the current artifact sta
 
 ## Anti-pattern
 
-Accepting "remove the custom source to reduce complexity" as a defect and deleting it, even though the current requirement explicitly needs that source and the review supplied no contrary authority.
+Accepting "remove keyboard navigation to simplify the interaction" as a defect and deleting it, even though the current accessibility contract explicitly requires that behavior and the review supplied no contrary authority.
 
 ## Why
 

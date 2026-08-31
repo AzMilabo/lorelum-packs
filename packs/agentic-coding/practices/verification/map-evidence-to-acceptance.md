@@ -23,7 +23,7 @@ Read the current acceptance criteria and the results that belong to the current 
 
 ## Anti-pattern
 
-Listing a test suite, build, and manual check as "verification complete" because they all passed, while never showing whether persistence, authorization, or another required outcome was exercised.
+Listing a calculation test, build, and manual booking check as "verification complete" while never showing whether cancellation releases reserved capacity or repeated submission creates a duplicate booking.
 
 ## Why
 
@@ -35,4 +35,4 @@ A single result may cover several criteria when its observable scope genuinely i
 
 ## Example
 
-A form test proves that two fields render, and an integration result proves that saving survives reload. The map marks both criteria covered but leaves "unauthorized users are rejected" uncovered because neither result exercised it.
+A calculation test covers the quoted price, a booking result covers label issuance, and a rejection check covers invalid destinations. The map leaves cancellation cleanup uncovered because none of those results exercised it.
