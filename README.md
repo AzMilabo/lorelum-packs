@@ -5,6 +5,7 @@ This repository is the official public catalog for installable Lorelum Knowledge
 ## Catalog
 
 - `agentic-coding@0.2.0` — the complete first release: 29 tool-neutral Practices covering requirements, planning, implementation, testing, verification, review, delivery, correction, and context recovery.
+  - [简体中文本地化](./packs/agentic-coding/i18n/zh-CN/README.md) is available as non-runtime companion content.
 - `agentic-coding@0.1.0` — immutable placeholder history retained for reproducible installation tests. It is not production guidance and is not updated in place.
 
 ## Install
@@ -33,6 +34,7 @@ packs/
     README.md
     SOURCES.md
     practices/
+    i18n/
 ```
 
 The `packs/<name>` path is this catalog's organization convention. A project-authored Pack may instead live at `.lorelum/packs/<name>` in its own project; the Pack root format itself is unchanged.

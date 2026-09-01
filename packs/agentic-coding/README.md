@@ -2,6 +2,8 @@
 
 `agentic-coding@0.2.0` is a tool-neutral Knowledge Pack of 29 Practices for keeping AI-assisted engineering aligned with the current user goal, authoritative requirements, proportionate plans, observable evidence, and supportable delivery claims.
 
+Canonical English · [简体中文](./i18n/zh-CN/README.md)
+
 The Practices cover requirements, planning, implementation, testing, verification, review, delivery, correction, and context recovery. Each entry targets one decision point and is intended to remain useful when retrieved alone; consumers should retrieve only the few entries relevant to the current work and moment.
 
 ## Scope
@@ -18,3 +20,5 @@ This Pack is not a workflow engine, task manager, test framework, compactor, aut
 - `0.1.0` is an immutable one-entry installation placeholder retained only as release history. Its tag and content are not rewritten.
 
 See [SOURCES.md](./SOURCES.md) for public provenance and the distinction between issue-explicit evidence and author synthesis.
+
+Localized content under [`i18n/`](./i18n/) is provided for human-facing consumption and does not change the canonical runtime Pack, Registry release, retrieval inputs, or Practice IDs.
