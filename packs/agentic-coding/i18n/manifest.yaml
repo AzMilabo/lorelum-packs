@@ -1,0 +1,63 @@
+schema_version: 1
+source_locale: en
+locales:
+  zh-CN:
+    entries:
+      - path: practices/context/reground-after-context-loss.md
+        source_digest: sha256:75759287f705f66de1a4b897ed7e22a3b5bc9f28f7f04628906ae26ec7e2bc1e
+      - path: practices/context/validate-handoff-before-continuation.md
+        source_digest: sha256:e9ad55c600777e8c23d008e1864f7dde2729a60446118223212c37680929af49
+      - path: practices/context/write-decision-dense-checkpoint.md
+        source_digest: sha256:804ce91229cfd59abf6a69fdfd0aa2ead42ed42b1edf3d271a89247aa90e2124
+      - path: practices/correction/restore-authoritative-baseline.md
+        source_digest: sha256:0fdb3502ee25043f702a7cb2f9fbafaaefb1be7e8397f8d4108e3bca3590f926
+      - path: practices/delivery/claim-only-supported-outcome.md
+        source_digest: sha256:21062fea4a2039b09b36d015d8f4f5a272b5096822f003d2fbfa8948581317c6
+      - path: practices/delivery/report-material-residuals.md
+        source_digest: sha256:9a4fb59bbfdf3196b7bab1f2ef121a74e65cfeb8440a9d1d3c77253452a74d10
+      - path: practices/implementation/choose-smallest-sufficient-design.md
+        source_digest: sha256:8f32d243a6dc399c9b0185673b21da824b374ab578080e49f06f21dc1c3ef60e
+      - path: practices/implementation/confirm-product-surface-expansion.md
+        source_digest: sha256:fe2ce6642e4d358352a7da1943f03aec29624e248b7e21f2ac6f0917881644ec
+      - path: practices/implementation/inspect-and-reuse-existing-capability.md
+        source_digest: sha256:cd1d5f3b605be62d258cebcdabeee55b7e61c88a8cf00c3fa737b906291ea26c
+      - path: practices/implementation/preserve-responsibility-boundaries.md
+        source_digest: sha256:306b1029a8486619e5a39d19fb936111168c7c9b531c9dc90626fa93d0d62e0c
+      - path: practices/implementation/replan-on-material-drift.md
+        source_digest: sha256:7aeadffa0d3c9771c5a9e1c1115049564f6be1dba861d8dd7a20a3c4ec9584fb
+      - path: practices/implementation/surface-unconfirmed-assumptions.md
+        source_digest: sha256:4e112d86985ed0c2000f5f20ed269b6cc8e14b2e9126eb2d1c66dd7e206e1c3d
+      - path: practices/planning/admit-only-currently-justified-work.md
+        source_digest: sha256:18eddbbb9803e89d584cf30aeb267dabcbb30ef82649cdbdf2413e5de7187935
+      - path: practices/planning/define-stop-condition.md
+        source_digest: sha256:e983b243741e79365e8888b9508fede8613abdecdf18e84003c0c066e741ef8d
+      - path: practices/planning/map-plan-to-user-capability.md
+        source_digest: sha256:e873e112d9305b2ffe437ab310ae2eb9b28573e51217e94594ad9bf162cb5936
+      - path: practices/planning/plan-sufficient-evidence.md
+        source_digest: sha256:46173f8c92bf5964fbae405ae5287c2826047909736cf1a92dd18f8c0273cffe
+      - path: practices/planning/scale-work-to-risk-and-cost.md
+        source_digest: sha256:1d0eaec24e8d08a0f3e3aeb21cefeeda7ee7e5acfa08ba9f25da94b73dc5bb68
+      - path: practices/requirements/define-acceptance-and-non-goals.md
+        source_digest: sha256:1877c9578410cdeb21495354c1aa48978a00887258b08f2f828b226db7128285
+      - path: practices/requirements/ground-user-goal.md
+        source_digest: sha256:c43fd2fee321fbcdeaa631a65ff3777cb78bc9d5ed0ea0ba775891e42a194ded
+      - path: practices/requirements/resolve-source-authority.md
+        source_digest: sha256:f2b21969a0a49cd9727824eaef349f6e3e7bdbd66417533559174d04673b965a
+      - path: practices/review/run-subtractive-review-before-commit.md
+        source_digest: sha256:3deb6306773785e8c5539c7d29bf1e3ff530e971ff8947956dc9056b31327b73
+      - path: practices/review/validate-findings-before-action.md
+        source_digest: sha256:ce867b4461625881f4b3d4cead2581cbeac29de7b2eae5970450a3c5678afd2f
+      - path: practices/testing/anchor-tests-to-requirements.md
+        source_digest: sha256:0dda2a7916b47101db1c8b0522c06470689fdecf168cd793b406f0af763df2d5
+      - path: practices/testing/assert-observable-behavior.md
+        source_digest: sha256:adf5162b38753239a806f89d5d99a92e0ab9937ae49426836c7a197566ce4b18
+      - path: practices/testing/classify-failure-before-changing-test.md
+        source_digest: sha256:91f2a3e400f8ac62a98c00bd80bb40105d2d79ca4c6bac7c58b206db48fd2c57
+      - path: practices/testing/justify-regression-protection.md
+        source_digest: sha256:ec4f35db6e4790dfaba98f07d1f7d625aea8480bcb9b4f12220de96e83e0e092
+      - path: practices/verification/bind-evidence-to-artifact-state.md
+        source_digest: sha256:2cfe8b2bd09c5ee19dac73c871c6e69190398552fdb06abc77b240ec3fd7e7cc
+      - path: practices/verification/close-or-declare-evidence-gaps.md
+        source_digest: sha256:0e4cba4aa27f4fb30764853b3a6f958f6ced66471d311aad54ac5eaca8b58a27
+      - path: practices/verification/map-evidence-to-acceptance.md
+        source_digest: sha256:e944589e8c514506e19313b3dd0a2f1c4b090f633427cc30845dcaf71ed3f6ce
