@@ -14,3 +14,9 @@ packs:
       - version: 0.3.0
         ref: agentic-coding-v0.3.0
         path: packs/agentic-coding
+  - name: pack-creator
+    description: Practices for creating atomic, retrievable, reviewable, and verifiably published Lorelum Knowledge Packs.
+    releases:
+      - version: 0.1.0
+        ref: pack-creator-v0.1.0
+        path: packs/pack-creator

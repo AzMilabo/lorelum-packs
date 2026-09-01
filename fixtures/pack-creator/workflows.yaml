@@ -1,0 +1,139 @@
+fixture_set: pack-creator-workflows
+evaluation_only: true
+description: Cross-Practice Pack-authoring scenarios; not a required authoring workflow, runtime protocol, or proof of content or retrieval quality.
+workflows:
+  - id: policy-library-to-decision-pack
+    scenario: A privacy team asks for a Pack based on its retention, consent, deletion, and vendor policies. The initial outline mirrors those four policy folders, while product teams actually ask questions when adding fields, importing consent, deleting accounts, and approving analytics vendors.
+    authoritative_facts:
+      - The Pack should help product reviewers make correct data-handling decisions before approving a change.
+      - Adopted policy text is authoritative for retention and consent requirements.
+      - Review notes show recurring confusion across policy folders, but they do not prove that a proposed Practice retrieves correctly.
+    distractors:
+      - Mirroring the policy library would make source links and coverage counts simple.
+      - A large Pack with one Practice per policy heading would look comprehensive.
+    phases:
+      - id: before-practice-selection
+        trigger: The author has source folders and a broad privacy topic but has not defined the decisions or moments the Pack should improve.
+        expected_practices:
+          - pack-creator.discovery.define-pack-decision-outcome
+          - pack-creator.discovery.ground-content-in-sources-and-observed-needs
+          - pack-creator.discovery.identify-retrieval-moments
+        correctness_assertions:
+          - The author defines the target reviewers and the product decisions the Pack should improve, then rejects topics that do not change those decisions.
+          - Each candidate rule records what policy or recurring observation supports it and which part is author synthesis.
+          - Retrieval moments are written around adding fields, importing consent, deleting accounts, and approving vendors rather than around policy-folder names.
+        forbidden_behavior:
+          - Treat source organization, Practice count, or topic coverage as the Pack outcome.
+          - Present a review-derived generalization as a policy requirement or measured retrieval result.
+      - id: after-first-drafts
+        trigger: One draft combines consent import, account deletion, and vendor approval, while two narrower drafts both say they apply when handling personal data and one refers to definitions in an earlier entry.
+        expected_practices:
+          - pack-creator.design.decompose-one-decision-per-practice
+          - pack-creator.design.separate-neighboring-triggers
+          - pack-creator.design.keep-each-practice-standalone
+        correctness_assertions:
+          - Independently arising decisions receive separate Practices, but setup text that makes no independent choice is not split into another file.
+          - Neighboring triggers state the different facts that select consent-import, deletion, or vendor-review guidance.
+          - Every Practice repeats the minimum policy constraint needed to act without depending on Pack order.
+        forbidden_behavior:
+          - Preserve a broad Practice because one policy guide discusses all three decisions together.
+          - Keep indistinguishable files by changing only their titles, or require a retrieved reader to open an earlier Practice before acting.
+
+  - id: realistic-and-readable-authoring
+    scenario: A security Pack has structurally valid drafts, but one `applies_when` says only "authentication work," Guidance says to "ensure robust trust posture," and the Anti-pattern blames a developer for forgetting all authorization checks. The Example repeats that failure with different names, and the Why says only that security builds customer trust.
+    authoritative_facts:
+      - One draft should help an API reviewer decide whether a token issued for one service may be accepted by another service.
+      - Capable developers can reuse a shared token-validation helper because signature checking already passes, while overlooking the token audience.
+      - A reviewer unfamiliar with the original incident must be able to understand and apply the Practice alone.
+    distractors:
+      - Abstract language sounds reusable across more security systems.
+      - Repeating one incident in both sections feels consistent and avoids inventing another example.
+      - A broad exception such as "when business needs differ" appears flexible.
+    phases:
+      - id: rewrite-the-practice
+        trigger: The author must turn the valid but vague draft into one retrievable and executable intervention.
+        expected_practices:
+          - pack-creator.authoring.write-discriminating-applies-when
+          - pack-creator.authoring.write-concrete-guidance-and-stop-condition
+          - pack-creator.authoring.use-realistic-failure-mechanisms
+          - pack-creator.authoring.make-examples-self-contained
+          - pack-creator.authoring.give-anti-pattern-and-example-distinct-jobs
+          - pack-creator.authoring.prefer-plain-language-and-concrete-referents
+          - pack-creator.authoring.explain-the-direct-causal-reason
+          - pack-creator.authoring.write-specific-exceptions-and-boundaries
+        correctness_assertions:
+          - The trigger identifies acceptance of a token across service boundaries and distinguishes it from token issuance or storage decisions.
+          - Guidance names the issuer, audience, intended receiving service, rejection behavior, and the observation that ends the check.
+          - The Anti-pattern explains the credible reuse incentive and missed audience check; the Example demonstrates correct application in a different self-contained service relationship.
+          - The Why states that signature validation alone cannot show the token was issued for this service, and any exception names an identifiable compatibility condition plus protections that remain.
+        forbidden_behavior:
+          - Prove the rule with an incompetent actor, unexplained incident labels, abstract trust language, or an exception that can excuse every case.
+          - Make the Example a positive paraphrase of the Anti-pattern or require another Practice to explain the actors and tokens.
+      - id: before-content-commit
+        trigger: The rewritten Pack still contains repeated definitions, generic security advice, and two examples that do not change any review decision.
+        expected_practices:
+          - pack-creator.review.run-subtractive-content-review
+        correctness_assertions:
+          - The reviewer removes advice already supplied by capable Agents, duplicated explanations, and decorative examples while retaining facts needed for standalone use and neighboring-trigger distinctions.
+          - Changed Practices are reviewed again for meaning after deletion.
+        forbidden_behavior:
+          - Optimize for fewer words or files by deleting the audience condition, exception guard, or another distinction required for correct retrieval.
+
+  - id: retrieval-fixtures-with-honest-claims
+    scenario: A database Pack has separate Practices for choosing an online index method and deciding rollback behavior. Its fixture catalog contains one title-like positive query per Practice, all YAML parses, and all IDs are present, so the author wants to report that retrieval and Agent behavior are validated.
+    authoritative_facts:
+      - Engineers describe both decisions as "safe production indexing" in ordinary requests.
+      - The current checks have parsed fixture files and compared ID coverage only.
+      - No retrieval system or representative Agent task has run these queries yet.
+    distractors:
+      - Full ID coverage produces a clear 100 percent number.
+      - Title-like queries are easy to maintain and return the intended Practice in manual search.
+    expected_practices:
+      - pack-creator.evaluation.test-retrieval-with-contrasting-queries
+      - pack-creator.evaluation.separate-structural-and-semantic-evidence
+    expected_behavior:
+      - Add a natural paraphrase, a near miss, and the nearest neighbor's query for both Practices, with expected selection or rejection written before execution.
+      - Report only that structure and fixture coverage passed; keep retrieval selection and downstream behavior unknown until each is directly observed.
+      - If a later retrieval run confuses the decisions, revise the Practice boundary only after distinguishing content ambiguity from a known retrieval-system defect.
+    forbidden_behavior:
+      - Treat YAML parsing, ID counts, human approval, or easy positive queries as proof of retrieval quality or improved Agent decisions.
+      - Inflate evidence by adding more title-shaped positive queries that cannot expose a collision.
+
+  - id: localized-versioned-release
+    scenario: An operations Pack has reviewed English Practices and a Chinese reading version. A wording change narrows one alert-escalation trigger after translation, while the existing Registry tag still points to the previous canonical files and nobody has installed the candidate from the public Registry.
+    authoritative_facts:
+      - English canonical files are the only runtime content for this release.
+      - The Chinese files are mirrored companion content for human review and must preserve the canonical decision.
+      - The previous release tag is already public and immutable.
+      - Local format and schema validation have passed for the candidate.
+    distractors:
+      - Moving the old tag would avoid another version for a small wording change.
+      - The Chinese wording could retain the older broad trigger because localized files are not installed.
+      - A README install command makes the expected path appear obvious.
+    phases:
+      - id: localization-review
+        trigger: The canonical trigger changed after its Chinese companion was last synchronized.
+        expected_practices:
+          - pack-creator.localization.localize-for-human-review-without-forking-runtime
+        correctness_assertions:
+          - The Chinese text is reviewed against the changed decision, written naturally, and synchronized to the current canonical revision without inventing a localized runtime rule.
+          - IDs and runtime behavior remain canonical rather than being duplicated in the companion.
+        forbidden_behavior:
+          - Keep a stale meaning, translate mechanically, or add a region-specific escalation rule only to the localized file.
+      - id: release-object
+        trigger: The corrected canonical and localized content is accepted and ready to publish.
+        expected_practices:
+          - pack-creator.release.preserve-versioned-content-and-provenance
+        correctness_assertions:
+          - The maintainer creates a new version and immutable ref at the reviewed commit, keeps the previous tag unchanged, and records which rule is source-explicit versus author synthesis.
+        forbidden_behavior:
+          - Rewrite an old release or describe the trigger revision as proven effective because review and localization are complete.
+      - id: installability-claim
+        trigger: The new Registry entry and release ref exist, but only local validation has run.
+        expected_practices:
+          - pack-creator.release.verify-the-supported-install-path-before-claiming-release
+        correctness_assertions:
+          - An isolated install resolves the intended Registry entry, version, immutable ref, reviewed commit, canonical files, decoder result, and installed Pack identity before an installability claim is made.
+          - The release report keeps installation evidence separate from semantic, retrieval, and downstream evidence.
+        forbidden_behavior:
+          - Announce the Pack as installable from a local directory, schema pass, translated companion, or documented command alone.

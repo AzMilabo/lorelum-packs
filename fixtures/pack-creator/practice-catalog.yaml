@@ -1,0 +1,163 @@
+fixture_set: pack-creator-practice-catalog
+evaluation_only: true
+description: Retrieval and content hypotheses for the 20 pack-creator Practices; not a runtime schema or proof of content, retrieval, or downstream quality.
+entries:
+  - id: pack-creator.discovery.define-pack-decision-outcome
+    positive_trigger: A security Pack has forty authentication documents, and the author must decide whether the collection should cover those topics or improve concrete credential-storage, rotation, and validation decisions.
+    paraphrase: Support playbooks supply many product-domain topics, but no sentence says which choices a product operator should make better after receiving the Pack.
+    near_miss: The intended readers and decisions are already named; the open question is when those readers encounter the decisions and need guidance.
+    nearest_neighbor: pack-creator.discovery.identify-retrieval-moments
+    expected_behavior: Write one sentence naming the reader, recurring decisions, and desired improvement, then exclude topics that do not support that result.
+    forbidden_behavior: Use the source table of contents or broad domain coverage as the Pack's purpose.
+
+  - id: pack-creator.discovery.ground-content-in-sources-and-observed-needs
+    positive_trigger: A database Pack is about to say that every failed migration should be retried because one incident recovered that way and the repository already has a retry helper.
+    paraphrase: Repeated compliance reviews suggest a useful rule with no public standard behind it, so the author must separate the observed need from the generalization being added.
+    near_miss: Each canonical rule already has a recorded basis and synthesis limit; the author is now preparing a reproducible release and its public provenance map.
+    nearest_neighbor: pack-creator.release.preserve-versioned-content-and-provenance
+    expected_behavior: Record what the source or recurring observation supports, label the author's added judgment, and qualify or remove unsupported claims.
+    forbidden_behavior: Present one local pattern, incident response, or author inference as a universal rule with hidden evidence limits.
+
+  - id: pack-creator.discovery.identify-retrieval-moments
+    positive_trigger: A privacy Pack should improve data-handling choices, and the author must choose between policy chapters and real moments such as adding a field, designing deletion, or approving a vendor.
+    paraphrase: An operations Pack outcome is clear, but the author has not mapped when threshold changes, unowned alerts, or incident closure create a need for help.
+    near_miss: One Practice already owns a single decision, and the author is writing the exact condition that should select that file rather than its neighbor.
+    nearest_neighbor: pack-creator.authoring.write-discriminating-applies-when
+    expected_behavior: List recurring collection-level decision moments from real questions and failures, merge synonyms, and remove moments unrelated to the Pack outcome.
+    forbidden_behavior: Treat source chapters, repository folders, or one fixed workflow as the moments readers will use to retrieve the Pack.
+
+  - id: pack-creator.design.decompose-one-decision-per-practice
+    positive_trigger: A frontend-performance draft combines image sizing, cache policy, bundle splitting, and measurement because one internal guide discusses them together.
+    paraphrase: A database-change draft covers choosing a migration method, defining rollback, and deciding whether rollback evidence supports release.
+    near_miss: Those decisions already have separate files, but two of their triggers still match the same realistic author query.
+    nearest_neighbor: pack-creator.design.separate-neighboring-triggers
+    expected_behavior: Split actions that can arise independently into separate Practices and recombine fragments that make no useful decision alone.
+    forbidden_behavior: Use a source section, file length, or paragraph count as the Practice boundary.
+
+  - id: pack-creator.design.separate-neighboring-triggers
+    positive_trigger: A web-security Pack has separate input-validation and output-encoding Practices, but both currently match any query about handling untrusted text.
+    paraphrase: A database Pack's index-selection and execution-plan Practices both retrieve for a report that an indexed query became slow.
+    near_miss: One draft still contains both decisions in the same file, so it must be decomposed before separate triggers can be compared.
+    nearest_neighbor: pack-creator.design.decompose-one-decision-per-practice
+    expected_behavior: State the fact that routes a realistic query to each neighbor, revise the triggers and actions, and merge files when no meaningful boundary exists.
+    forbidden_behavior: Keep colliding Practices merely because their familiar labels or source documents differ.
+
+  - id: pack-creator.design.keep-each-practice-standalone
+    positive_trigger: An incident-response Practice says to use the severity and owner from earlier entries, but selective retrieval may return it without those definitions.
+    paraphrase: A compliance Practice depends on an acronym and approval rule explained only in the Pack README.
+    near_miss: The complete Practice works without its neighbors, but its Example refers to an internal incident whose roles and constraints are not stated.
+    nearest_neighbor: pack-creator.authoring.make-examples-self-contained
+    expected_behavior: Cold-read the whole file alone and add only the trigger, action, reason, stop, exception, and definitions needed to use it safely.
+    forbidden_behavior: Depend on Pack order, an earlier Practice, README context, or an unopened source for a fact required by the immediate decision.
+
+  - id: pack-creator.authoring.write-discriminating-applies-when
+    positive_trigger: Token storage, rotation, and request validation all say they apply when working on authentication, so a storage query cannot select one of them.
+    paraphrase: A database Practice about building an index on a populated table still uses the broad trigger "during database changes."
+    near_miss: The Pack author has not yet identified the collection-wide moments worth supporting, and no single Practice decision is settled enough to receive a trigger.
+    nearest_neighbor: pack-creator.discovery.identify-retrieval-moments
+    expected_behavior: Name the reader's immediate choice, affected object, and distinguishing condition so a cold reader can route it away from the closest neighbor.
+    forbidden_behavior: Use a domain label, broad activity, or implementation steps as a substitute for the decision condition.
+
+  - id: pack-creator.authoring.write-concrete-guidance-and-stop-condition
+    positive_trigger: A failover Practice has a clear trigger but offers only resilience principles, topology questions, and tool options with no review output or finish point.
+    paraphrase: A frontend color Practice says to consider the design system without telling the reader what to inspect, record, or decide before stopping.
+    near_miss: The default action and stopping point are already observable, but the exception section says only "unless security or business needs require otherwise."
+    nearest_neighbor: pack-creator.authoring.write-specific-exceptions-and-boundaries
+    expected_behavior: Name the facts to inspect, the comparison or change to make, the result to record, and the condition that ends further work.
+    forbidden_behavior: Supply considerations and background that let research continue without producing a bounded decision.
+
+  - id: pack-creator.authoring.use-realistic-failure-mechanisms
+    positive_trigger: A retention source describes a purge job deleting records under legal hold, but the Anti-pattern replaces that reuse trap with a careless developer who ignores policy.
+    paraphrase: A frontend Pack needs to preserve why a capable engineer would reuse a link-styled button even though its keyboard and navigation behavior is wrong.
+    near_miss: The Anti-pattern has a credible incentive and consequence, but the Example merely reverses the same scenario instead of demonstrating another application.
+    nearest_neighbor: pack-creator.authoring.give-anti-pattern-and-example-distinct-jobs
+    expected_behavior: Preserve a capable person's locally attractive choice, the evidence supporting it, and the worse result that can survive superficial review.
+    forbidden_behavior: Prove the rule with negligence, an obvious schema mistake, or a dramatic consequence unsupported by the source.
+
+  - id: pack-creator.authoring.make-examples-self-contained
+    positive_trigger: A security Example says "as in the Omega incident, keep the owner in the right layer" without explaining that a broker owned retry timing.
+    paraphrase: A consent-import Example names a quarantine action but omits the policy facts that require consent time and source.
+    near_miss: The Example contains its goal, constraints, choice, and result, while other sections still rely on earlier Practices and hidden Pack order.
+    nearest_neighbor: pack-creator.design.keep-each-practice-standalone
+    expected_behavior: Include only the Pack goal, source or system facts, plausible alternative, chosen action, and result needed to understand the scenario cold.
+    forbidden_behavior: Rely on internal names, familiar incidents, unexplained relationships, or earlier entries to make the Example intelligible.
+
+  - id: pack-creator.authoring.give-anti-pattern-and-example-distinct-jobs
+    positive_trigger: An operations Practice uses the same checkout surge twice, with an oversized pool in the Anti-pattern and a smaller pool in the Example.
+    paraphrase: An authorization Practice explains one cached-membership failure and then retells it with the decision reversed as its only positive example.
+    near_miss: The sections teach different information, but the Anti-pattern's wrong choice is too foolish for a capable practitioner to make.
+    nearest_neighbor: pack-creator.authoring.use-realistic-failure-mechanisms
+    expected_behavior: Keep the Anti-pattern on temptation, mechanism, and failure, and use the Example to show the correct action or boundary in another concrete case.
+    forbidden_behavior: Mirror one scenario with positive and negative wording when deleting either section would lose no distinct lesson.
+
+  - id: pack-creator.authoring.prefer-plain-language-and-concrete-referents
+    positive_trigger: An operations Practice says to "operationalize the observability posture through telemetry harmonization" without naming fields, sampling, alerts, or dashboards.
+    paraphrase: A compliance rule says to retain sufficient exception provenance instead of naming the requester, approver, and policy version to record.
+    near_miss: Every actor and action is concrete, but the Why says only that the rule improves trust and omits the direct failure it prevents.
+    nearest_neighbor: pack-creator.authoring.explain-the-direct-causal-reason
+    expected_behavior: Replace vague nouns and verbs with the actual actor, artifact, action, or observable state, and define necessary domain terms once.
+    forbidden_behavior: Preserve jargon or coined labels because they sound authoritative while readers can map them to different actions.
+
+  - id: pack-creator.authoring.explain-the-direct-causal-reason
+    positive_trigger: A database Practice requires online index creation, but its Why mentions customer trust instead of the write locks and order delays recorded in the source.
+    paraphrase: A token Practice says audience checks improve security without stating that they reject tokens issued for another service.
+    near_miss: The immediate cause is correct, but abstract wording hides which actor, artifact, or state actually changes.
+    nearest_neighbor: pack-creator.authoring.prefer-plain-language-and-concrete-referents
+    expected_behavior: Connect the required action to the first important system or decision effect and explain why that effect changes the outcome.
+    forbidden_behavior: Use a mission statement, distant business benefit, or unsupported causal chain as the rationale.
+
+  - id: pack-creator.authoring.write-specific-exceptions-and-boundaries
+    positive_trigger: A frontend Practice recommends standard components but permits custom ones whenever performance, accessibility, security, or business needs apply.
+    paraphrase: An operations retry rule says only "do not retry when risky" and leaves duplicate external charges unprotected.
+    near_miss: The default itself contains no concrete steps, decision output, or stopping point, so Guidance must be completed before its exceptions are refined.
+    nearest_neighbor: pack-creator.authoring.write-concrete-guidance-and-stop-condition
+    expected_behavior: Name the observable condition, how the default changes, and which protection remains for every exception that can alter the decision.
+    forbidden_behavior: Add broad concern lists or imaginable edge cases that let any preference bypass the default.
+
+  - id: pack-creator.review.run-subtractive-content-review
+    positive_trigger: Reviewers call a database-reliability Pack long, and the author is considering merging backup verification with active service recovery because both mention restoration.
+    paraphrase: Two accessibility Practices repeat "test carefully" and one runner's setup even though their focus and error-announcement decisions differ.
+    near_miss: Two atomic drafts still compete for one realistic query, and their trigger boundary has not yet been designed before the final content pass.
+    nearest_neighbor: pack-creator.design.separate-neighboring-triggers
+    expected_behavior: Remove generic prose, duplicated warnings, artificial examples, and tool ceremony while keeping files whose triggers or actions genuinely differ.
+    forbidden_behavior: Optimize word or file count by merging distinct decisions or preserving concise advice that changes no action.
+
+  - id: pack-creator.evaluation.test-retrieval-with-contrasting-queries
+    positive_trigger: A security-logging Pack tests only title-like field-selection queries and never asks what to do when an existing logger exposes session tokens.
+    paraphrase: An alerting Pack needs direct, natural, near-miss, and diagnosis-neighbor queries to distinguish threshold selection from an alarm that is already firing.
+    near_miss: The catalog parses and covers every ID, but no retrieval system has run; the author is currently deciding how narrowly to report that structural result.
+    nearest_neighbor: pack-creator.evaluation.separate-structural-and-semantic-evidence
+    expected_behavior: State expected matches and non-matches, run realistic contrasts through the selected retrieval system, and inspect both missing and convincing wrong results.
+    forbidden_behavior: Treat copied-title positives, query counts, valid fixtures, or catalog coverage as retrieval-quality evidence.
+
+  - id: pack-creator.evaluation.separate-structural-and-semantic-evidence
+    positive_trigger: An accessibility Pack has valid frontmatter and complete fixture rows, and the release summary is about to claim that its advice is complete and retrieves correctly.
+    paraphrase: A privacy Pack has expert review, one retrieval run, and one Agent exercise, and the author must report what each observation proves without calling everything "validated."
+    near_miss: The immediate task is to design and run positive, paraphrase, near-miss, and neighbor queries for one stable Practice set.
+    nearest_neighbor: pack-creator.evaluation.test-retrieval-with-contrasting-queries
+    expected_behavior: Report structural, human semantic, retrieval, and downstream behavior findings separately with the exact revision and observation for each claim.
+    forbidden_behavior: Average different evidence layers into one quality claim or let success at a cheaper layer stand in for an untested one.
+
+  - id: pack-creator.localization.localize-for-human-review-without-forking-runtime
+    positive_trigger: A compliance translation is about to add a seven-year retention rule used by one business unit even though the canonical Practice defers to the applicable policy.
+    paraphrase: A literal translation of "fail closed" is unclear, and the translator must make the action natural without changing IDs, denial behavior, or recovery conditions.
+    near_miss: The localized companion is already current and meaning-aligned; the author must now publish changed canonical content without moving an existing release tag or blurring provenance.
+    nearest_neighbor: pack-creator.release.preserve-versioned-content-and-provenance
+    expected_behavior: Preserve IDs and decision meaning, translate relationships into natural language, record the canonical revision, and obtain target-language review.
+    forbidden_behavior: Add local trigger values, runtime rules, or release behavior that makes the translation a second canonical Pack.
+
+  - id: pack-creator.release.preserve-versioned-content-and-provenance
+    positive_trigger: A tagged security Pack recommends an obsolete cipher, and moving the old tag looks easier than publishing a one-paragraph correction as a new version.
+    paraphrase: An operations Pack changes two escalation triggers and must record which timing rules came from policy and which split was author synthesis.
+    near_miss: The version, commit, release ref, canonical files, and provenance already identify one immutable object; the remaining question is whether users can install it through the supported path.
+    nearest_neighbor: pack-creator.release.verify-the-supported-install-path-before-claiming-release
+    expected_behavior: Freeze one commit, publish changed canonical content under a new version and ref, preserve old releases, and record source-explicit versus synthesized guidance.
+    forbidden_behavior: Move an old tag, update released bytes in place, or describe author judgment as published proof that the Pack works.
+
+  - id: pack-creator.release.verify-the-supported-install-path-before-claiming-release
+    positive_trigger: An incident-alerting Pack validates locally and documents an install command, but the author has not checked whether its Registry ref exists remotely.
+    paraphrase: A tagged frontend-performance Pack needs one clean installation through the official source, followed by readback of the resolved version and Practice IDs.
+    near_miss: Canonical content changed, but the new version, immutable ref, and provenance have not yet been frozen into a release object.
+    nearest_neighbor: pack-creator.release.preserve-versioned-content-and-provenance
+    expected_behavior: Install through the documented Registry path into an isolated store, verify the exact ref and files, pass decoding, and read back the expected identity.
+    forbidden_behavior: Claim publication or installability from a working-tree directory, schema pass, fixture count, or README command that never exercised the remote chain.

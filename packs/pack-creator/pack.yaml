@@ -1,0 +1,8 @@
+name: pack-creator
+version: 0.1.0
+description: Practices for creating atomic, retrievable, reviewable, and verifiably published Lorelum Knowledge Packs.
+author:
+  name: Lorelum
+license: CC-BY-4.0
+applies_to:
+  - lorelum-pack-authoring

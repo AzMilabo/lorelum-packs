@@ -4,6 +4,8 @@ This repository is the official public catalog for installable Lorelum Knowledge
 
 ## Catalog
 
+- `pack-creator@0.1.0` — 20 domain-neutral Practices for defining, designing, authoring, reviewing, evaluating, localizing, and releasing Lorelum Packs.
+  - [简体中文本地化](./packs/pack-creator/i18n/zh-CN/README.md) is available as non-runtime companion content.
 - `agentic-coding@0.3.0` — 30 tool-neutral Practices covering requirements, planning, implementation, testing, verification, review, delivery, correction, context recovery, and decision-aware delegation.
   - [简体中文本地化](./packs/agentic-coding/i18n/zh-CN/README.md) is available as non-runtime companion content.
 - `agentic-coding@0.2.0` — immutable first complete release with 29 Practices.
@@ -14,7 +16,7 @@ This repository is the official public catalog for installable Lorelum Knowledge
 After a release ref listed in `.lorelum/registry.yaml` has been published:
 
 ```sh
-lore install agentic-coding
+lore install <pack>
 ```
 
 The Lorelum CLI contains the official Registry repository name, not the Pack content. It reads this descriptor, resolves the release from the same repository, validates the selected Pack, and installs it into the user-level LocalStore.
@@ -31,6 +33,12 @@ lore install <pack> --registry owner/repository
 .lorelum/registry.yaml
 packs/
   agentic-coding/
+    pack.yaml
+    README.md
+    SOURCES.md
+    practices/
+    i18n/
+  pack-creator/
     pack.yaml
     README.md
     SOURCES.md
