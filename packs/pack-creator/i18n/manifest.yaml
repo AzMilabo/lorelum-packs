@@ -1,0 +1,45 @@
+schema_version: 1
+source_locale: en
+locales:
+  zh-CN:
+    entries:
+      - path: practices/authoring/explain-the-direct-causal-reason.md
+        source_digest: sha256:3895f0ec8d48078b384bcd2b2762656683f035a0b705042ac6977c63a12325aa
+      - path: practices/authoring/give-anti-pattern-and-example-distinct-jobs.md
+        source_digest: sha256:a1555a6130c394c9dae5ece19fa350509f794f2bb453522a4c975ea5ae6996ec
+      - path: practices/authoring/make-examples-self-contained.md
+        source_digest: sha256:cc511dd443bdd54b2ed4b0f6e179d2c2c62c8f342f95c14a1d0a7e7bf38c44c5
+      - path: practices/authoring/prefer-plain-language-and-concrete-referents.md
+        source_digest: sha256:22e232118c7b38195a653ddbdd3d86d647ceee75277985630f7b70af3daacd95
+      - path: practices/authoring/use-realistic-failure-mechanisms.md
+        source_digest: sha256:c71d48b45679e1a5d5dea69150b4b8ef99ade89ff1ba9920edca24e24d7f5492
+      - path: practices/authoring/write-concrete-guidance-and-stop-condition.md
+        source_digest: sha256:7f80f0348ddc8b06c7a76b8b70e6e94b74a58aeb0290a7c2943ec5371f4b27ed
+      - path: practices/authoring/write-discriminating-applies-when.md
+        source_digest: sha256:57598f987fd2d0f870f88a86af4f3d9cc4c37aa728df1f4ebcb3790dc650d173
+      - path: practices/authoring/write-specific-exceptions-and-boundaries.md
+        source_digest: sha256:1ba7a23bf1540a576021dcf02ea875761876b34b2a4cdeb14b2062a88ab3ab27
+      - path: practices/design/decompose-one-decision-per-practice.md
+        source_digest: sha256:4f522a6364c03ff0ed5324b2f4db266df638d04af12f5562f4a2acdf1ad91df0
+      - path: practices/design/keep-each-practice-standalone.md
+        source_digest: sha256:e73470155ce8ef883ac11a08d867a177a5a7607278d691a3a3b42430e959060c
+      - path: practices/design/separate-neighboring-triggers.md
+        source_digest: sha256:adbdffce8cfdfef5eb2939697f9e065fc53222f86cb8e2fd9e3f0b66d15e5a48
+      - path: practices/discovery/define-pack-decision-outcome.md
+        source_digest: sha256:238ab2b9edd46f14e063448f8895136cb06814482b63b38726091a309af4e1fa
+      - path: practices/discovery/ground-content-in-sources-and-observed-needs.md
+        source_digest: sha256:20b6c1ece6511b46b556c6e6c618a7ac3429088dd79b163cc942e16dc6eaf418
+      - path: practices/discovery/identify-retrieval-moments.md
+        source_digest: sha256:9a96814e14c0e2afae87d0363a0a305999dfc2a5d3ddbe40b853b60c8dfa7f24
+      - path: practices/evaluation/separate-structural-and-semantic-evidence.md
+        source_digest: sha256:a552b0aeacead97df3cd7e1b0ac87515abaf4c2da818b544e962877d71baacd8
+      - path: practices/evaluation/test-retrieval-with-contrasting-queries.md
+        source_digest: sha256:c147e47c8c9696078edf9dc0fabe81b2bfb3d113e1758785502454b8706c7347
+      - path: practices/localization/localize-for-human-review-without-forking-runtime.md
+        source_digest: sha256:d369e4bc4311db303a4c94417b55896d59d037255eea199e3cb59b71546d8c2e
+      - path: practices/release/preserve-versioned-content-and-provenance.md
+        source_digest: sha256:7373ec49de818546139aa3f15e2dd7f4044c0ac3040bfc3b81358c8d62aaad2d
+      - path: practices/release/verify-the-supported-install-path-before-claiming-release.md
+        source_digest: sha256:44f75d62a16af614f60e93b4e0a71ab2ab9844f80e9771a422895a7c0581954d
+      - path: practices/review/run-subtractive-content-review.md
+        source_digest: sha256:cc5f73ad46f674fbc5e2486c73c2905dd5929db192c0f1e49cb9c6e718e02a6c

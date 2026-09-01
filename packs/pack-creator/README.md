@@ -2,7 +2,7 @@
 
 `pack-creator@0.1.0` is a domain-neutral Knowledge Pack for creating Lorelum Packs whose Practices can be retrieved independently, understood by humans, and evaluated without confusing format success with semantic or behavioral quality.
 
-Canonical English · 简体中文 companion content will be added before release.
+Canonical English · [简体中文 companion](./i18n/zh-CN/README.md)
 
 ## Scope
 
