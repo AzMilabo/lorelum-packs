@@ -16,6 +16,6 @@ This Pack is not a schema reference, Markdown tutorial, retrieval engine impleme
 
 ## Release history
 
-- `0.1.0` is the first release and will be tagged only after its canonical content, localization, fixtures, and official install path are verified.
+- `0.1.0` is the first release. Its tag is created only after canonical content, localization, and fixtures are verified; installability is claimed only after that tag succeeds through the official Registry path.
 
 See [SOURCES.md](./SOURCES.md) for provenance and synthesis boundaries.
