@@ -22,4 +22,5 @@
 
 ## 示例
 
-一项聚焦的 parser 测试绑定到 revision A，在仅修改文档后仍然有效。parser 代码变更到 revision B 后，应重新构建在 revision A 生成的 package，因为旧产物已不再代表当前源码。
+一项聚焦的 parser 测试绑定到 revision A，在仅修改文档后仍然有效。parser 代码变更到 revision
+B 后，应重新构建在 revision A 生成的 package，因为旧产物已不再代表当前源码。

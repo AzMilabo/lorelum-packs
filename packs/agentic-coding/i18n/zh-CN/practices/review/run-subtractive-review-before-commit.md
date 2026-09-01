@@ -24,4 +24,5 @@
 
 ## 示例
 
-一次提交前审查移除了第二个日期规范化 helper 和未使用的 fixture export，改用现有 parser，并保留批量大小 guard 和恢复标记，因为导入契约要求两者都存在。
+一次提交前审查移除了第二个日期规范化 helper 和未使用的 fixture
+export，改用现有 parser，并保留批量大小 guard 和恢复标记，因为导入契约要求两者都存在。
