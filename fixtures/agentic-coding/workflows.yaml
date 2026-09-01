@@ -11,21 +11,37 @@ workflows:
     distractors:
       - Arbitrary file and network locators might be useful later.
       - More layers, tests, and documentation would make the change look comprehensive.
-    expected_practices:
-      - agentic-coding.planning.admit-only-currently-justified-work
-      - agentic-coding.planning.scale-work-to-risk-and-cost
-      - agentic-coding.planning.define-stop-condition
-      - agentic-coding.implementation.inspect-and-reuse-existing-capability
-      - agentic-coding.implementation.choose-smallest-sufficient-design
-      - agentic-coding.implementation.replan-on-material-drift
-      - agentic-coding.review.run-subtractive-review-before-commit
-    expected_behavior:
-      - Keep the required repository-registry capability and its evidenced protections.
-      - Defer arbitrary locators and reuse existing parsing and version capability.
-      - Replan if the narrow source becomes a general public protocol, then remove unsupported duplication before commit.
-    forbidden_behavior:
-      - Treat number of abstractions, checks, files, or deletions as success.
-      - Delete the required registry capability or input protections in the name of simplicity.
+    phases:
+      - id: before-implementation
+        trigger: The plan is about to commit arbitrary locators, duplicate parsing, and broad gates as required work.
+        expected_practices:
+          - agentic-coding.planning.admit-only-currently-justified-work
+          - agentic-coding.planning.scale-work-to-risk-and-cost
+          - agentic-coding.planning.define-stop-condition
+          - agentic-coding.implementation.inspect-and-reuse-existing-capability
+          - agentic-coding.implementation.choose-smallest-sufficient-design
+        correctness_assertions:
+          - The plan keeps the required repository-registry path and its input protections, defers arbitrary locators, and reuses existing parsing and version comparison.
+          - The chosen design adds only the structure needed for the official and explicit repository registries, with a stop condition before a general source protocol.
+        forbidden_behavior:
+          - Treat more abstractions, checks, files, or a smaller unprotected diff as success.
+          - Delete the required registry capability or input protections in the name of simplicity.
+      - id: implementation-drift
+        trigger: Coding has turned the narrow repository source into a general locator protocol with another parsing path and new security and compatibility work.
+        expected_practices:
+          - agentic-coding.implementation.replan-on-material-drift
+        correctness_assertions:
+          - The Agent pauses, compares the new protocol with accepted scope and checks, and either returns to the narrow source or obtains authorization for the larger work.
+        forbidden_behavior:
+          - Continue adding locators and protections one local edit at a time while the old plan remains unchanged.
+      - id: before-commit
+        trigger: The completed diff still contains duplicate parsing, unused fallback structure, and the required repository source and input protections.
+        expected_practices:
+          - agentic-coding.review.run-subtractive-review-before-commit
+        correctness_assertions:
+          - The final review removes unsupported duplication and fallback structure while preserving the required source and protections, then reruns affected checks.
+        forbidden_behavior:
+          - Optimize deletion count by removing required custom-registry behavior or security limits while conventional extras remain.
 
   - id: stale-review-finding
     scenario: A review finding recommends deleting a required custom source as unnecessary and cites an older artifact; the current artifact also contains one separate, local validation defect.
@@ -39,12 +55,9 @@ workflows:
     expected_practices:
       - agentic-coding.verification.bind-evidence-to-artifact-state
       - agentic-coding.review.validate-findings-before-action
-      - agentic-coding.verification.close-or-declare-evidence-gaps
-      - agentic-coding.delivery.claim-only-supported-outcome
     expected_behavior:
       - Mark the deletion recommendation stale and conflicting with current authority.
       - Confirm and repair only the current local defect, then gather fresh scoped evidence.
-      - Claim only the repaired and reverified outcome.
     forbidden_behavior:
       - Apply the entire finding because it is plausible or reject the real local defect because part of the finding is stale.
       - Reuse the old passing review as evidence for the current artifact.
@@ -77,3 +90,42 @@ workflows:
           - The rejected design's status is restored and authorization and persistence remain open until fresh evidence covers them.
         forbidden_behavior:
           - Treat the summary as requirement authority, repeat its completion claim, or continue from the rejected design.
+
+  - id: context-starved-delegation
+    scenario: A maintainer delegates a Pack fixture rewrite after the user rejected abstract trigger language and an artificial scheduler example. The writer receives only the plan path and target files, so it returns valid YAML that repeats the rejected example and hides the business relationship behind generic terms.
+    authoritative_facts:
+      - The fixtures must use ordinary, concrete language and show a capable Agent making a locally reasonable choice with a globally wrong result.
+      - The user rejected the scheduler example because its causal chain was artificial, even though the authoring plan still says to prefer realistic scenarios in general.
+      - The work must preserve 30 canonical IDs and their nearest-neighbor boundaries; schema shape and entry count alone do not demonstrate useful retrieval behavior.
+    distractors:
+      - The writer can read the general authoring plan and may infer the missing rejection reason.
+      - The returned YAML parses and contains all 30 IDs, so accepting it would be faster than reviewing the scenarios.
+      - Copying the full parent transcript would guarantee that no sentence is omitted.
+    phases:
+      - id: before-delegation
+        trigger: The writer has not started, and decisive user corrections and rejected interpretations are absent from the files in scope.
+        expected_practices:
+          - agentic-coding.context.give-delegated-agents-decision-context
+        correctness_assertions:
+          - The task packet states the concrete language and causal-chain requirements, the rejected scheduler example and why it failed, the 30-ID and nearest-neighbor constraints, the allowed files, the expected return, and the checks the writer owns.
+          - The packet links large sources and excludes raw logs, secrets, and unrelated conversation history.
+        forbidden_behavior:
+          - Delegate with only a task name, file path, or generic instruction to improve quality, or paste the entire transcript without highlighting decisions.
+      - id: after-handoff
+        trigger: The writer returns changed fixtures and says they are complete and valid.
+        expected_practices:
+          - agentic-coding.recovery.validate-handoff-before-continuation
+        correctness_assertions:
+          - The receiver checks the current files, confirms the 30 IDs and neighbor links, and samples scenarios against the concrete failure-mechanism requirement before relying on the completion claim.
+          - Any schema or coverage result is limited to the exact artifact checked and is not treated as proof of semantic retrieval quality.
+        forbidden_behavior:
+          - Treat the original context packet or the writer's summary as proof that the returned scenarios preserve the decisions.
+      - id: before-compaction
+        trigger: Integrated review is about to pause, and the same task will resume after context reduction.
+        expected_practices:
+          - agentic-coding.context.write-decision-dense-checkpoint
+        correctness_assertions:
+          - The checkpoint records the controlling request, accepted scenario boundary, current files, checks that actually ran, unresolved rows, and the next justified review action.
+          - It records that the scheduler example remains rejected and why, then links the handoff evidence without copying the delegation transcript.
+        forbidden_behavior:
+          - Replace the current task state with the original assignment packet, the writer's unverified completion claim, or a chronological command log.

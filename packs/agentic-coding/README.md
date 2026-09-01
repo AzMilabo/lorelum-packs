@@ -1,6 +1,6 @@
 # Agentic Coding
 
-`agentic-coding@0.2.0` is a tool-neutral Knowledge Pack of 29 Practices for keeping AI-assisted engineering aligned with the current user goal, authoritative requirements, proportionate plans, observable evidence, and supportable delivery claims.
+`agentic-coding@0.3.0` is a tool-neutral Knowledge Pack of 30 Practices for keeping AI-assisted engineering aligned with the current user goal, authoritative requirements, proportionate plans, observable evidence, supportable delivery claims, and decision-aware delegation.
 
 Canonical English · [简体中文](./i18n/zh-CN/README.md)
 
@@ -8,7 +8,7 @@ The Practices cover requirements, planning, implementation, testing, verificatio
 
 ## Scope
 
-Use this Pack to improve engineering judgment around scope, risk, evidence, implementation drift, review findings, completion claims, corrections, long-session checkpoints, and handoffs. Combine it with the domain Practices and project requirements that define what the system itself must do.
+Use this Pack to improve engineering judgment around scope, risk, evidence, implementation drift, review findings, completion claims, corrections, long-session checkpoints, delegation context, and handoffs. Combine it with the domain Practices and project requirements that define what the system itself must do.
 
 ## Non-goals
 
@@ -16,7 +16,8 @@ This Pack is not a workflow engine, task manager, test framework, compactor, aut
 
 ## Release history
 
-- `0.2.0` is the complete first 29-Practice release.
+- `0.3.0` rewrites the Pack for clearer standalone retrieval and adds a Practice for giving delegated Agents the decisions they need to preserve scope and quality.
+- `0.2.0` is the immutable first complete 29-Practice release.
 - `0.1.0` is an immutable one-entry installation placeholder retained only as release history. Its tag and content are not rewritten.
 
 See [SOURCES.md](./SOURCES.md) for public provenance and the distinction between issue-explicit evidence and author synthesis.
