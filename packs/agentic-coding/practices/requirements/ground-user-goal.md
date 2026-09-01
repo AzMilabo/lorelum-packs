@@ -1,43 +1,53 @@
 ---
+anti_patterns:
+  - description: The agent adopts a plausible component or work product as the goal because it offers fast visible progress, allowing a polished implementation to miss the result the user actually needs.
+    id: agentic-coding.requirements.solution-shaped-goal
+    name: Solution-shaped goal
+    severity: warn
+applies_when: the agent is about to frame or continue work without a current statement of the observable result the affected user or operator needs
 id: agentic-coding.requirements.ground-user-goal
-title: Ground Work in the User Goal
+severity: warn
 stage: requirements
 tech_stack:
   - agentic-coding
-applies_when: >-
-  the agent is about to frame or continue work without a current statement of
-  the user-visible outcome
-severity: warn
-anti_patterns:
-  - id: agentic-coding.requirements.solution-shaped-goal
-    name: Solution-shaped goal
-    description: >-
-      The agent restates its preferred implementation or a visible work product
-      as the goal, making a technically complete solution able to miss the result
-      the user actually needs.
-    severity: warn
+title: Ground Work in the User Goal
 ---
 
 ## When to apply
 
-Apply when the agent is about to frame or continue work and there is no current statement of who needs what observable result. This can happen at task start or after implementation details have begun to replace the reason for the work. If the result is already clear and the only open question is how completion will be judged, define acceptance boundaries instead.
+Apply at task start, or when implementation details have displaced the reason for the work, if no
+current sentence states who needs what result. If the result is clear and only the definition of
+done is missing, define acceptance instead.
 
 ## Guidance
 
-Read the user's current request and any explicitly adopted task source. Produce one concise goal statement naming the affected user or operator, the observable result they need, and any explicit constraint that changes that result. Treat proposed components, abstractions, tests, and documents as means rather than goals. If a material ambiguity permits different user outcomes, mark that ambiguity or ask for a decision; do not resolve it by choosing an implementation. Stop once the outcome statement is specific enough to reject work that would not advance it.
+Read the current request and any accepted issue or specification. Write one sentence naming the
+affected person, the result they must observe, and any explicit constraint that changes it.
+Components, tests, documents, and abstractions are possible means, not the goal. If two
+interpretations produce different outcomes, ask for the decision. Stop when the sentence can reject
+work that does not advance the result.
 
 ## Anti-pattern
 
-Turning “help support staff locate delayed orders” into “build a status dashboard” makes a convenient interface shape the target. The dashboard can render while staff still cannot find an order from the customer reference they receive.
+Support staff need to locate delayed orders from a customer reference. Because the repository
+already has an attractive operations dashboard, the agent adds a delayed badge there and gets the
+component tests green. The dashboard works, but staff still cannot search with the reference
+customers provide.
 
 ## Why
 
-A stable outcome statement gives later scope and design decisions a common reference. It prevents implementation momentum and easy-to-measure artifacts from silently replacing user value.
+A concrete outcome gives later decisions a stable comparison point. Without it, repository structure
+and visible artifacts can replace user value while superficial checks still pass.
 
 ## Exceptions and boundaries
 
-For a purely mechanical request whose outcome is already exact, such as renaming a supplied label, the user's wording may already be the complete goal statement. Do not add a planning ceremony. This Practice identifies the desired outcome; it does not enumerate acceptance tests or non-goals.
+For an exact mechanical request, such as renaming a supplied label, the user's wording may already
+be the complete goal. This Practice identifies the result; it does not list acceptance checks or
+non-goals.
 
 ## Example
 
-Before planning an order-support change, record: “Support staff can locate an order by customer reference and see its current delivery status, without gaining order-editing behavior.” A proposed analytics dashboard can then be excluded because it does not advance that outcome.
+A request says to improve failed uploads, and the repository already has a generic error banner that
+would make a message-only patch easy. The agent first records: "Creators can identify the failed
+file and retry it without re-uploading files that already succeeded." That goal leaves UI design
+open and shows why changing only the banner would not solve the request.

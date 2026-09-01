@@ -1,40 +1,53 @@
 ---
+anti_patterns:
+  - description: The agent optimizes for fewer lines or files because a smaller diff looks disciplined, removing required behavior or protection while retaining conventional additions that have no present purpose.
+    id: agentic-coding.review.deletion-as-success
+    name: Deletion as success metric
+    severity: warn
+applies_when: a completed implementation diff is about to be committed or handed off, and its added files, abstractions, fallbacks, interfaces, I/O, tests, or documents have not been checked for a current reason to remain
 id: agentic-coding.review.run-subtractive-review-before-commit
-title: Run a Subtractive Pre-Commit Review
+severity: warn
 stage: review
 tech_stack:
   - agentic-coding
-applies_when: an implementation diff is ready to commit or hand off, and the agent must decide whether every added file, abstraction, fallback, interface, I/O pass, test, and document has a current reason to remain
-severity: warn
-anti_patterns:
-  - id: agentic-coding.review.deletion-as-success
-    name: Deletion as success metric
-    description: Optimizing the review for fewer lines or files can remove required behavior and protections while making an underbuilt diff appear disciplined.
-    severity: warn
+title: Remove Unneeded Changes Before Commit
 ---
 
 ## When to apply
 
-Apply to the completed diff immediately before it becomes a commit or review handoff, when its additions can be judged together. Do not apply while choosing between designs during implementation, or as a demand to minimize a diff that already contains only justified work.
+Apply when the completed diff can be judged as a whole, immediately before commit or handoff. This
+checks necessity across the diff; it does not choose the original design or respond to an
+unvalidated finding.
 
 ## Guidance
 
-Inspect each material addition against a current requirement, demonstrated risk, stable contract, or necessary implementation dependency. Remove additions with no present reason, consolidate duplicate logic, and replace local reinventions with already-suitable capability, while retaining behavior and protection that the evidence justifies. Stop with the smallest diff that still satisfies the accepted outcome and its risk boundaries.
-
-If any subtraction or replacement can affect accepted behavior, the affected evidence is stale; stop before commit until the revised state has current verification.
+For each material addition, name the requirement, risk, contract, or dependency that justifies it.
+Remove additions with no present reason, merge duplicates, and reuse suitable existing code.
+Preserve required behavior, migration support, and safeguards. Stop with the smallest diff that
+still satisfies the request and its risks. If a deletion changes behavior, verify the revised state
+before commit.
 
 ## Anti-pattern
 
-Celebrating deletion count, then removing an explicitly required extension point or authorization check because it makes the patch smaller, while leaving an unneeded helper because it looks conventional.
+At final review, an upstream route guard makes a service-level authorization check look redundant,
+and a recovery marker has no happy-path reader. To shrink the diff, the agent removes both while
+keeping a familiar wrapper and duplicate parser. Focused route tests stay green, but another caller
+can reach the service directly and interrupted work can no longer recover.
 
 ## Why
 
-Implementation accumulates locally reasonable extras that are easier to see as a system at the diff boundary. A subtractive pass reduces unsupported surface and maintenance cost without turning minimality into a substitute for correctness.
+Locally reasonable additions are easier to judge together in the final diff. Subtractive review
+removes unsupported maintenance cost without treating minimality as correctness.
 
 ## Exceptions and boundaries
 
-Keep apparently unused migration, compatibility, security, audit, or rollback machinery when current contracts or rollout state require it. If simplification would change a public contract or accepted architecture, return that decision to the appropriate authority rather than deleting it during cleanup.
+Keep migration, compatibility, security, audit, or rollback code when a current contract or rollout
+requires it. Ask the responsible authority before changing an accepted architecture or public
+contract.
 
 ## Example
 
-A pre-commit pass removes a second date-normalization helper and an unused fixture export, reuses the existing parser, and keeps the batch-size guard and recovery marker because the import contract requires both.
+A task adds chunked image upload to a repository that already has a media-type validator. Before
+commit, the agent removes an unused progress abstraction and duplicate media-type helper, reuses the
+validator, and keeps the chunk-size cap and partial-file cleanup required by the upload contract. It
+reruns the affected upload checks after deletion.

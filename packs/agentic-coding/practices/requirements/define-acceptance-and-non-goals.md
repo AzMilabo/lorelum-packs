@@ -1,44 +1,56 @@
 ---
+anti_patterns:
+  - description: The agent judges completion by a clean-looking diff, reusable architecture, or passing local checks instead of the required behaviors, so optional platform work can be added or a required path can be removed.
+    id: agentic-coding.requirements.artifact-count-acceptance
+    name: Artifact-count acceptance
+    severity: warn
+applies_when: the requested result is clear, but the agent is about to plan implementation without stating which behaviors must work and which likely extensions are not part of the task
 id: agentic-coding.requirements.define-acceptance-and-non-goals
-title: Define Acceptance and Explicit Non-goals
+severity: warn
 stage: requirements
 tech_stack:
   - agentic-coding
-applies_when: >-
-  the user outcome and requirement authority are known, and downstream work is
-  about to rely on an implicit definition of done while plausible adjacent work
-  could be mistaken for required scope
-severity: warn
-anti_patterns:
-  - id: agentic-coding.requirements.artifact-count-acceptance
-    name: Artifact-count acceptance
-    description: >-
-      The agent defines completion by files, tasks, tests, or documents produced
-      rather than observable behavior, allowing busy output to pass while the
-      capability remains incomplete or expanded.
-    severity: warn
+title: Define Acceptance and Explicit Non-goals
 ---
 
 ## When to apply
 
-Apply after the intended user result is understood but before downstream work relies on an implicit definition of done. The distinguishing condition is that plausible adjacent work could be mistaken for required scope. If the user outcome itself is still unclear, establish that outcome first rather than inventing acceptance criteria.
+Apply after the requested result is clear and before implementation work is chosen. State both what
+must work and the most plausible adjacent work that is not required. If the requested result is
+still unclear, define the user goal first.
 
 ## Guidance
 
-Before downstream work proceeds, create one compact acceptance boundary in the project's existing task authority. State the smallest set of observable musts that together demonstrate the requested result, then name the most plausible non-goal that would otherwise expand the work. Prefer user behavior, stable contracts, and durable invariants over internal steps or artifact counts. Mark any must that cannot yet be made observable as unresolved rather than weakening it into an implementation proxy. Stop when the boundary can distinguish complete, incomplete, and out-of-scope work.
+Write a short "done when" list using behavior a caller can observe. Then write a "not part of this
+task" list for nearby extensions a capable engineer might reasonably add. Keep required behavior
+even when removing it would shrink the diff. Exclude optional infrastructure even when it would make
+the design more general. Stop when the two lists let a reviewer distinguish complete work from
+missing behavior and scope expansion.
 
 ## Anti-pattern
 
-“Scheduler added, tests written, and documentation updated” can all be true while unsubscribed recipients still receive a report. Those outputs do not define the requested behavior and may reward unnecessary additions.
+The installer needs a default official registry and an explicit custom repository registry. Because
+the Git acquisition code is already being changed, a generic locator layer, automatic mirror
+fallback, caching, and authentication hooks look like efficient future-proofing. A later cleanup
+makes the opposite mistake: it removes custom-registry support to minimize the patch. Both choices
+optimize the shape of the implementation instead of the requested install behaviors.
 
 ## Why
 
-Observable musts keep planning and evidence tied to the requested capability. An explicit non-goal prevents common optional improvements from quietly becoming promises and then gaining tests, compatibility obligations, and maintenance cost.
+Without an explicit behavior boundary, "more reusable" and "smaller diff" can both look like
+quality. Completion conditions protect required capability; non-goals prevent attractive platform
+work from becoming a current commitment.
 
 ## Exceptions and boundaries
 
-For a tiny, fully specified, reversible edit, one observable must and one short boundary may be sufficient; do not manufacture a formal checklist. Security, privacy, authorization, migration, and compatibility constraints remain valid musts even when they require more work than the happy path.
+Security checks required to use either registry are part of completion, even if the request does not
+list every check. A later authorized requirement may add a non-goal, but future possibility alone
+does not.
 
 ## Example
 
-For a scheduled report, define the musts as “subscribed recipients receive it at the agreed time” and “unsubscribed recipients do not,” with “redesign the report template” as a non-goal. A running scheduler alone is then visibly incomplete, while template work is visibly outside the task.
+For this installer, write: "Done when an install with no override resolves the official registry,
+and an install with an explicit repository uses that custom registry." Write: "Not part of this
+task: automatic mirror fallback, authentication plugins, multi-registry aggregation, generic file or
+HTTP locators, and registry caching." Verification must cover both required paths; it need not build
+or permanently forbid the non-goals.

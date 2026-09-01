@@ -1,44 +1,54 @@
 ---
+anti_patterns:
+  - description: The agent promotes an abstraction, fallback, feature, or guardrail into required work because it could help later, increasing current cost and maintenance without a present requirement or evidenced risk.
+    id: agentic-coding.planning.future-value-scope-promotion
+    name: Future-value scope promotion
+    severity: warn
+applies_when: candidate plan items are about to become commitments, and one or more are supported only by generic practice, possible future use, or visible output
 id: agentic-coding.planning.admit-only-currently-justified-work
-title: Admit Only Currently Justified Work
+severity: warn
 stage: planning
 tech_stack:
   - agentic-coding
-applies_when: >-
-  candidate plan items are being reviewed before commitment, and one or more
-  items may be promoted to required work based only on generic practice,
-  possible future use, or visible output
-severity: warn
-anti_patterns:
-  - id: agentic-coding.planning.future-value-scope-promotion
-    name: Future-value scope promotion
-    description: >-
-      The agent promotes an abstraction, fallback, feature, or guardrail into
-      required work because it might be useful later, expanding current cost and
-      maintenance without a present requirement or evidenced risk.
-    severity: warn
+title: Commit Only Work With a Current Reason
 ---
 
 ## When to apply
 
-Apply while deciding which proposed items belong in the committed plan. The trigger is a plausible item whose current basis is uncertain, not a public-surface change already being implemented. This Practice reviews all candidate work; it does not perform the later design check for a particular interface or extension point.
+Apply while deciding which proposed items belong in the committed plan. The trigger is a plausible
+item with no clear present reason. This decides plan scope, not which variant of an approved public
+surface may later be exposed.
 
 ## Guidance
 
-Give each candidate item one scope disposition: required, optional, or out of scope. Mark it required only when it directly supports a current acceptance condition, evidenced risk, stable contract, or explicitly approved expansion. A useful idea without that basis remains optional and must not become an implementation dependency. If its status depends on a missing authority decision, leave it unresolved and request that decision rather than upgrading it by default. Stop when every committed item has a present, traceable reason.
+Label each candidate required, optional, out of scope, or unresolved. Required work must support
+current acceptance, an evidenced risk, behavior already promised to callers, or an approved
+expansion. A useful idea without that support stays optional and cannot block the required path. If
+authority is missing, leave the item unresolved and ask. Stop when every committed item has a
+present reason.
 
 ## Anti-pattern
 
-A plan for one supported data source adds arbitrary file and network locators “for flexibility.” The extra locators become required work even though no current user, contract, or risk calls for them.
+A task requires installation from one configured repository registry. Because the loader already
+accepts a string, arbitrary file and network locators look like a cheap, future-proof extension.
+Adding them to the required plan silently creates new validation, security, and compatibility
+obligations that no current requirement supports.
 
 ## Why
 
-Scope expands most cheaply in a plan and most expensively after code, tests, and compatibility expectations attach to it. Requiring present justification blocks proxy achievements such as more features or more abstractions from displacing the requested result.
+An optional idea is cheapest to defer while it is still a plan item. Once code, tests, and consumers
+depend on it, removal becomes a compatibility decision.
 
 ## Exceptions and boundaries
 
-Security, privacy, data integrity, compatibility, and compliance protections may be required by an evidenced risk or governing contract even when they are not named in the feature request. Conversely, this Practice does not forbid recording optional improvements; it prevents them from silently becoming commitments.
+A governing contract or evidenced security, privacy, data-integrity, compatibility, or compliance
+risk can require work the feature request does not name. Optional improvements may still be recorded
+without becoming commitments.
 
 ## Example
 
-For a task that explicitly requires one custom registry, admit the narrow registry path as required. Record support for arbitrary locators as optional because “it may be useful someday” is not current justification.
+A task requires email alerts for failed jobs, and the repository already contains an unused
+multi-channel interface that makes SMS and push look cheap. The plan marks failure detection, email
+delivery, and unsubscribe handling as required; SMS and push are out of scope; consolidating two
+email templates is optional. The existing interface is not enough to make extra channels current
+work.

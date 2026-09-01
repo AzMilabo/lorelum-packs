@@ -1,44 +1,54 @@
 ---
+anti_patterns:
+  - description: The agent treats the source that is newest, most detailed, or easiest to implement as authoritative without checking its status, turning stale behavior or an unconfirmed interpretation into a requirement.
+    id: agentic-coding.requirements.promote-convenient-source
+    name: Convenient source promotion
+    severity: warn
+applies_when: current instructions, an accepted specification, code, tests, summaries, or prior decisions disagree, and one of them is about to define intended behavior
 id: agentic-coding.requirements.resolve-source-authority
-title: Resolve Authority Across Conflicting Sources
+severity: warn
 stage: requirements
 tech_stack:
   - agentic-coding
-applies_when: >-
-  requirements are being established and current instructions, specifications,
-  summaries, code, or prior decisions disagree, before one of them is used to
-  define intended behavior
-severity: warn
-anti_patterns:
-  - id: agentic-coding.requirements.promote-convenient-source
-    name: Convenient source promotion
-    description: >-
-      The agent treats the most recent, detailed, or implementation-friendly
-      source as authoritative without checking its role or status, causing stale
-      behavior or speculation to become a requirement.
-    severity: warn
+title: Resolve Authority Across Conflicting Sources
 ---
 
 ## When to apply
 
-Apply when two or more sources imply different intended behavior and the agent must choose a requirement baseline. A source may be a current user instruction, adopted specification, issue, decision record, code state, summary, or earlier conversation. If the sources agree and the question is only whether existing code can be reused, inspect the implementation instead.
+Apply when two or more sources imply different intended behavior and the next decision needs one
+baseline. Sources include the current request, an accepted issue or specification, a decision
+record, code and tests, and conversation summaries. If they agree and the question is reuse, inspect
+the implementation instead.
 
 ## Guidance
 
-For the disputed point, classify each relevant source as current authority, historical or observed fact, unconfirmed interpretation, or superseded evidence. Use explicit adoption, recency of an authorized correction, and the project's stated governance to choose the current authority; neither detail nor chronology alone is sufficient. Record the resulting authority decision and the conflict it resolves. If no available rule can decide a material product behavior, surface that unresolved choice to an authorized person and stop before encoding it.
+Isolate the disputed behavior. For each source, state whether it defines what should happen, only
+shows what exists now, is an unconfirmed interpretation, or has been replaced. Choose the
+controlling source from explicit adoption, an authorized correction, and the repository's stated
+rules; detail and recency alone are not enough. Record what controls the behavior and what the other
+sources still prove. If no rule resolves a material choice, ask the user or responsible maintainer
+before coding it.
 
 ## Anti-pattern
 
-A compact summary says audit records expire after one year, while the adopted retention policy requires seven years. Continuing from the summary because it is shorter promotes a derivative source over the requirement authority.
+An older cleanup job and its green tests delete audit records after one year. A compact session
+summary repeats that behavior, so retaining it seems safer than reopening the design. The adopted
+retention policy requires seven years, however, and the implementation evidence cannot override it.
 
 ## Why
 
-Separating authority from observation prevents current code, old decisions, and agent-generated explanations from acquiring requirement status through repetition. It also makes later corrections local: the superseded source remains useful as history without controlling new work.
+Code, tests, and summaries describe a state; they do not automatically authorize it. Separating
+authority from observation prevents convenient existing behavior from becoming the target.
 
 ## Exceptions and boundaries
 
-An emergency safety or data-protection constraint may temporarily override a lower-authority product instruction when the governing policy explicitly grants that precedence; record the override and its scope. This Practice decides which source defines intent. It does not decide whether an implementation should be reused or whether a new design is preferable.
+A safety or data-protection rule may override a product instruction when governing policy explicitly
+grants that precedence. Record the scope of the override. This Practice chooses which source defines
+intent, not the implementation design.
 
 ## Example
 
-The current cleanup job deletes audit records after one year, but the approved retention policy requires seven years. Record the policy as requirement authority and the job schedule as current-state evidence, not as the target behavior.
+The accepted migration plan says existing customer identifiers must remain stable, while the current
+prototype and its tests generate replacements. Keeping the tested prototype would be cheaper, but
+the agent records the plan as authority and the prototype as unfinished state. It does not preserve
+replacement identifiers unless that behavior is separately approved.
