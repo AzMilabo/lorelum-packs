@@ -1,38 +1,54 @@
 ---
+anti_patterns:
+  - description: Including every explored path, harmless warning, and transient failure to demonstrate diligence, thereby burying the unresolved facts that could change the recipient's next action or release decision.
+    id: agentic-coding.delivery.residual-log-dump
+    name: Investigation log instead of decision-relevant issues
+    severity: warn
+applies_when: delivery or handoff is imminent, at least one known limitation, risk, plan deviation, or unfinished item could change the recipient's next decision, and the agent must decide what to report
 id: agentic-coding.delivery.report-material-residuals
-title: Report Only Material Residuals
+severity: warn
 stage: delivery
 tech_stack:
   - agentic-coding
-applies_when: delivery or handoff is imminent, known remaining work, risk, plan deviation, or verification limitation exists, and the agent must decide what the next decision-maker needs to know
-severity: warn
-anti_patterns:
-  - id: agentic-coding.delivery.residual-log-dump
-    name: Residual log dump
-    description: Reporting every explored path and transient failure obscures the unresolved items that can change the recipient's next action, release decision, or recovery path.
-    severity: warn
+title: Report Only Remaining Issues That Matter
 ---
 
 ## When to apply
 
-Apply when a delivery or handoff has at least one known residual that may affect what happens next. Do not add an empty residuals section when nothing material remains, and do not use this Practice to restate the evidence-supported completion claim.
+Apply when something known but unresolved could change the recipient's next action, release
+decision, or recovery plan. This Practice reports what remains; it does not restate what the
+evidence already proves. If nothing important remains, do not invent an issues section.
 
 ## Guidance
 
-Select only unresolved work, risk, deviation, or verification limits that could change the recipient's next decision. For each selected residual, state its present impact and the minimum reproduction, mitigation, or rollback information needed to act. Stop when the recipient can choose the next step without replaying the exploration history.
+Select only unfinished work, risk, deviation, or untested behavior that can change the next
+decision. For each item, state its current impact and the smallest reproduction, mitigation, or
+rollback fact needed to act. Stop when the recipient can choose the next step without replaying the
+investigation.
 
 ## Anti-pattern
 
-Hiding an unverified migration behind pages of command output, discarded hypotheses, and harmless warnings, or reporting all of that noise as if every item carried equal risk.
+The user asks to finish a dependency upgrade. Two consumers still use the old interface, but the
+agent also encountered several harmless warnings and discarded many hypotheses while debugging. To
+demonstrate thoroughness, the handoff lists every command and dead end. The important decision,
+whether the two remaining consumers block release or need compatibility support, is buried in
+process history.
 
 ## Why
 
-Material residuals preserve decision continuity; process exhaust consumes attention and can bury the actual blocker. A concise, actionable record lets the next owner assess risk without mistaking verbosity for completeness.
+Decision-relevant issues preserve continuity between owners. Process history consumes attention and
+can hide the actual blocker, while a concise impact and recovery note lets the next owner act
+without mistaking verbosity for completeness.
 
 ## Exceptions and boundaries
 
-Regulated, forensic, incident, or audit workflows may require a complete retained log, but the operational handoff should still distinguish decision-relevant residuals from the archive. A transient failure that was reproduced, explained, and cleared is material only if recurrence or uncertainty can affect the next action.
+Regulated, forensic, incident, or audit work may require a complete retained log. Keep that archive,
+but separate it from the operational handoff. A transient failure that was reproduced, explained,
+and cleared belongs in the handoff only when recurrence or uncertainty can still change the next
+action.
 
 ## Example
 
-A handoff reports that the data migration was not exercised against a production-sized copy, states the possible timeout impact, and gives the rollback checkpoint. It omits unrelated failed searches and superseded debugging guesses.
+A handoff states that peak-load behavior was not exercised, explains that connection saturation
+could delay requests, and identifies the safe concurrency setting to restore if latency rises. It
+omits unrelated failed searches and superseded tuning experiments.

@@ -1,41 +1,57 @@
 ---
+anti_patterns:
+  - description: Placing a shared rule in the component where the symptom is easiest to fix rather than in the component responsible for the rule, allowing other callers to bypass it or implement it differently.
+    id: agentic-coding.implementation.invariant-in-wrong-owner
+    name: Invariant in the wrong owner
+    severity: warn
+applies_when: a change crosses a domain, layer, package, service, or repository boundary, and the agent must decide which component should own a rule that must remain consistent across more than one caller or entry point
 id: agentic-coding.implementation.preserve-responsibility-boundaries
-title: Place Behavior With Its Invariant Owner
+severity: warn
 stage: implementation
 tech_stack:
   - agentic-coding
-applies_when: >-
-  a change crosses domain, layer, package, service, or repository boundaries,
-  and the agent is about to decide which component should own behavior that
-  enforces a specific invariant
-severity: warn
-anti_patterns:
-  - id: agentic-coding.implementation.invariant-in-wrong-owner
-    name: Invariant in the wrong owner
-    description: Placing behavior in the nearest editable component instead of the component responsible for its invariant, which duplicates policy and allows callers to diverge.
-    severity: warn
+title: Put Shared Rules in the Responsible Component
 ---
 
 ## When to apply
 
-Apply when a requested behavior touches more than one responsibility boundary and its placement is still undecided. The near miss is a local implementation detail entirely inside the component that already owns the relevant invariant. This Practice decides ownership, not whether the architecture itself should be redesigned.
+Apply when the same rule must hold across multiple callers, interfaces, or layers and it is unclear
+where the rule belongs. A local detail inside the component already responsible for the rule is a
+near miss. This Practice chooses the responsible component; it does not redesign the architecture or
+choose the least complex implementation inside that component.
 
 ## Guidance
 
-Name the invariant the behavior must preserve, identify the component already accountable for that invariant, and place the authoritative decision there. Let other layers translate inputs, outputs, or presentation without reimplementing the rule. The output is one ownership placement with a clear boundary for callers. If no existing component legitimately owns the invariant, stop and seek an explicit design decision rather than assigning it by convenience.
+State the rule that must stay true and list the entry points that depend on it. Identify the
+component already responsible for the relevant data or policy and put the final decision there.
+Other layers may translate input, output, or presentation, but they should not redefine the rule.
+Stop with one responsible component and a clear instruction for callers. If no current component can
+own the rule honestly, pause for an architectural decision instead of choosing the easiest file to
+edit.
 
 ## Anti-pattern
 
-Implementing authorization, identity grouping, validation, or consistency rules in a presentation or transport layer because that is where the immediate symptom appears, leaving other callers free to behave differently.
+The user asks a new checkout screen to show the final invoice total. The screen already has every
+line item, so calculating and rounding the total there avoids a service change and makes the UI
+tests pass quickly. But refunds and API-created orders still use the pricing component's different
+rounding rule, so the same invoice can have two totals.
 
 ## Why
 
-An invariant enforced by its owner has one semantic source and can be applied consistently across entry points. Putting it in a convenient caller couples policy to one flow and invites duplicated or contradictory behavior elsewhere.
+A rule enforced by the responsible component has one meaning for every entry point. Putting it in a
+convenient caller ties the rule to one flow, so other callers can bypass it or recreate it
+differently.
 
 ## Exceptions and boundaries
 
-Defense-in-depth checks may repeat validation at a trust boundary, but they should reinforce rather than redefine the authoritative invariant. Performance-sensitive duplication requires evidence and a consistency strategy. If the requirement intentionally changes ownership or splits a domain, handle that as an architectural decision with migration implications.
+Trust boundaries may repeat validation for defense in depth, but those checks should reinforce
+rather than redefine the authoritative rule. Performance-driven duplication needs evidence and a
+strategy for keeping results consistent. If the requirement intentionally moves ownership or splits
+a domain, treat that as an architectural change with migration consequences.
 
 ## Example
 
-A screen needs to show one account with several roles. The agent keeps identity aggregation in the domain service that owns account semantics and lets the screen render the resulting model, rather than teaching the screen to merge authorization rows.
+The repository creates stock reservations through both an API and a batch importer. Available stock
+is maintained by the inventory component, so the agent puts the no-overselling check there and lets
+each caller translate its own input. Both entry points now receive the same reservation decision
+without copying stock arithmetic.
