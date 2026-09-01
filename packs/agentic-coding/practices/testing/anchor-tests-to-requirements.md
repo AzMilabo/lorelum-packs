@@ -1,42 +1,63 @@
 ---
+anti_patterns:
+  - description: Adding coverage because a component, branch, or helper changed, without naming the behavior that must remain true, can make an incomplete implementation define its own correctness.
+    id: agentic-coding.testing.test-without-protected-contract
+    name: Test without a protected contract
+    severity: warn
+applies_when: the agent is selecting tests for new or changed behavior and must decide what requirement, public contract, or domain invariant each proposed test is supposed to protect
 id: agentic-coding.testing.anchor-tests-to-requirements
-title: Anchor Each Test to a Contract
+severity: warn
 stage: testing
 tech_stack:
   - agentic-coding
-applies_when: >-
-  test coverage is being selected for new or changed behavior, and the agent
-  is about to add or modify a test without identifying the requirement,
-  stable contract, or domain invariant that the test should protect, rather
-  than deciding whether a past failure deserves permanent protection
-severity: warn
-anti_patterns:
-  - id: agentic-coding.testing.test-without-protected-contract
-    name: Test without a protected contract
-    description: Adding coverage because code or a screen changed, without naming the behavior that must remain true, which lets tests legitimize an incorrect implementation.
-    severity: warn
+title: Anchor Each Test to a Contract
 ---
 
 ## When to apply
 
-Apply while deciding what a new or changed test is for. The distinguishing decision is the behavior or invariant the test protects. Choosing the exact observation or assertion comes later and is a near miss for this Practice. Deciding whether to memorialize a past failure with permanent regression protection is also a near miss and requires its own durability judgment. Mechanical test cleanup that preserves an already explicit contract does not require a new mapping.
+Apply before adding or substantially changing a test, while its purpose is still being chosen. Ask
+what promise would be broken if the test failed. This Practice ends once the test has one explicit
+contract to protect. Choosing how to observe that contract belongs to assertion design; deciding
+whether a past bug deserves a permanent regression test belongs to regression-protection judgment.
 
 ## Guidance
 
-For the proposed test, identify one authoritative requirement, published contract, or domain invariant whose violation would matter. Express the protected behavior independently of the current implementation, then admit the test only if its pass/fail result meaningfully represents that behavior. The output is one explicit test-to-contract mapping. If no durable basis can be found, revise the test purpose or omit it rather than treating changed code as sufficient justification.
+Name the exact reason for the proposed test: a sentence in the user request, an accepted issue or
+specification, a published interface, or a necessary rule such as “one user cannot read another
+user’s data.” Restate that reason as behavior without naming the current helper or class. Keep the
+test only when its failure would show that behavior may be broken. Put the connection in the test
+name, a nearby comment, or the review explanation, then stop; choosing the assertion comes next. If
+no meaningful reason exists, omit the test or label it as a temporary investigation instead of
+treating new code as automatically test-worthy.
 
 ## Anti-pattern
 
-Mirroring every new component, method, branch, or state with a test even though those structures may encode an incomplete or mistaken interpretation of the user capability.
+The user asks for retry-safe job submission. The repository already has a queue adapter, and the
+change adds a retry helper and status enum. Because each new method is easy to exercise and the
+coverage report highlights its branches, the agent writes one test per method. The suite turns
+green, but none of the tests protects the user-visible rule that retrying the same job must not
+submit it twice.
 
 ## Why
 
-Tests become durable evidence and future change constraints. Anchoring each one to a requirement or invariant keeps the suite aligned with intended behavior instead of allowing the current implementation to define correctness by itself.
+Tests outlive the implementation choice that created them. When their purpose comes from current
+code structure, they can preserve the wrong design and still look thorough. A test-to-contract
+mapping keeps maintenance cost and future failures tied to behavior the project has actually
+promised.
 
 ## Exceptions and boundaries
 
-Exploratory probes and temporary characterization tests can help reveal unknown behavior without yet asserting that it is correct; label and retire or promote them deliberately. Safety, compatibility, and data-integrity invariants may justify tests even when they are not visible in a feature description. This Practice does not prescribe the assertion mechanism.
+Exploratory probes and temporary characterization tests can reveal unknown behavior without
+declaring it correct; label them and later retire or promote them deliberately. Safety,
+compatibility, and data-integrity invariants may justify coverage even when product prose does not
+mention them. Mechanical updates that preserve an already clear mapping need not repeat this
+analysis.
 
 ## Example
 
-Rather than adding a test for every new retry helper, the agent maps the proposed test to “a transient failure is retried once without duplicating the operation.” Helpers with no independent contract do not gain tests merely because they were added.
+The user asks for uploads to resume after a worker restart without corrupting the file. The
+repository now has separate chunk scheduling and retry helpers, but those helpers are implementation
+choices. The agent creates one test for “retrying an interrupted chunk does not duplicate stored
+bytes” and one for “the upload resumes after process restart.” It leaves helper call patterns
+untested because they are not promises to the user; the next step chooses storage and resume results
+that can be observed.

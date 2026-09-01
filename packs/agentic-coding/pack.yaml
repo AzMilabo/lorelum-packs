@@ -1,6 +1,6 @@
 name: agentic-coding
-version: 0.2.0
-description: Tool-neutral Practices for evidence-aligned agentic coding across requirements, delivery, and recovery.
+version: 0.3.0
+description: Tool-neutral Practices for evidence-aligned agentic coding across requirements, delegation, delivery, and recovery.
 author:
   name: Lorelum
 license: CC-BY-4.0

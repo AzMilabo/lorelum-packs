@@ -1,41 +1,58 @@
 ---
+anti_patterns:
+  - description: Implementing a familiar utility from memory because it looks quick and locally testable, before checking the repository or its dependencies for an existing contract with important edge-case behavior.
+    id: agentic-coding.implementation.reflexive-reimplementation
+    name: Reflexive reimplementation
+    severity: warn
+applies_when: implementation is about to add a helper or mechanism, and the agent has not yet determined whether a nearby module, declared dependency, or the runtime already provides the required behavior under the current constraints
 id: agentic-coding.implementation.inspect-and-reuse-existing-capability
-title: Reuse Existing Capability Before Building
+severity: warn
 stage: implementation
 tech_stack:
   - agentic-coding
-applies_when: >-
-  implementation is about to add a helper, layer, or mechanism, and the agent
-  must decide whether the runtime, a dependency, or a nearby module already
-  provides the required capability under the current constraints
-severity: warn
-anti_patterns:
-  - id: agentic-coding.implementation.reflexive-reimplementation
-    name: Reflexive reimplementation
-    description: Building a familiar capability from memory before inspecting relevant existing code or dependencies, which duplicates behavior and creates another contract to maintain.
-    severity: warn
+title: Check What Already Exists Before Building
 ---
 
 ## When to apply
 
-Apply immediately before creating a new implementation for a capability that could plausibly exist in the runtime, declared dependencies, related modules, or their tests. This is a reuse decision, not a general search ritual. Do not apply when current evidence already establishes that the capability is intentionally new or that existing options cannot meet a required constraint.
+Apply immediately before creating a helper, adapter, parser, cache, retry policy, or similar
+mechanism that could plausibly exist nearby. Check only enough code and dependency documentation to
+decide whether suitable behavior already exists. If current evidence already shows that the behavior
+is intentionally new or that existing options fail a required constraint, stop searching and design
+the new code.
 
 ## Guidance
 
-Inspect the smallest evidence set that can answer the reuse question: the relevant module boundary, its call sites and tests, then the runtime or dependencies most likely to own the capability. Decide among direct reuse, a small adaptation, or a new implementation. Record the constraint that rules out each closer option. Stop searching once the evidence distinguishes those choices; the output is one reuse decision, not a catalog of alternatives.
+Inspect the module where the behavior belongs, representative call sites, and its tests. Then check
+only the runtime or declared dependencies most likely to provide it. Decide between direct reuse, a
+small adaptation, and a new implementation. Record the specific mismatch that rules out each closer
+option. Stop as soon as the evidence supports one choice; do not catalog every vaguely similar
+helper.
 
 ## Anti-pattern
 
-Writing a parser, validator, retry loop, cache, or abstraction from memory because it is easy to implement, then discovering that the project already carries an equivalent with different edge-case behavior.
+The user asks for imported links to be normalized before storage. A short helper is easy to write,
+matches the examples, and passes the new focused tests. Under deadline pressure, the agent builds it
+without checking a declared dependency already used by another importer. That dependency also
+handles encoded separators, host casing, and platform-specific paths, so the repository now has two
+normalization rules that disagree on real inputs.
 
 ## Why
 
-Existing capabilities often encode compatibility, failure semantics, and maintenance ownership that are invisible in a fresh local implementation. Inspecting before building prevents parallel contracts and focuses new code only where the current requirement actually exceeds what already exists.
+Existing code often carries compatibility rules, failure behavior, and maintenance ownership that
+are not obvious from its name. Checking before building avoids parallel contracts and limits new
+code to the part the current requirement truly lacks.
 
 ## Exceptions and boundaries
 
-Do not reuse a capability merely because its name matches. A security boundary, license restriction, unsupported environment, unstable API, or proven semantic mismatch can justify a new implementation. Choosing among several already-feasible designs belongs to design selection; this Practice only establishes whether reuse is a valid first option.
+Do not reuse code merely because its name looks right. A security boundary, license restriction,
+unsupported environment, unstable API, or demonstrated semantic mismatch can justify new code. Once
+reuse has been accepted or ruled out, choosing among multiple feasible designs is a separate
+decision.
 
 ## Example
 
-Before adding custom version comparison, an agent finds that the project runtime already exposes comparison with the required prerelease semantics. The observable decision is “reuse the runtime function,” with no new comparator or wrapper.
+A scheduling change needs to detect whether a new booking overlaps an existing one, including
+bookings that share an endpoint. Before adding a helper, the agent finds the scheduling module
+already has a tested overlap function with exactly those endpoint rules. The agent reuses it
+directly and adds no second definition of overlap.

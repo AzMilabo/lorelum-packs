@@ -1,41 +1,57 @@
 ---
+anti_patterns:
+  - description: Expanding an authorized surface into additional values, modes, or extension points because the internal implementation is already generic, thereby creating public compatibility and maintenance obligations that were never accepted.
+    id: agentic-coding.implementation.speculative-public-surface
+    name: Speculative public surface
+    severity: warn
+applies_when: accepted scope authorizes a long-lived UI control, API, configuration value, stored value, public export, source type, or extension category, but the agent is about to expose an exact variant that the accepted scope does not define
 id: agentic-coding.implementation.confirm-product-surface-expansion
-title: Confirm Authorized Product Surface Variants
+severity: warn
 stage: implementation
 tech_stack:
   - agentic-coding
-applies_when: >-
-  accepted scope authorizes a long-lived UI, API, configuration, persisted
-  state, public export, source type, or extension-point category, and
-  implementation is about to expose an exact variant that remains ambiguous
-severity: warn
-anti_patterns:
-  - id: agentic-coding.implementation.speculative-public-surface
-    name: Speculative public surface
-    description: Generalizing one requested variant into a broader public capability, which creates unsupported compatibility and maintenance obligations.
-    severity: warn
+title: Confirm What Users Can Depend On
 ---
 
 ## When to apply
 
-Apply at the last implementation decision before exposing a variant within a product-surface category that accepted scope already authorizes. An entirely unplanned surface, or one that materially changes scope, risk, or evidence needs, is a near miss: pause and replan from that drift. An internal refactor that preserves all observable surfaces is also a near miss.
+Apply before making a new UI option, API value, configuration key, stored value, export, source
+type, or extension point dependable outside its implementation. The general kind of feature is
+already authorized; the exact public values or behaviors are not. A completely unplanned feature
+that changes scope, risk, or verification needs requires replanning. An internal abstraction that
+exposes nothing new is only a design choice.
 
 ## Guidance
 
-Identify the authority for the accepted surface category, then compare the exact variants it supports with what the implementation would expose. Decide which proven variant boundary to admit or leave the ambiguous variant unexposed pending confirmation. The output is one bounded surface decision; do not infer neighboring modes merely because the implementation can generalize cheaply.
+Read the user request, accepted issue, or current specification that authorizes the feature. Compare
+the values and behaviors it names with what users, integrations, stored data, or downstream code
+could rely on after this change. Expose only what the source supports. Keep ambiguous variants
+private or ask for a decision. Stop with one explicit list of the public values or behaviors
+admitted now.
 
 ## Anti-pattern
 
-Turning an authorized two-state notification preference into arbitrary channel identifiers, per-channel schemas, and a public extension interface because a generic abstraction appears cleaner.
+The user asks integrations to receive one order-shipped webhook. The repository's event dispatcher
+already accepts arbitrary event names and headers, so exposing that generic shape looks cleaner than
+adding one narrow event, and the requested case still passes. But publishing every name, custom
+header, and plugin hook commits the product to behavior the user never asked for.
 
 ## Why
 
-Public and persisted surfaces acquire compatibility, documentation, validation, migration, and security obligations as soon as consumers can rely on them. Confirming the exact variant before exposure prevents implementation convenience from silently becoming product policy.
+Once users, integrations, stored data, or downstream code rely on a value or behavior, removing or
+changing it becomes expensive. Confirming the exact boundary prevents a generic internal
+implementation from silently defining product policy.
 
 ## Exceptions and boundaries
 
-Compatibility with an already published contract, an approved migration, or an explicit platform requirement may require a broader surface than the immediate use case. In that case preserve the established obligation and record its authority. This Practice does not prohibit future-facing design internally; it constrains what becomes externally dependable now.
+An existing published contract, approved migration, or explicit platform requirement may authorize
+more variants than the immediate feature needs. Preserve that obligation and record its source. This
+Practice does not forbid a future-friendly internal design; it limits what becomes externally
+dependable now.
 
 ## Example
 
-Accepted scope authorizes a display-density preference and names compact and comfortable modes. The agent exposes only those values and leaves custom style tokens unexposed pending authority. The observable result is a bounded preference contract.
+The accepted design asks for a display-density setting with compact and comfortable modes. The
+component can accept arbitrary spacing tokens, but no user request or specification makes those
+tokens public. The agent exposes only the two named modes and keeps custom tokens internal until a
+product decision authorizes them.

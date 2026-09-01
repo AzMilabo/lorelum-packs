@@ -1,38 +1,58 @@
 ---
+anti_patterns:
+  - description: Reusing a previous pass because a later edit looks small, without checking the exact commit, built file, configuration, and environment that were tested, lets changed work inherit proof it never received.
+    id: agentic-coding.verification.stale-proof-carryover
+    name: Old result reused for changed work
+    severity: warn
+applies_when: the agent is about to cite or reuse a verification result obtained before relevant code, configuration, dependencies, generated files, environment, or external conditions may have changed
 id: agentic-coding.verification.bind-evidence-to-artifact-state
-title: Bind Evidence to Artifact State
+severity: warn
 stage: verification
 tech_stack:
   - agentic-coding
-applies_when: verification evidence is being recorded or reused, and the agent must decide whether it still applies after code, configuration, environment, or generated artifacts may have changed
-severity: warn
-anti_patterns:
-  - id: agentic-coding.verification.stale-proof-carryover
-    name: Stale proof carryover
-    description: Reusing a previous pass without identifying the artifact state and conditions it covered lets later changes inherit proof they never received.
-    severity: warn
+title: Reuse Evidence Only When It Still Applies
 ---
 
 ## When to apply
 
-Apply when preserving, citing, or reusing evidence across edits, configuration changes, generated outputs, environment changes, or time-sensitive observations. Do not apply merely because an acceptance criterion lacks evidence; this Practice decides freshness, not how to close a known gap.
+Apply whenever the agent wants to cite an earlier pass after the code, configuration, dependencies,
+built package, runtime environment, or relevant outside service may have changed. Decide whether the
+old result still describes what will be delivered now. Mapping evidence to acceptance asks which
+requirement a result covers; closing a gap asks what to do when there is no adequate result.
 
 ## Guidance
 
-For each evidence item, identify the artifact state it examined, the relevant environment or configuration, when it was obtained, and its behavioral scope. Compare those bindings with the current state and invalidate only the evidence whose conclusion could be changed by the difference. Stop with a current, stale, or unaffected status for the evidence item.
+For each result, write down exactly what it tested: the commit or diff, the built or generated file,
+relevant configuration and dependency versions, the machine or service when it matters, the
+observation time for changing outside facts, and the behavior exercised. Compare those details with
+the current deliverable. Mark the result usable now, outdated, or unaffected by the later change,
+and explain why. Re-run only checks whose conclusion could change, but rebuild and recheck when the
+file being delivered changed. Stop when every earlier result you plan to cite has this decision.
 
 ## Anti-pattern
 
-Carrying "review passed" or "tests passed" into a completion claim after the reviewed diff or tested configuration changed, without checking whether the old result still describes the current artifact.
+The user asks for an archive that another application can open. The repository passes its
+compatibility check, then the agent performs a “small cleanup” in serialization. The edit looks
+mechanical and the external check is slow, so the agent reuses the earlier pass. The delivered bytes
+now come from code that the compatibility result never exercised.
 
 ## Why
 
-Evidence is a relationship between an observation and a particular state, not a permanent property of a task. Explicit bindings prevent stale results from silently proving new work while preserving unaffected evidence instead of forcing indiscriminate reruns.
+A pass describes specific files under specific conditions; it is not a permanent badge on the task.
+Recording those specifics prevents an old result from proving changed work, while avoiding wasteful
+reruns when a later edit cannot affect what was observed.
 
 ## Exceptions and boundaries
 
-Stable facts whose premises are unchanged can remain valid, even when unrelated files change. Security-sensitive, destructive, release, or environment-dependent claims may require stricter freshness rules defined by the authoritative contract.
+An unchanged fact can remain usable after an unrelated edit. A documentation-only change does not
+normally invalidate a parser unit test; changing parser code does invalidate an earlier binary test.
+Security, destructive operations, releases, and results that depend on a live environment may
+require a new check more often. Follow mandatory project rerun rules even when the edit appears
+unrelated.
 
 ## Example
 
-A focused parser test is bound to revision A and remains relevant after a documentation-only edit. A generated package created at revision A is rebuilt after parser code changes to revision B, because the old artifact no longer represents the current source.
+The user asks for a compiled CLI that installs a Pack. A binary built from commit A passes a real
+installation test. A later comment-only edit leaves that result usable. When argument parsing
+changes at commit B, the agent rebuilds the binary and repeats the installation check; source-level
+unit tests at B cannot prove that the old binary from A represents the current code.

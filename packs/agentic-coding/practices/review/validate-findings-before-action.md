@@ -1,38 +1,51 @@
 ---
+anti_patterns:
+  - description: The agent acts on a plausible finding because fixing it seems safer than challenging a reviewer, allowing stale, mis-scoped, or requirement-conflicting advice to become product behavior.
+    id: agentic-coding.review.finding-as-fact
+    name: Finding treated as fact
+    severity: warn
+applies_when: a human, agent, analyzer, or review has raised a finding, and the agent is about to change the current artifact without first establishing whether the finding is true and in scope
 id: agentic-coding.review.validate-findings-before-action
-title: Validate Findings Before Taking Action
+severity: warn
 stage: review
 tech_stack:
   - agentic-coding
-applies_when: a human, agent, analysis tool, or review has raised a finding, and the agent is about to change the artifact before confirming the finding against current authority and state
-severity: warn
-anti_patterns:
-  - id: agentic-coding.review.finding-as-fact
-    name: Finding treated as fact
-    description: Acting on a plausible review statement without checking the current requirement and artifact can fix a stale, mis-scoped, or requirement-conflicting problem into the product.
-    severity: warn
+title: Validate Findings Before Taking Action
 ---
 
 ## When to apply
 
-Apply when an external finding is about to drive a code, test, document, or plan change. Do not apply to a defect already reproduced against the current artifact and current contract unless new evidence puts that conclusion in doubt.
+Apply before an external finding drives a code, test, document, or plan change. Decide whether that
+finding is true for the current requirement and artifact. If the defect is already reproduced, act
+on it. If only the finding's supporting evidence may be stale, evaluate evidence freshness instead.
 
 ## Guidance
 
-Compare the finding with the authoritative requirement, the current artifact state, its claimed contract, and relevant observations. Classify it as confirmed, unconfirmed, or requiring an authority decision, and attach only the next action warranted by that classification. Stop before editing when the finding remains unconfirmed or would change the accepted requirement.
+Compare the finding with the current request or specification, current artifact, claimed contract,
+and observations. Mark it confirmed, unconfirmed, or requiring an authority decision. Choose only
+the route that status permits: local fix, more evidence, or return to requirements. Do not edit
+while it is unconfirmed or would change accepted behavior.
 
 ## Anti-pattern
 
-Accepting "remove keyboard navigation to simplify the interaction" as a defect and deleting it, even though the current accessibility contract explicitly requires that behavior and the review supplied no contrary authority.
+A reviewer recommends removing keyboard navigation because focused pointer tests pass and the event
+handling looks complex. Deleting it would simplify the component and keep the visible tests green,
+but the accepted accessibility requirement explicitly includes keyboard use. The plausible
+simplification conflicts with that requirement.
 
 ## Why
 
-Review findings are hypotheses whose quality and freshness vary. Validation keeps useful findings actionable while preventing persuasive wording, stale context, or proxy goals such as smaller diffs from silently overriding the task.
+A finding is a claim, not a fact. Checking it preserves useful review input without letting
+confidence, stale context, or preference for smaller code override the task.
 
 ## Exceptions and boundaries
 
-Immediately contain an actively exploitable security issue or destructive failure when delay would increase harm, then complete validation before making the containment permanent. A maintainer decision that legitimately changes scope should be treated as new authority, not merely as a confirmed technical finding.
+Contain an exploitable security issue or destructive failure immediately when delay increases harm,
+then validate before making containment permanent. A maintainer decision that changes scope is new
+authority, not a technical finding.
 
 ## Example
 
-A reviewer reports that a decoder accepts invalid input. The current code and a focused reproduction confirm the case, so the finding is marked confirmed and fixed locally; a separate suggestion to remove a required input mode is held for an authority decision.
+A review says a cache key ignores locale and may return text in the wrong language. The agent checks
+the current branch and finds locale was added during a later refactor; the finding cites the older
+diff. It marks the finding unconfirmed for the current artifact and makes no code change.

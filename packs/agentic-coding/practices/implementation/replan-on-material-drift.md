@@ -1,41 +1,54 @@
 ---
+anti_patterns:
+  - description: Treating each newly discovered dependency, fallback, state change, or I/O step as a small implementation detail until the delivered behavior, risks, and required checks no longer match the accepted plan.
+    id: agentic-coding.implementation.drift-normalization
+    name: Drift normalization
+    severity: warn
+applies_when: coding has revealed an unplanned dependency, public behavior, stored state, I/O path, risk, or verification need that changes the accepted scope, and the agent is about to continue under the old plan
 id: agentic-coding.implementation.replan-on-material-drift
-title: Replan When Implementation Materially Drifts
+severity: warn
 stage: implementation
 tech_stack:
   - agentic-coding
-applies_when: >-
-  implementation has revealed an unplanned public surface, source type,
-  fallback, I/O pass, file group, risk class, or evidence need, and the agent
-  is about to continue coding as though the accepted plan still applies
-severity: warn
-anti_patterns:
-  - id: agentic-coding.implementation.drift-normalization
-    name: Drift normalization
-    description: Absorbing each unplanned expansion as a small local edit until the implementation has a different scope, risk, or proof burden than the accepted plan.
-    severity: warn
+title: Replan When New Facts Change the Work
 ---
 
 ## When to apply
 
-Apply when implementation discoveries materially change what will be delivered, who may depend on it, how it can fail, or what evidence is needed. A routine file move, renamed helper, or local adjustment already covered by the accepted scope and risk is a near miss. The trigger is changed planning truth, not ordinary implementation detail.
+Apply when a discovery during coding changes what will be delivered, who may depend on it, how
+failure can occur, or what must be checked. A renamed helper, routine file split, or local
+adjustment covered by the same scope and risk is a near miss. If the plan already authorizes a kind
+of public behavior and only its exact values are unclear, confirm those values instead of reopening
+the whole task.
 
 ## Guidance
 
-Pause the expanding work and compare the discovery with the accepted scope, risk level, stop condition, and evidence plan. Produce one revised implementation baseline: either narrow back to the plan, explicitly admit the new work with updated risk and evidence, or stop for authorization. Resume only from that decision. Do not keep coding while treating the update as documentation to be completed later.
+Pause the affected implementation. Compare the new fact with the accepted scope, risks, stopping
+condition, and planned checks. Choose one response: narrow the implementation back to the plan,
+update the plan and its checks, or ask for authorization before continuing. Stop with one current
+plan that says what will be built and verified, then resume from it.
 
 ## Anti-pattern
 
-Allowing a local calculation to become a persisted background job, then adding retries and another write pass one edit at a time because no individual change appears large enough to justify replanning.
+The user asks for a download endpoint that returns an account export. A large fixture exceeds the
+response limit, so the agent adds a temporary file, then a retry queue, then background cleanup.
+Each small addition fixes the next focused test and seems faster than stopping to redesign the
+endpoint. Together they turn a synchronous download into a stateful background job with new failure
+and recovery behavior that the accepted work never covered.
 
 ## Why
 
-Plans calibrate scope and verification against known risk. Material drift invalidates that calibration; continuing silently compounds commitments and leaves testing and review aimed at an obsolete target. Replanning early makes the changed cost and proof burden visible before they are entrenched.
+A plan ties the promised scope to known risks and checks. When those facts change, continuing
+silently creates new commitments while testing and review still judge the old work.
 
 ## Exceptions and boundaries
 
-Urgent containment of an active security or data-loss incident may precede formal replanning, but the response should still minimize exposure and record the changed baseline as soon as safe. Do not invoke this Practice for harmless mechanical details, and do not use it to reopen settled scope without material new evidence.
+Contain an active security or data-loss incident immediately when delay increases harm, then update
+the plan as soon as it is safe. Do not invoke this Practice for harmless mechanical details or use
+it to reopen settled scope without a new fact that changes delivery, risk, or verification.
 
 ## Example
 
-A synchronous report formatter begins requiring a persistent queue and scheduled execution. The agent pauses, rejects scheduling as outside scope, and updates the plan only for synchronous formatting plus its revised latency evidence before resuming.
+A migration checker was planned as read-only, but corrupted records reveal that useful completion
+would require writes and rollback. The agent pauses, keeps the current change to a read-only report,
+and asks whether repair should become a separately authorized migration with new safety evidence.

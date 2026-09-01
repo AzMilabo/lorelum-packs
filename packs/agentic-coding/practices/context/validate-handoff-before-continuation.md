@@ -1,38 +1,62 @@
 ---
+anti_patterns:
+  - description: Treating a concise handoff as proven because the sender is trusted or rerunning work is costly lets omitted limits, references to old files or commits, and unsupported conclusions control the receiver’s next decision.
+    id: agentic-coding.recovery.handoff-as-proof
+    name: Handoff treated as proof
+    severity: warn
+applies_when: another agent, contributor, or delegated task has returned conclusions or completion status, and the receiver is about to rely on them without checking the current request, files, commit, and cited results
 id: agentic-coding.recovery.validate-handoff-before-continuation
-title: Validate Handoffs Before Continuing
+severity: warn
 stage: recovery
 tech_stack:
   - agentic-coding
-applies_when: another agent, contributor, or delegated task has returned conclusions or completion status, and the receiving agent is about to make a dependent decision without reconciling them with current authority, artifacts, and evidence
-severity: warn
-anti_patterns:
-  - id: agentic-coding.recovery.handoff-as-proof
-    name: Handoff treated as proof
-    description: Treating a concise handoff as verified state lets omitted limits, stale artifact references, or unsupported conclusions become premises for the receiving agent's next work.
-    severity: warn
+title: Validate Handoffs Before Continuing
 ---
 
 ## When to apply
 
-Apply at a cross-agent or cross-contributor information boundary before the receiver acts on a reported finding, result, or completion status. Do not apply merely because the same agent is resuming after context loss, or when the handoff contains no conclusion relevant to the next decision.
+Apply when receiving conclusions, test results, or completion status from another Agent,
+contributor, delegated task, or workstream and the next action depends on them. Check only the
+statements needed for that action, not every exploratory detail. Same-Agent recovery after context
+loss requires re-grounding instead; a suggestion that will not affect the next decision may remain
+clearly tentative.
 
 ## Guidance
 
-Identify the handoff claims that the next action depends on, then compare them with the authoritative requirement, current artifact state, and cited evidence. Accept, narrow, reject, or escalate each dependent claim and discard assumptions made stale by concurrent changes. Stop with a validated handoff disposition and a corrected next action.
+List the handoff statements that would change your plan, code edit, approval, or completion report.
+For each one, check the current user request, accepted issue, or specification; confirm the branch,
+file, commit, or environment the sender used; and inspect the cited result closely enough for the
+risk. Check for changes made after the sender finished. Decide whether each statement is usable as
+written, usable only for a smaller scope, unsupported, or blocked on a decision from the person who
+owns the requirement. Update the next action, then stop. Do not repeat the sender’s entire task
+unless the risk requires it.
 
 ## Anti-pattern
 
-Continuing from "all checks pass" when the handoff cites only component tests and the current branch has since changed the integration path required by acceptance.
+The user requires a migration that can roll back populated data. A capable specialist reports
+“migration verified” with a clean test summary. The receiver trusts the specialist, and the full
+fixture is slow, so preparing delivery seems reasonable. The cited run covered only forward
+migration on the specialist’s earlier commit; the current branch changes rollback handling, and the
+handoff omitted both limits.
 
 ## Why
 
-Handoffs compress both evidence and uncertainty, while artifacts may change independently. Validation keeps delegation useful without allowing confidence, omission, or timing differences to propagate into the main task as false shared state.
+Handoffs shorten evidence, assumptions, and unknowns so work can be divided. The receiver still owns
+the next decision. Checking only the statements that decision depends on preserves most of the speed
+while catching omitted scope, old commits, and unsupported confidence.
 
 ## Exceptions and boundaries
 
-Low-impact exploratory suggestions can remain explicitly provisional until they become decision inputs. An authoritative scope change delivered through a handoff should be processed as changed authority, not accepted merely because another agent reported it.
+Low-impact suggestions can remain clearly tentative until they affect a decision. Trusted automated
+results need less inspection when the exact commit and tested behavior are clear. Security,
+migration, release, and destructive claims need stronger checks. If a handoff says the scope
+changed, trace that change to the user, maintainer, or accepted specification that actually controls
+the work; the sender cannot change scope merely by reporting it.
 
 ## Example
 
-A delegated task reports that installation is verified. The receiver confirms the cited local install result but finds no upgrade evidence, narrows the claim to fresh installation, and keeps upgrade verification as the next action.
+The user asks for rate limits that remain correct when one service instance loses the shared store.
+A delegated task reports the fix verified. The receiver checks the cited commit and test output,
+confirming burst limiting in one process but finding no shared-store failover run. It records the
+single-process result as valid, rejects the broader “production fix verified” wording, and makes
+failover the next required check.

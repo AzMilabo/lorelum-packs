@@ -1,38 +1,53 @@
 ---
+anti_patterns:
+  - description: Using a broad completion verb because the changed component and focused checks look finished, even though the evidence covers only one artifact state or technical slice of the user capability.
+    id: agentic-coding.delivery.capability-inflation
+    name: Technical slice inflated to capability
+    severity: warn
+applies_when: the agent is about to say that work is complete, fixed, accepted, deployed, pushed, or verified, and the available evidence may cover only a narrower artifact state or technical slice
 id: agentic-coding.delivery.claim-only-supported-outcome
-title: Claim Only the Supported Outcome
+severity: warn
 stage: delivery
 tech_stack:
   - agentic-coding
-applies_when: the agent is about to say that work is complete, fixed, accepted, deployed, pushed, or verified, and the available evidence may cover only a narrower artifact state or technical slice
-severity: warn
-anti_patterns:
-  - id: agentic-coding.delivery.capability-inflation
-    name: Technical slice inflated to capability
-    description: Using a broad completion verb for evidence that covers only a component or local check causes recipients to rely on behavior that was never verified.
-    severity: warn
+title: Claim Only What the Evidence Proves
 ---
 
 ## When to apply
 
-Apply at the moment of forming a completion or status claim from the evidence currently available. Do not apply merely because residual work exists; residual reporting is a separate decision unless it changes the supported wording.
+Apply when writing a completion or status claim from evidence already collected. This Practice
+controls what the proven result may be called. It does not decide how to close a missing check, and
+it does not choose which remaining risks belong in a handoff.
 
 ## Guidance
 
-Identify the artifact state, behavior, environment, and scope directly supported by current evidence. Choose a verb and object no broader than that boundary, and distinguish a technical slice from an end-user capability when the latter spans additional flows. Stop with one calibrated outcome statement; omit unverified implications rather than softening them with confidence language.
+Name the exact artifact state, behavior, environment, and scope that current evidence covers. Choose
+a verb and object no broader than those facts. If the work is one component or technical slice of a
+larger user capability, say so directly. Stop with one calibrated outcome statement; do not hide a
+broader implication behind words such as "likely" or "effectively."
 
 ## Anti-pattern
 
-Saying "webhook delivery is accepted" because one event arrives and a focused handler test passes, even though retry exhaustion and invalid-signature rejection were not exercised.
+The user asks to repair the worker that replays edits after reconnecting. The repository already has
+a larger offline-sync feature, and one queued edit now replays successfully with focused tests
+green. Calling the work "offline sync complete" feels natural because that is the surrounding
+feature name. But conflict resolution and repeated reconnects were not exercised, so the claim turns
+proof of one repaired path into proof of the whole capability.
 
 ## Why
 
-Recipients often treat completion verbs as permission to merge, release, or stop investigating. Matching the sentence to the proof prevents a locally true result from triggering decisions that assume the whole capability exists.
+Recipients use completion language to decide whether to merge, release, or stop investigating.
+Matching the statement to the evidence prevents a true local result from authorizing decisions that
+assume untested behavior.
 
 ## Exceptions and boundaries
 
-Use the project's formally defined completion vocabulary when it has explicit gates, but still state when a gate was not run or refers to a different artifact state. Do not weaken a confirmed full-capability result into vague language merely because several independent evidence items support it.
+Use the project's formal completion vocabulary when its gates are satisfied, but say when a gate was
+not run or covered a different artifact state. When current evidence does cover the full capability,
+state that plainly rather than weakening a supported result into vague language.
 
 ## Example
 
-Instead of "the search rollout is complete," report "query ranking passed the sampled relevance cases on the current index; failover behavior was not exercised."
+The current index passes the accepted relevance cases, but no rollout or failover was performed. The
+agent reports, "Ranking behavior is verified on the current index," rather than "The search rollout
+is complete."
