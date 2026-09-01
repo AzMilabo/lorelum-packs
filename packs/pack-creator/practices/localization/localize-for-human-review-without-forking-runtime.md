@@ -1,0 +1,63 @@
+---
+anti_patterns:
+  - description: Editing localized IDs, triggers, decisions, or release behavior independently to improve one language creates two competing Pack meanings that can drift and retrieve differently.
+    id: pack-creator.localization.localized-runtime-fork
+    name: Localized copy becomes a second runtime Pack
+    severity: warn
+applies_when: canonical Practices are being translated for human readers, and the author must make the localized text natural and reviewable while keeping one canonical runtime identity and decision meaning
+id: pack-creator.localization.localize-for-human-review-without-forking-runtime
+severity: warn
+stage: localization
+tech_stack:
+  - lorelum-pack-authoring
+title: Localize for Human Review without Forking Runtime Meaning
+---
+
+## When to apply
+
+Apply when preparing or updating companion content in another language. The decision is how to make
+that reading version clear to human reviewers without turning it into a second canonical Pack. The
+canonical Practice IDs, runtime files, and intended decision remain the shared reference.
+
+## Guidance
+
+Translate the decision, not the English word order. Preserve the Practice ID, anti-pattern ID,
+trigger conditions, required action, stopping point, exceptions, causal reason, and example
+relationships. Replace an idiom or unfamiliar term with natural language in the target language when
+the meaning stays the same. Keep localized files outside the canonical runtime input according to
+the repository’s localization layout, and record which canonical revision each translation
+represents. Have a target-language reviewer check both readability and meaning against the canonical
+file. Stop when every localized Practice is current, reviewable, and traceable to one canonical
+Practice; do not add language-specific runtime rules merely to make the translation feel more
+useful.
+
+## Anti-pattern
+
+A compliance Pack is translated for regional reviewers. The canonical Practice says to retain
+customer records for the period defined by the applicable policy and to escalate conflicting rules.
+A local reviewer asks for a concrete number, and the translator knows that one business unit
+commonly uses seven years. Adding “seven years” only to the translation seems helpful and saves a
+policy lookup. It also creates a second rule that can outlive the business-unit policy and
+contradict the canonical trigger for other users.
+
+## Why
+
+Natural localization lets humans catch unclear guidance and domain mistakes. A runtime fork does the
+opposite: the same Practice ID would imply different decisions depending on which file a reader saw,
+and fixes would have no single source to update.
+
+## Exceptions and boundaries
+
+A localized note may explain a term, regulation name, or example for readers when it is clearly
+marked as non-canonical context and does not change the decision. A market-specific rule that should
+affect runtime behavior belongs in its own canonical Practice or Pack with an explicit trigger, not
+in a translation. This Practice does not require literal sentence alignment.
+
+## Example
+
+A database-operations Pack uses the English phrase “fail closed” in a Practice about restoring
+access controls after recovery. The Chinese reviewer finds a literal translation unclear. The
+translator rewrites it as a concrete instruction: if the permission state cannot be verified, keep
+access denied and ask an operator to resolve it. The Practice and anti-pattern IDs stay unchanged,
+the example preserves the same recovery sequence, and the localization record points to the reviewed
+canonical revision. No localized file is added to the runtime Pack root.
