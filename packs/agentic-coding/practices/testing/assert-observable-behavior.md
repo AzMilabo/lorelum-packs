@@ -1,41 +1,59 @@
 ---
+anti_patterns:
+  - description: Asserting convenient private state, call order, markup shape, or helper boundaries that are not contractual makes harmless refactoring look like a broken promise while the real outcome may remain untested.
+    id: agentic-coding.testing.incidental-implementation-assertion
+    name: Incidental implementation assertion
+    severity: warn
+applies_when: a test already has a protected requirement or invariant, and the agent must choose an assertion boundary that distinguishes the promised outcome from incidental implementation details
 id: agentic-coding.testing.assert-observable-behavior
-title: Assert Observable or Stable Behavior
+severity: warn
 stage: testing
 tech_stack:
   - agentic-coding
-applies_when: >-
-  a test's protected behavior is already known, and the agent is about to
-  choose assertions that could observe either a user-visible or stable
-  interface outcome or incidental implementation structure
-severity: warn
-anti_patterns:
-  - id: agentic-coding.testing.incidental-implementation-assertion
-    name: Incidental implementation assertion
-    description: Asserting private state, call order, markup shape, or helper boundaries that are not contractual, which makes harmless refactoring look like behavioral regression.
-    severity: warn
+title: Assert Observable or Stable Behavior
 ---
 
 ## When to apply
 
-Apply when writing or revising the assertion for a behavior whose purpose is already established. Prefer what a user, caller, downstream system, or stable interface can observe. The near miss is deciding which requirement deserves coverage; that is a test-purpose decision, not an assertion-shape decision.
+Apply after the reason for a test is known and before choosing what it will inspect. Identify who or
+what relies on the protected behavior: a user, API caller, persisted reader, external consumer, or
+intentionally stable internal interface. This Practice selects the observation boundary; it does not
+decide whether the behavior deserves a test in the first place.
 
 ## Guidance
 
-Identify the observer named by the protected behavior and the stable outcome available to that observer. Assert that outcome at the narrowest reliable boundary, supplying controlled inputs and observing outputs or effects rather than reconstructing private execution. The output is the observable assertion. If only internal details are currently visible, create or use the smallest legitimate observation seam instead of declaring an incidental detail to be the contract.
+Drive the behavior with a controlled input and inspect the smallest result that the real user or
+caller can rely on: a return value, saved record, protocol message, permission decision, file bytes,
+or another promised effect. Check enough detail to distinguish success from the likely failure, but
+do not reconstruct the private route taken to get there. If the result cannot currently be observed,
+expose the smallest legitimate read or test through the nearest stable interface. Stop when the
+assertion would still pass after an internal refactor that preserves the promised behavior.
 
 ## Anti-pattern
 
-Checking component state names, exact internal call sequences, incidental markup nesting, or temporary helper invocations when the actual requirement concerns saved data, returned results, permissions, or other externally meaningful effects.
+The user requires revoked access to stop working on the next request. The repository uses an
+authorization cache, and a refactor moves invalidation between two helpers. Because helper order is
+easy to mock and produces a fast deterministic test, the agent checks that invalidation runs before
+lookup. The test can pass while the next request still receives a cached allow decision, and it will
+fail if a later design removes the cache while correctly denying access.
 
 ## Why
 
-Observable assertions fail when promised behavior changes, while implementation assertions also fail when behavior is preserved through refactoring. Testing the stable boundary therefore protects outcomes with less false coupling and produces evidence that maps more directly to acceptance.
+An assertion is useful when its failure means the protected promise may be broken. Stable
+observations provide that signal. Incidental assertions spend maintenance effort on code shape, can
+miss the user-visible defect, and produce evidence that is difficult to connect to acceptance.
 
 ## Exceptions and boundaries
 
-Exact bytes, syntax trees, protocol fields, event order, timing bounds, or serialization shape should be asserted when those details are themselves published or safety-relevant contracts. Focused unit tests may observe an internal API that is intentionally stable within the project. Do not weaken precision when precision is part of the requirement.
+Exact bytes, syntax trees, protocol fields, event order, timing bounds, or serialization shape
+should be asserted when those details are published, compatibility-sensitive, or safety-relevant.
+Focused unit tests may target an internal API that the project deliberately treats as stable.
+“Observable” does not mean vague: retain exactness whenever exactness is part of the promise.
 
 ## Example
 
-For a profile update, the test submits a new display name and verifies that a subsequent read returns it. It does not assert the component’s internal state variable or the order of two private helper calls.
+The user requires revoked access to stop working immediately. The repository exposes a supported
+request path and an administration path for revocation. The agent grants access, confirms one
+request succeeds, revokes access, then sends another request through the supported path and verifies
+denial. It does not inspect a cache flag or helper order because the user relies on the denial, not
+the cache design.

@@ -1,41 +1,64 @@
 ---
+anti_patterns:
+  - description: Changing the easiest side of a failed check before deciding whether the defect is in the product, verifier, environment, or pre-existing baseline can erase the only clear evidence of the real problem.
+    id: agentic-coding.testing.test-accommodation-before-diagnosis
+    name: Test accommodation before diagnosis
+    severity: warn
+applies_when: a test, lint, type, build, or validation check has failed and the agent is about to change production code, the test, generated files, or configuration without first identifying the source of the disagreement
 id: agentic-coding.testing.classify-failure-before-changing-test
-title: Classify Failures Before Changing Tests
+severity: warn
 stage: testing
 tech_stack:
   - agentic-coding
-applies_when: >-
-  a test, lint, type, build, or validation check has failed, and the agent is
-  about to change production code, test expectations, or configuration before
-  establishing what kind of failure occurred
-severity: warn
-anti_patterns:
-  - id: agentic-coding.testing.test-accommodation-before-diagnosis
-    name: Test accommodation before diagnosis
-    description: Updating the failing expectation to match current output before determining whether the product, test, environment, or baseline is wrong, which can erase evidence of a real defect.
-    severity: warn
+title: Classify Failures Before Changing Tests
 ---
 
 ## When to apply
 
-Apply after a check fails and before editing either the implementation or its verifier. The needed output is a cause classification: product defect, outdated test or contract, environment or nondeterminism, or unrelated pre-existing baseline. A failure with already decisive evidence and an agreed classification is a near miss; proceed with the corresponding fix.
+Apply when a check has produced a concrete failure and more than one explanation is plausible. Pause
+before editing the implementation, expectation, fixture, generated output, or tool configuration.
+Decide whether the problem is in the product, an obsolete or incorrect test, the environment or
+nondeterministic behavior, a generated file built from different source, or an unrelated failure
+that already existed. An external review comment without a reproduced check is a review-finding
+problem instead.
 
 ## Guidance
 
-Reproduce the smallest relevant failure and compare its observed behavior with the authoritative requirement and the state being tested. Gather only enough additional evidence to distinguish the candidate classes, then record the classification and the evidence that rules out the nearest alternative. Stop at that classification; selecting or applying a remediation is outside this Practice. If the evidence remains ambiguous, keep production code, tests, and configuration unchanged while escalating the uncertainty rather than guessing through edits.
+Reproduce the smallest relevant failure using a known commit, build, or generated file. Read the
+failed assertion or diagnostic, compare what happened with the current requirement, and check the
+environment, inputs, fixtures, and generated files that could change the result. Gather only enough
+evidence to distinguish the leading explanations. Record what is wrong and the fact that rules out
+the next most likely explanation, then stop. Choose the fix only after that. If the cause is still
+unclear, leave production code, tests, and configuration unchanged and report what remains uncertain
+instead of editing until something turns green.
 
 ## Anti-pattern
 
-Seeing that a redesigned screen breaks a test, immediately updating selectors and expected rows to fit the new screen, and only later asking whether the redesigned behavior still satisfies the requirement.
+The user asks for a visual refresh that preserves keyboard navigation. A nearby UI refactor changes
+a snapshot, and the new screen looks polished. Because updating the snapshot is one command and
+restores a green suite, the agent accepts it immediately. The refactor also removed a required
+keyboard action, so the expectation update deletes the only failure signal before the behavior is
+compared with the request.
 
 ## Why
 
-A failing check is evidence of disagreement, not evidence of which side is wrong. Classification preserves that signal long enough to locate the disagreement and prevents test edits from laundering implementation drift into apparent correctness.
+A failed check proves only that two states disagree. Correct classification prevents a product
+defect from being normalized into a new expectation, and prevents valid behavior from being “fixed”
+to satisfy a stale test. It also avoids mixing unrelated baseline failures into the current change.
 
 ## Exceptions and boundaries
 
-Contain active security, data-loss, or production incidents before completing a full diagnosis when delay increases harm, while preserving evidence for follow-up. Clearly corrupt generated artifacts or unavailable infrastructure may be repaired once their cause is directly established. A user-approved requirement change can make a test outdated, but the approval must be the basis for that classification.
+Contain an active security, data-loss, or production incident before full diagnosis when delay
+increases harm, while preserving evidence for follow-up. A directly confirmed infrastructure outage
+or corrupt generated file can be repaired without reconsidering every possible cause. An approved
+requirement change may make a test obsolete, but that approval—not the new implementation output—is
+the reason.
 
 ## Example
 
-A search test fails after results are grouped differently. The agent checks the requirement, finds grouping was never changed, and classifies the failure as a product defect rather than rewriting the expectation. Remediation begins only after that classification is established.
+The user asks for a database migration that works from the currently released schema. In the
+repository, the migration test passes alone but fails after another database suite. The agent runs
+both orders and checks the starting schema version, finding that the earlier suite leaves shared
+state behind. A fresh database migrates successfully, so the failure comes from test isolation
+rather than the migration or its expected result. Only then does the agent change the shared fixture
+cleanup.

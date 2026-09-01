@@ -1,38 +1,61 @@
 ---
+anti_patterns:
+  - description: Treating a long list of commands, tests, or inspections as proof of acceptance without mapping results to criteria hides unsupported capabilities behind visible activity.
+    id: agentic-coding.verification.coverage-by-activity
+    name: Coverage by activity
+    severity: warn
+applies_when: implementation is ready for verification, actual checks or observations are available, and the agent is about to decide which acceptance criteria those results cover
 id: agentic-coding.verification.map-evidence-to-acceptance
-title: Map Evidence to Acceptance Criteria
+severity: warn
 stage: verification
 tech_stack:
   - agentic-coding
-applies_when: implementation is ready for verification, actual checks or observations are available, and the agent is about to decide which acceptance criteria those results cover
-severity: warn
-anti_patterns:
-  - id: agentic-coding.verification.coverage-by-activity
-    name: Coverage by activity
-    description: Treating a list of executed checks as proof of acceptance without showing which criterion each result supports leaves untested capabilities hidden behind visible activity.
-    severity: warn
+title: Map Evidence to Acceptance Criteria
 ---
 
 ## When to apply
 
-Apply after implementation when concrete test results, inspections, or observations must be reconciled with the current acceptance criteria. Do not apply while merely choosing future checks; that is evidence planning, not a mapping of evidence already obtained.
+Apply after checks or observations exist and before deciding that acceptance has been demonstrated.
+The decision is which current criterion each result actually supports. Planning future evidence
+happens before implementation; checking whether a result is still fresh is a separate state-binding
+decision; resolving a row left uncovered happens after this map exposes it.
 
 ## Guidance
 
-Read the current acceptance criteria and the results that belong to the current implementation. For each criterion, record the specific result that supports it and the scope that result actually exercised; mark a criterion uncovered when no result reaches it. Stop with an acceptance-to-evidence map, without converting uncovered rows into inferred success.
+Copy the current acceptance criteria from the user request, accepted issue, or specification. Beside
+each one, name the exact test result, inspected file, or direct observation that exercised it,
+including the behavior and environment actually covered. One result may support several criteria
+only when it really observed each outcome. Write “not covered” or “partly covered” when a result
+stops short. Stop with this criterion-by-criterion table or list; do not fill empty rows with
+confidence, test counts, or nearby successes.
 
 ## Anti-pattern
 
-Listing a calculation test, build, and manual booking check as "verification complete" while never showing whether cancellation releases reserved capacity or repeated submission creates a duplicate booking.
+The user asks for booking submission to issue one reservation even when a request is retried. The
+repository has green calculation tests, a full build, static checks, and one successful booking
+demonstration. Because the log is substantial and every command is green, the agent reports
+verification complete. None of those results retries a submission, so the no-duplicate requirement
+disappears behind the activity summary.
 
 ## Why
 
-Checks prove only the behavior and state they observe. Mapping them to acceptance exposes silent coverage gaps and prevents a dense verification log from being mistaken for complete capability evidence.
+Verification results have narrower meaning than their command names suggest. Mapping makes that
+meaning explicit, exposes silent gaps, and lets reviewers challenge a particular criterion-to-result
+relationship instead of interpreting a dense log as a general proof.
 
 ## Exceptions and boundaries
 
-A single result may cover several criteria when its observable scope genuinely includes each one; do not duplicate work just to force one result per row. If acceptance itself is missing or disputed, resolve that authority problem before inventing criteria for this map.
+A single end-to-end observation may cover several criteria when it really includes them; do not
+duplicate work to force one result per row. Mandatory gates may be recorded even when they do not
+directly prove a user capability, but label their role. If the user request, accepted issue, and
+specification do not agree on acceptance, ask which one controls the work before inventing criteria.
+This Practice produces the map, not the final delivery wording.
 
 ## Example
 
-A calculation test covers the quoted price, a booking result covers label issuance, and a rejection check covers invalid destinations. The map leaves cancellation cleanup uncovered because none of those results exercised it.
+The user asks for a report with required fields, readable pages, and a file that opens on the target
+phone. The repository has a schema test, rendered page images, a successful phone download, and a
+green build. The agent maps the schema result to required fields, the image inspection to
+readability, and the phone observation to delivery and opening. It records the build only as a
+required gate. Because no check interrupted and resumed a download, offline retry remains explicitly
+uncovered.

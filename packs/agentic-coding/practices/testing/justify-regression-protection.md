@@ -1,42 +1,61 @@
 ---
+anti_patterns:
+  - description: Turning a salient one-off mistake or rejected experiment into a permanent negative assertion without a durable contract, credible recurrence path, or high-impact risk leaves future maintainers paying for corrective residue.
+    id: agentic-coding.testing.memorialized-transient-mistake
+    name: Memorialized transient mistake
+    severity: warn
+applies_when: a failure has been classified or a correction accepted, and the agent must decide whether to add a long-lived regression test, negative assertion, lint rule, or gate that will constrain future changes
 id: agentic-coding.testing.justify-regression-protection
-title: Require Evidence for Regression Protection
+severity: warn
 stage: testing
 tech_stack:
   - agentic-coding
-applies_when: >-
-  the agent is about to add a long-lived negative test, regression test, lint
-  rule, or delivery gate after a reproduced and classified regression or an
-  authoritative correction, and must decide whether preventing recurrence is a
-  durable contract
-severity: warn
-anti_patterns:
-  - id: agentic-coding.testing.memorialized-transient-mistake
-    name: Memorialized transient mistake
-    description: Turning an agent's rejected or one-off behavior into a permanent negative assertion or gate without a contract or evidenced recurrence risk, which creates corrective residue.
-    severity: warn
+title: Require Evidence for Regression Protection
 ---
 
 ## When to apply
 
-Apply before making a classified regression or authoritative correction a permanent part of the project’s verification surface. The trigger is the durability decision, not ordinary positive coverage of a current requirement. An unclassified failure is a near miss and must be classified before regression protection is considered. A security prohibition, compatibility boundary, or explicit acceptance condition already documented as durable is also a near miss because its justification is established.
+Apply after the failure or correction is understood, before converting it into a permanent test or
+gate. The decision is whether recurrence prevention deserves long-term maintenance. It is not the
+earlier decision about what caused the failure, and it is not ordinary positive coverage selected
+directly from a current requirement.
 
 ## Guidance
 
-Identify the proposed protection and require at least one durable basis: an explicit contract, an observable absence requirement, a real regression with credible recurrence, or a high-impact safety, privacy, compatibility, or data-integrity boundary. Decide to keep, narrow, time-bound, or omit the protection based on that basis. The output is one protection decision with its justification; a recent mistake alone is not evidence that the project needs a permanent rule.
+State the failure the proposed test or gate would catch. Keep it only when there is a lasting
+reason: an explicit promise, a required absence such as “unauthorized requests never return data,” a
+reproduced bug that can realistically return through future changes, or a high-impact safety,
+privacy, compatibility, or data-integrity risk. Choose whether to keep, narrow, make temporary, or
+omit the protection. Observe the smallest stable behavior that catches recurrence without freezing
+today’s helper design. Record the reason and, for temporary protection, when it can be removed.
+“This just happened” is not enough.
 
 ## Anti-pattern
 
-After removing unrequested text, adding a permanent assertion that the exact text never appears again, even though the user only asked to restore the original design and established no new prohibition.
+The user rejects helper text that an Agent added to one supplied screen and asks to restore the
+design. The repository has a simple text-lint mechanism, so adding a global ban for that phrase is
+cheap and makes the correction feel complete. The Agent adds the ban even though the user restored
+one screen, not a product-wide prohibition, and no shared generator or repeated failure could
+reintroduce the text elsewhere.
 
 ## Why
 
-Tests and gates convert history into future maintenance obligations. Requiring a durable reason preserves protections that prevent meaningful harm while avoiding a growing rule set that memorializes every discarded exploration or local correction.
+Regression tests and gates turn one incident into a standing constraint. A durability check keeps
+protections for failures that matter and can recur, while avoiding a suite shaped by the accident of
+which Agent mistakes happened most recently.
 
 ## Exceptions and boundaries
 
-Unauthorized access, secret exposure, destructive data loss, regulatory violations, and published compatibility breaks can warrant protection after a single credible incident because the failure cost is high. Temporary safeguards may also be appropriate during a migration if their removal condition is explicit. Do not reject a protection merely to minimize test count or diff size.
+Unauthorized access, secret exposure, destructive data loss, regulatory violations, and published
+compatibility breaks can warrant protection after one credible incident because the failure cost is
+high. Temporary safeguards can be appropriate during a migration when their removal condition is
+explicit. Do not reject justified protection merely to minimize test count or diff size, and do not
+add it before an unresolved failure is classified.
 
 ## Example
 
-An agent removes an unrequested tooltip and declines to add a “tooltip must never exist” test. It does add a denial-path test for unauthorized access because absence of access is an explicit security contract.
+The user requires payment retries to produce at most one charge. A reproduced bug showed that the
+repository’s queue serializer dropped the request identifier before redelivery, allowing a duplicate
+charge. Because the public payment contract requires idempotency and the serializer is a likely
+future refactor point, the agent adds a permanent test that redelivers the saved job and observes
+one charge. It does not freeze the current queue helper sequence.
