@@ -1,0 +1,60 @@
+---
+anti_patterns:
+  - description: The author treats broad subject coverage as success because it mirrors the available sources, producing a useful-looking reference collection that does not help a reader make a better choice at a real decision point.
+    id: pack-creator.discovery.topic-list-as-pack-outcome
+    name: Topic list used as the Pack outcome
+    severity: warn
+applies_when: a new Pack is described by a domain, document collection, or list of topics, but the author has not stated whose recurring decisions the collection should improve
+id: pack-creator.discovery.define-pack-decision-outcome
+severity: warn
+stage: discovery
+tech_stack:
+  - lorelum-pack-authoring
+title: Define the Decisions the Pack Should Improve
+---
+
+## When to apply
+
+Apply before choosing Practices when the proposed Pack is still described as a subject such as
+"PostgreSQL operations" or "frontend accessibility." Decide what judgment the collection should
+improve and for whom. Identifying when that help is needed comes next; this Practice defines the
+result of the collection, not its retrieval moments.
+
+## Guidance
+
+Write one outcome sentence naming the intended reader, the recurring decisions they face, and how
+the Pack should improve those choices. Test each candidate topic against that sentence: if knowing
+the topic would not change one of those decisions, it does not belong merely for completeness.
+Narrow or separate unrelated decision families instead of hiding them under a broad domain name.
+Stop when the outcome can admit useful guidance and reject impressive but irrelevant coverage.
+
+## Anti-pattern
+
+A team wants a database-operations Pack that reduces avoidable production incidents. The source
+repository is organized into backup, replication, indexing, and configuration chapters, so copying
+that table of contents looks comprehensive and easy to review. The author makes one Practice for
+every chapter and calls the Pack complete. A database operator asking whether a risky schema change
+can be rolled back receives definitions from several chapters but no guidance for that decision. The
+better outcome would name the operational choices the Pack should improve, then include source
+topics only when they support those choices.
+
+## Why
+
+A Pack organized around a decision outcome has a stable reason for including or excluding content. A
+topic inventory can grow indefinitely while still failing to help at the moment a reader must
+choose.
+
+## Exceptions and boundaries
+
+Early research may begin with a provisional outcome and refine it as real needs appear. A Pack may
+serve several related decision families when the relationship is explicit; it should not force
+unrelated audiences into one collection. This Practice does not choose individual `applies_when`
+text or require a fixed number of Practices.
+
+## Example
+
+An accessibility Pack is intended for frontend reviewers. The author states: "Help reviewers decide
+whether a proposed interface change preserves keyboard use, focus visibility, and understandable
+control names before approval." Color theory and general visual branding may be useful subjects, but
+they do not enter this Pack unless they change one of those review decisions. The outcome is
+specific enough to guide discovery without dictating the final Practice list.
