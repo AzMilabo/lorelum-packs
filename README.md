@@ -1,6 +1,6 @@
 # Lorelum Knowledge Packs
 
-This repository is the official public catalog for installable Lorelum Knowledge Packs. Each directory under `packs/` is a self-contained Pack root using the public `pack.yaml + practices/**/*.md + decisions.yaml?` format.
+This repository is the official public catalog for installable Lorelum Knowledge Packs. Each released Pack directory under `packs/` is a self-contained Pack root using the public `pack.yaml + practices/**/*.md + decisions.yaml?` format; a maintainer checkout may also contain explicitly marked unreleased candidates.
 
 ## Catalog
 
@@ -47,3 +47,7 @@ packs/
 ```
 
 The `packs/<name>` path is this catalog's organization convention. A project-authored Pack may instead live at `.lorelum/packs/<name>` in its own project; the Pack root format itself is unchanged.
+
+## Unreleased local candidate
+
+`packs/react-web-craft/` is a maintainer working candidate, not an installable catalog release. It has no Registry entry, immutable release ref, or tag. Its content is complete and frozen: 24 Practices across six categories (state, async, bundle, server, rendering, composition), English content frozen 2026-09-14, with a zh-CN companion under `i18n/zh-CN/` pinned by `i18n/manifest.yaml`. The Pack license is determined as CC-BY-4.0 (`pack.yaml`, 2026-09-15). The only gate still open is the Registry release; the Pack's own README records the gate status. Do not infer release status merely from its location under `packs/`.
